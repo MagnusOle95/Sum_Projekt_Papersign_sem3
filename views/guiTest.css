@@ -1,0 +1,93 @@
+/* --------------------------------------------------------------- */
+
+
+/* Big grid */
+.parent {
+    display: grid;
+    grid-template-columns: repeat(2, 35%);
+    grid-template-rows: repeat(15, 35%);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+}
+
+/* --------------------------------------------------------------- */
+
+/* Big grid children */
+
+.child1 {
+    display: grid;
+    grid-template-columns: repeat(3, 30%);
+    grid-template-rows: repeat(15, 50%);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    grid-row-start: 1;
+}
+
+.child2 {
+    display: grid;
+    grid-template-columns: repeat(3, 30%);
+    grid-template-rows: repeat(15, 50%);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    grid-column-start: 2;
+    grid-row-start: 1;
+    
+}
+
+/* --------------------------------------------------------------- */
+
+/* Grid Content */
+
+/* Listviews */
+.child1 #produktList {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end: 12;
+
+}
+
+.child2 #kurvList {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end: 11;
+
+}
+
+.child2 #produktList {
+    text-align: center;
+}
+
+/* Titles */
+.child2 #titleK {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 4;
+
+}
+
+.child1 #titleP {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 4;
+
+}
+
+/* Font size */
+
+p, input, button, select{
+    font-size: 125%;
+}
+
+/* --------------------------------------------------------------- */
+
+.child2 #titleB {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 4;
+
+}
