@@ -24,6 +24,15 @@
         "program": "${workspaceFolder}/logik.js"
         
     },{
+      "type": "module",
+      "request": "launch",
+      "name": "paperSign launcher",
+      "skipFiles": [
+          "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/underskrift.js"
+      
+  },{
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
