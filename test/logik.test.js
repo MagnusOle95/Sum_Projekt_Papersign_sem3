@@ -1,7 +1,7 @@
-const { assert } = require('chai');
-const { describe } = require('mocha');
-const logik = require('../logik.js');
-const ordre = require('../ordre.js');
+import assert from 'chai';
+import describe from 'mocha';
+import logik from '../logik.js';
+import ordre from '../ordre.js'
 
 describe('Test af createProduct', () => {
     let productgroup = null;
