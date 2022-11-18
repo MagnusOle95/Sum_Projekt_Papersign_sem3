@@ -1,0 +1,123 @@
+
+let varenr = 0; // tælles op automatisk af inde i constructoren
+let products = []; // varer tilføjes automatisk her, når de oprettes.
+let productgroups = []; // all produktgrupper (en del af alle produkter)
+
+function createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe){
+    let product = new Product(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe);
+    products.push(product);
+    produktgruppe.produkter.push(this); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
+    return product;
+}
+
+function createProductgroup(navn, beskrivelse){
+    let productgroup = new Productgroup(navn, beskrivelse);
+    productgroups.push(productgroup);
+    return productgroup;
+}
+
+function getProductgroup(){
+  return productgroups;
+}
+
+function removeAttribute(produkt, attribut){
+    produkt.removeAttribute(attribut);
+}
+// TODO, måske: setNewProduktgruppe (undergruppe)
+function setNewAttribute(produkt, attribut, værdi){
+    produkt.setAttribute(attribut, værdi);
+}
+
+class Product {
+  constructor(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe) {
+    this.varenr = varenr.toString().padStart(6, '0'); // sætter (op til 6) 0'er foran varenummeret
+    this.navn = navn;
+    this.pris = pris;
+    this.antal = antal;
+    this.EAN = EAN;
+    this.leverandør = leverandør;
+    this.bestillingsnummer = bestillingsnummer;
+    this.produktgruppe = produktgruppe;
+    varenr++;
+  }
+}
+
+class Productgroup {
+    constructor(navn, beskrivelse) {
+      this.navn = navn;
+      this.beskrivelse = beskrivelse;
+      this.produkter = [];
+    }
+  }
+
+function getProducts(){
+  return products; // returnerer arrayet med alle produkter.
+}
+
+function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
+  let found = false
+  if (obj[arrSplit[count]] == soegevaerdi) {
+    return true;
+  }
+  else if (count == arrSplit.length - 1) {
+    return false;
+  }
+  else {
+    found = searchDynamicObject(obj[arrSplit[count]], arrSplit, count + 1, soegevaerdi);
+  }
+  return found;
+}
+
+function searchDynamic(arr, attribut, soegevaerdi) {
+  searchresults = [];
+  let attributSplit = null;
+  if (attribut.includes(".")) {
+    attributSplit = attribut.split(".");
+    for (let p of arr) {
+      let found = searchDynamicObject(p, attributSplit, 0, soegevaerdi);
+      if (found == true) {
+        searchresults.push(p);
+      }
+    }
+  }
+  else {
+    for (let p of arr) {
+      if (p[attribut] == soegevaerdi) {
+        searchresults.push(p);
+      }
+    };
+  }
+  return searchresults;
+}
+
+// finder en vare med det specifikke varenummer (skal indeholde 0'erne foran)
+function getProduct(varenr){
+    let index = products.findIndex(object => {
+        return object.varenr == varenr;
+      });
+      return products[index];
+}
+
+
+
+/*
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCwMpbafG7AkNlU28omo8MDhA7ZgIh7BlA",
+  authDomain: "papersign-19cd5.firebaseapp.com",
+  projectId: "papersign-19cd5",
+  storageBucket: "papersign-19cd5.appspot.com",
+  messagingSenderId: "477663863462",
+  appId: "1:477663863462:web:f765c4665f9f0610fd4a67"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+*/
+
+export default { Product, createProduct, getProduct, getProducts, getProductgroup, createProductgroup, removeAttribute, setNewAttribute, searchDynamic };
