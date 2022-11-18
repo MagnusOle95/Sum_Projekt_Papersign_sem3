@@ -9,7 +9,7 @@ let path = import('path');
 const { request } = import('http');
 const { response } = import('express');
 app.set('view engine','pug');
-app.set('views',('Sum_Projekt/views/'));
+app.set('views',('views/'));
 
 app.use(express.json());
 
