@@ -1,0 +1,84 @@
+
+script.
+    //- //attributer 
+    //- let aktuelRum
+
+
+    //Post metode til funktion. 
+    async function post(url, objekt) {
+    const respons = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(objekt),
+    headers: {
+    'Content-Type': 'application/json'
+    }
+    });
+    if (respons.status !== 201) // Created
+    throw new Error(respons.status);
+    return await respons.text();
+    }
+
+    let visProdukter = async (rumNavn) => {
+        console.log(rumNavn)
+         try {
+        await post("http://localhost:6969/produkter");
+        window.location.href = "http://localhost:6969/"
+        }catch(e){
+        console.log("Fejl");
+        }
+        //aktuelRum = rumNavn; 
+    }
+
+    let opretProdukt = async () => {
+        console.log("Når her til")
+        var pNavn = document.getElementById("pNavn").value;
+        try {
+        await post("http://localhost:6969/opretProdukt", {pNavn: pNavn});
+        window.location.href = "http://localhost:6969/"
+        }catch(e){
+        console.log("Fejl");
+        } 
+        clickfunction(aktuelRum);
+    }
+
+    let sletProdukt = async (beskedId) => {
+        try {
+        await post("http://localhost:6969/sletprodukt", {beskedId: beskedId});
+        window.location.href = "http://localhost:6969/"
+        }catch(e){
+        console.log("Fejl");
+        } 
+        clickfunction(aktuelRum);
+    }
+
+
+body 
+
+    h1 Chatsystem. 
+        p
+            button(onclick='visProdukter()') vis produkter
+
+    h2 Beskeder i Rummet:
+    table(border = '1')
+        - 
+        each p in produkter
+            tr
+                td #{p.navn}
+                td
+                    label(onclick='sletProdukt("' + p.produktId + '")') slet
+
+    p   
+        label produktNavn
+        br
+        input(type='text' id='pNavn')
+        br
+        button(onclick='opretProdukt()') Opret Produkt:
+        br
+        label produktNavn til slet
+        br
+        input(type='text' id='pNavnSlet')
+        br
+        button(onclick='sletProdukt()') Opret Produkt:
+        
+        
+        
