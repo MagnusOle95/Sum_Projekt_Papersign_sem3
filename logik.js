@@ -1,4 +1,3 @@
-
 let varenr = 0; // tælles op automatisk af inde i constructoren
 let products = []; // varer tilføjes automatisk her, når de oprettes.
 let productgroups = []; // all produktgrupper (en del af alle produkter)
