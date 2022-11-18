@@ -15,17 +15,17 @@
             <p id="titleP">Produkt Grupper</p>
             <select name="kurv" id="produktList" multiple>
             </select>
-            <button id="tilfoejProduktG" onclick="">Tilføj</button>
+            <button id="tilfoejProduktG" onclick="createProductgroup(navnG.value, beskrilseG.value)">Tilføj</button>
             <button id="tilfoejProduktG">Opdater</button>
             <button id="tilfoejProduktG">Slet</button>
-            <input type="text" id="navn" placeholder="Navn">
-            <input type="text" id="beskrilse" placeholder="Beskrivelse">
+            <input type="text" id="navnG" placeholder="Navn">
+            <input type="text" id="beskrilseG" placeholder="Beskrivelse">
         </div class="child1">
         <div class="child2">
             <p id="titleK">Produkter</p>
             <select name="kurv" id="kurvList" multiple>
             </select>
-            <button id="tilfoejProdukt">Tilføj</button>
+            <button id="tilfoejProdukt" onclick="createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktgruppe)">Tilføj</button>
             <button id="tilfoejProdukt">Opdater</button>
             <button id="tilfoejProdukt">Slet</button>
             <input type="text" id="navn" placeholder="Navn">

@@ -1,0 +1,32 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='stylesheet' type='text/css' href='guiCrud.css')
+  script(src='logik.js')
+  title Document
+h1 PaperSign CRUD
+.parent
+  .child1
+    p#titleP Produkt Grupper
+    select#produktList(name='kurv' multiple='')
+    button#tilfoejProduktG(onclick='createProductgroup(navnG.value, beskrilseG.value)') Tilf&oslash;j
+    button#tilfoejProduktG Opdater
+    button#tilfoejProduktG Slet
+    input#navnG(type='text' placeholder='Navn')
+    input#beskrilseG(type='text' placeholder='Beskrivelse')
+  .child2
+    p#titleK Produkter
+    select#kurvList(name='kurv' multiple='')
+    button#tilfoejProdukt(onclick='createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktgruppe)') Tilf&oslash;j
+    button#tilfoejProdukt Opdater
+    button#tilfoejProdukt Slet
+    input#navn(type='text' placeholder='Navn')
+    input#pris(type='text' placeholder='Pris')
+    input#antal(type='text' placeholder='Antal')
+    input#ean(type='text' placeholder='EAN')
+    input(type='text' id='leverandør' placeholder='Leverandør')
+    input#bestillingsnummer(type='text' placeholder='Bestillingsnummer')
+    input#tilfoejAtr(type='text' placeholder='Skriv tekst her')
+    button#tilfoejAtrBut Tilf&oslash;j

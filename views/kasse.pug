@@ -1,0 +1,31 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='stylesheet' type='text/css' href='guiTest.css')
+  title Document
+h1 PaperSign
+.parent
+  .child1
+    input#atribut(type='text' placeholder='Kategori')
+    input#value(type='text' placeholder='Værdi')
+    button S&oslash;g
+    p#titleP Produkt liste
+    select#produktList(name='kurv' multiple='')
+    input#antal(type='number' placeholder='Antal')
+    button#tilfoejProdukt Tilf&oslash;j
+  .child2
+    p#titleB  
+    p#titleK Kurv
+    select#kurvList(name='kurv' multiple='')
+    button#tilfoejRabat Tilf&oslash;j Rabat
+    input#rabat(type='text' placeholder='Rabat')
+    button Slet
+    select#produktList(name='kurv')
+      option(value='' disabled='' selected='') Betallingsform
+      option(value='kort') Kort
+      option(value='kontant') Kontant
+      option(value='mobilPay') MobilPay
+    input#Beloeb(type='text' name='' placeholder='Beløb')
+    button#koeb K&oslash;b
