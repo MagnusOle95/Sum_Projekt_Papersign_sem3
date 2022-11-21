@@ -6,12 +6,20 @@ head
   link(rel='stylesheet' type='text/css' href='guiCrud.css')
   script(src='logik.js')
   title Search
-button Kasse
-button Faktura
-button Crud
-h1 PaperSign CRUD
-.parent
-    h2 søgning
-    form.div2(action = "/search", method="get")
-      input(type="text", value="" name="search" required)
-      input(class='button' type="submit", value="🔍👀 Søg")
+body
+    button Kasse
+    button Faktura
+    button Crud
+    h1 PaperSign Search
+    .parent
+
+        h2 søgning
+        form.div2(action = "/search", method="get")
+            input#atribut(type='text' name="attribut" placeholder='attribute')
+            input#value(type='text' name="vaerdi" placeholder='soegevaerdi')
+            input(class='button' type="submit", value="🔍👀 Søg")
+            <br>
+        each data in search
+            a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= 'Navn: ' + data.navn
+            <br>
+            
