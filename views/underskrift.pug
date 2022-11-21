@@ -1,10 +1,5 @@
 
 script.
-    //- //attributer 
-    //- let aktuelRum
-
-
-    //Post metode til funktion. 
     async function post(url, objekt) {
     const respons = await fetch(url, {
     method: "POST",
@@ -18,17 +13,6 @@ script.
     return await respons.text();
     }
 
-    //- let visProdukter = async (rumNavn) => {
-    //-     console.log(rumNavn)
-    //-      try {
-    //-     await post("http://localhost:6969/produkter");
-    //-     window.location.href = "http://localhost:6969/"
-    //-     }catch(e){
-    //-     console.log("Fejl");
-    //-     }
-    //-     //aktuelRum = rumNavn; 
-    //- }
-
     let opretProdukt = async () => {
         console.log("Når her til")
         var pNavn = document.getElementById("pNavn").value;
@@ -38,11 +22,11 @@ script.
         }catch(e){
         console.log("Fejl");
         } 
-        //clickfunction(aktuelRum);
     }
 
-    let redirektToSignatur = async (beskedId) => {
+    let accepterUnderskrift = async (beskedId) => {
         try {
+            // mangler funktioner (og korrekt redirection?)
         window.location.href = "/underskrift"
         }catch(e){
         console.log("Fejl");
@@ -53,19 +37,10 @@ script.
 body 
 
     h1 Underskrift 
-    //-     p
-    //-         button(onclick='visProdukter()') vis produkter
+        <br>
+        button(onclick='accepterUnderskrift()') Acceptér Underskrift 
 
-    //- h2 Beskeder i Rummet:
-    //- table(border = '1')
-    //-     - 
-    //-     each p in produkter
-    //-         tr
-    //-             td #{p.navn}
-    //-             td
-    //-                 label(onclick='sletProdukt("' + p.produktId + '")') slet
-
-    p   
+    
          
         
         
