@@ -4,8 +4,8 @@
 /* Big grid */
 .parent {
     display: grid;
-    grid-template-columns: repeat(2, 35%);
-    grid-template-rows: repeat(15, 35%);
+    grid-template-columns: repeat(6, 35%);
+    grid-template-rows: repeat(10, 100px);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
 }
@@ -17,7 +17,7 @@
 .child1 {
     display: grid;
     grid-template-columns: repeat(3, 30%);
-    grid-template-rows: repeat(15, 50%);
+    grid-template-rows: repeat(15, 40%);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     grid-row-start: 1;
@@ -26,7 +26,7 @@
 .child2 {
     display: grid;
     grid-template-columns: repeat(3, 30%);
-    grid-template-rows: repeat(15, 50%);
+    grid-template-rows: repeat(15, 40%);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     grid-column-start: 2;
