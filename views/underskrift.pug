@@ -1,5 +1,7 @@
 doctype html
 head
+  style 
+    include underskrift.css
   meta(charset='utf-8')
   meta(name='viewport' content='width=device-width, initial-scale=1')
   title Signature
@@ -9,7 +11,7 @@ head
   div
     canvas#sig
 div
-  input#text(type='text' placeholder='skriv navn på lære' required='')
+  input#text(type='text' placeholder='Navn' name="Navn" required)
   button#gemSig.gem(type='button') gem&#x1F4BE;
   button#sletSig.slet(type='button') slet&#x1F5D1;&#xFE0F;&#x1F480;
 #image
@@ -24,6 +26,8 @@ script(type='module').
   var canvas;
   function setupSigBox(){
   canvas = document.querySelector("canvas");
+  canvas.setAttribute("width", 700);
+  canvas.setAttribute("height", 400);
   signaturePad = new SignaturePad(canvas);
   }
   document.addEventListener("DOMContentLoaded",setupSigBox);
@@ -38,7 +42,7 @@ script(type='module').
   var imageData= signaturePad.toDataURL();
   var doc = new jsPDF()
   doc.setFontSize(40)
-  doc.text("Lære navn: "+text,40,40)
+  doc.text("Lærer navn: "+text,40,40)
   doc.addImage(imageData,"JPEG",15,40,180,180)
   doc.save(`underskrift ${text}.pdf`)
   }
