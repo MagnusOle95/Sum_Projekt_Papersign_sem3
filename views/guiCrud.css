@@ -19,7 +19,6 @@
     grid-template-rows: repeat(15, 40%);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
-    grid-row-start: 1;
 }
 
 .child1{
@@ -38,8 +37,7 @@
 .child1 #produktList, .child2 #kurvList {
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 2;
-    grid-row-start: 2;
+    grid-row-start: 3;
     grid-row-end: 8;
 
 }
@@ -49,8 +47,21 @@
 .child1 #titleP, .child2 #titleK{
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 1;
+    grid-row-start: 2;
 
+}
+
+.child1 #value{
+    grid-column-start: 2;
+    grid-column-end: 2;
+  
+}
+
+.child1 #atribut {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
 }
 
 /* Inputs */
@@ -70,8 +81,12 @@ p, input, button, select{
     font-size: 125%;
 }
 
-body {
-    overflow: hidden;
+.child2 #titleB {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 4;
+
 }
 
 /* --------------------------------------------------------------- */

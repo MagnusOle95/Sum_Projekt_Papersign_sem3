@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +9,7 @@
     <script src="logik.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <button>Kasse</button>
     <button>Faktura</button>
@@ -15,7 +17,15 @@
     <h1>PaperSign CRUD</h1>
     <div class="parent">
         <div class="child1">
-            <p id="titleP">Produkt Grupper</p>
+            <input type="text" id="atribut" placeholder="Kategori">
+            <input type="text" id="value" placeholder="Værdi">
+            <button>Søg</button>
+            <!-- <div class="search"> -->
+
+            <!-- </div> -->
+
+
+            <p id="titleP">Produktgrupper</p>
             <select name="kurv" id="produktList" multiple>
             </select>
             <button id="tilfoejProduktG" onclick="createProductgroup(navnG.value, beskrilseG.value)">Tilføj</button>
@@ -25,10 +35,19 @@
             <input type="text" id="beskrilseG" placeholder="Beskrivelse">
         </div class="child1">
         <div class="child2">
+            <p id="titleB"> </p>
             <p id="titleK">Produkter</p>
             <select name="kurv" id="kurvList" multiple>
             </select>
-            <button id="tilfoejProdukt" onclick="createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktList.selected.value)">Tilføj</button>
+            <!-- <div class="search"> -->
+            <!-- <input type="text" id="atribut" placeholder="Kategori">
+                <input type="text" id="value" placeholder="Værdi">
+                <button>Søg</button> -->
+            <!-- </div> -->
+
+
+            <button id="tilfoejProdukt"
+                onclick="createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktList.selected.value)">Tilføj</button>
             <button id="tilfoejProdukt">Opdater</button>
             <button id="tilfoejProdukt">Slet</button>
             <input type="text" id="navn" placeholder="Navn">
@@ -43,4 +62,5 @@
 
     </div>
 </body>
+
 </html>
