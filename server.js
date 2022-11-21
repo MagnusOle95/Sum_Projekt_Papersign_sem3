@@ -1,3 +1,5 @@
+import logik from './logik.js';
+
 //laver express server. 
 const port = 6969
 import express from 'express'; //Ændret til import. ved brug af firebase
@@ -58,7 +60,7 @@ let beskedNrCount = 2
 let valueForView = {produkter: produkterServerList };
 
 app.get("/",(request,response) =>{
-    response.render('index',valueForView)
+    response.render('kasse',valueForView)
 })
 // //-------------------------------------------------------------------------------------------------
 // app.post('/produkter',async (request, response) => {
@@ -82,19 +84,25 @@ app.get("/",(request,response) =>{
 app.post('/opretProdukt',async (request, response) => {
     const { pNavn } = request.body;
     let nyProdukt = {navn: pNavn}
-    console.log("Kan dun se mig")
     addDoc(collection(db,'varer'), nyProdukt)
     response.sendStatus(201);
 })
 
 app.get('/underskrift',async (request, response) => {
-    // console.log("test")
-    // response.sendFile('G:/Mit drev/skole/Datamatiker/3.semester/Projekt sum _ papersign/Sum_Projekt_Papersign_sem3/views/underskrift.html')
-    // console.log("test")
     response.render('underskrift',valueForView)
 })
 
+app.get('/search/:attribute/:vaerdi',async (request, response) => {
+    let array = logik.getProducts();
+    let attribut = request.query.attribute;
+    console.log(attribut);
+    let soegevaerdi = request.query.soegevaerdi;
+    const searchResult = await logik.searchDynamic(array, attribut, soegevaerdi);
+    response.render('search', {search: searchResult})
+})
 
 
 app.listen(port);
+
+console.log("Lytter på port " + port);
 
