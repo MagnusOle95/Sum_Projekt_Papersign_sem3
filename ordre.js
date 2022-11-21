@@ -1,5 +1,5 @@
 const logik = require("./logik.js");
-const saveAs = require('file-saver');
+// const saveAs = require('file-saver');
 
 let ordrelinjenr = 1;
 let fakturanr = 0;
