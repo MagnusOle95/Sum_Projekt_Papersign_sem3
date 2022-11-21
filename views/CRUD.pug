@@ -6,6 +6,9 @@ head
   link(rel='stylesheet' type='text/css' href='guiCrud.css')
   script(src='logik.js')
   title Document
+button Kasse
+button Faktura
+button Crud
 h1 PaperSign CRUD
 .parent
   .child1
@@ -19,7 +22,7 @@ h1 PaperSign CRUD
   .child2
     p#titleK Produkter
     select#kurvList(name='kurv' multiple='')
-    button#tilfoejProdukt(onclick='createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktgruppe)') Tilf&oslash;j
+    button#tilfoejProdukt(onclick='createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktList.selected.value)') Tilf&oslash;j
     button#tilfoejProdukt Opdater
     button#tilfoejProdukt Slet
     input#navn(type='text' placeholder='Navn')

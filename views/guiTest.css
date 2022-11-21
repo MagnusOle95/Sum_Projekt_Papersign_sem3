@@ -91,3 +91,7 @@ p, input, button, select{
     grid-row-end: 4;
 
 }
+
+body {
+    overflow: hidden;
+}
