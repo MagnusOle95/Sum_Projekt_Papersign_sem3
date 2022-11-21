@@ -91,7 +91,7 @@ app.get('/underskrift',async (request, response) => {
     // console.log("test")
     // response.sendFile('G:/Mit drev/skole/Datamatiker/3.semester/Projekt sum _ papersign/Sum_Projekt_Papersign_sem3/views/underskrift.html')
     // console.log("test")
-    response.sendFile(path.join(__dirname, '/views/underskrift.html'));
+    response.render('underskrift',valueForView)
 })
 
 
