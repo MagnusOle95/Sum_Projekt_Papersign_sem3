@@ -49,6 +49,16 @@ class Productgroup {
   }
 }
 
+// tilføjer produktet på arrayet, hvis det ikke er der i forvejen.
+function addProducts(arrayofProducts){
+  for (let p of arrayofProducts) {
+    if(!products.includes(p)){
+      products.push(p);
+    }
+}
+}
+
+
 function getProducts() {
   return products; // returnerer arrayet med alle produkter.
 }
@@ -67,8 +77,8 @@ function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   return found;
 }
 
-function searchDynamic(arr, attribut, soegevaerdi) {
-  searchresults = [];
+async function searchDynamic(arr, attribut, soegevaerdi) {
+  let searchresults = [];
   let attributSplit = null;
   if (attribut.includes(".")) {
     attributSplit = attribut.split(".");
