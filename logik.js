@@ -65,7 +65,8 @@ function getProducts() {
 
 function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   let found = false
-  if (obj[arrSplit[count]].includes(soegevaerdi)) {
+  if((obj[arrSplit[count]].toLocaleLowerCase()).includes(soegevaerdi1)){
+  // if (obj[arrSplit[count]] == soegevaerdi) {
     return true;
   }
   else if (count == arrSplit.length - 1) {
@@ -78,6 +79,7 @@ function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
 }
 
 async function searchDynamic(arr, attribut, soegevaerdi) {
+  let soegevaerdi1 = soegevaerdi.toLocaleLowerCase();
   let searchresults = [];
   let attributSplit = null;
   if (attribut.includes(".")) {
@@ -91,13 +93,25 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
   }
   else {
     for (let p of arr) {
-      if (p[attribut].search(soegevaerdi) != -1) {
+      if ((p[attribut].toLocaleLowerCase()).includes(soegevaerdi1)) {
         searchresults.push(p);
       }
     };
   }
+  //TODO maybe sort
   return searchresults;
 }
+
+let pg = createProductgroup("hej", "hej");
+
+let p1 = createProduct("Hat", 20, 10, 4567890, "Mowgli inc", 932005, pg);
+let p2 = createProduct("Hat1", 20, 10, 4567890, "Mowgli inc", 932005, pg);
+let p3 = createProduct("Hat2", 20, 10, 4567890, "Mowgli inc", 932005, pg);
+let p4 = createProduct("1Hat", 20, 10, 4567890, "Mowgli inc", 932005, pg);
+let p5 = createProduct("2Hat", 20, 10, 4567890, "Mowgli inc", 932005, pg);
+
+console.log(searchDynamic(products, "navn", "1"));
+
 
 // finder en vare med det specifikke varenummer (skal indeholde 0'erne foran)
 function getProduct(varenr) {
@@ -201,3 +215,5 @@ function setProduct(product, navn, pris, antal, EAN, leverandør, bestillingsnum
   }
   return setd;
 }
+
+let stop = 0;
