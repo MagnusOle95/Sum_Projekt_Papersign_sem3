@@ -11,9 +11,9 @@ button Crud
 h1 PaperSign
 .parent
   .child1
-  form.div2(action = "/search/:attribute/:soegevaerdi/", method="get")
-    input#atribut(type='text' placeholder='attribute')
-    input#value(type='text' placeholder='soegevaerdi')
+  form.div2(action = "/search", method="get")
+    input#atribut(type='text' name="attribut" placeholder='attribute')
+    input#value(type='text' name="vaerdi" placeholder='soegevaerdi')
     input(class='button' type="submit", value="🔍👀 Søg")
     p#titleP Produkt liste
     select#produktList(name='kurv' multiple='')

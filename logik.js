@@ -65,7 +65,7 @@ function getProducts() {
 
 function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   let found = false
-  if (obj[arrSplit[count]] == soegevaerdi) {
+  if (obj[arrSplit[count]].includes(soegevaerdi)) {
     return true;
   }
   else if (count == arrSplit.length - 1) {
@@ -91,7 +91,7 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
   }
   else {
     for (let p of arr) {
-      if (p[attribut] == soegevaerdi) {
+      if (p[attribut].search(soegevaerdi) != -1) {
         searchresults.push(p);
       }
     };

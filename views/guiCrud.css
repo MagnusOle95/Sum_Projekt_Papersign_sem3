@@ -1,5 +1,7 @@
 /* --------------------------------------------------------------- */
-
+html{
+    background-color: aqua;
+}
 
 /* Big grid */
 .parent {
@@ -38,7 +40,6 @@
 .child1 #produktList, .child2 #kurvList {
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 2;
     grid-row-start: 2;
     grid-row-end: 8;
 

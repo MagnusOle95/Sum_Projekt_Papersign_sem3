@@ -3,17 +3,20 @@ head
   meta(charset='UTF-8')
   meta(http-equiv='X-UA-Compatible' content='IE=edge')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  link(rel='stylesheet' type='text/css' href='guiCrud.css')
+  style 
+    include guiCrud.css
   script(src='logik.js')
-  title Document
+  title CRUD
 button Kasse
 button Faktura
 button Crud
 h1 PaperSign CRUD
 .parent
   .child1
-    p#titleP Produkt Grupper
+    p#titleP Produktgrupper
     select#produktList(name='kurv' multiple='')
+      each data in produktliste
+        option(value=produktliste.navn placeholder=produktliste.navn)= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='createProductgroup(navnG.value, beskrilseG.value)') Tilf&oslash;j
     button#tilfoejProduktG Opdater
     button#tilfoejProduktG Slet
