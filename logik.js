@@ -3,29 +3,29 @@ let varenr = 0; // tælles op automatisk af inde i constructoren
 let products = []; // varer tilføjes automatisk her, når de oprettes.
 let productgroups = []; // all produktgrupper (en del af alle produkter)
 
-function createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe){
-    let product = new Product(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe);
-    products.push(product);
-    produktgruppe.produkter.push(this); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
-    return product;
+function createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe) {
+  let product = new Product(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe);
+  products.push(product);
+  produktgruppe.produkter.push(this); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
+  return product;
 }
 
-function createProductgroup(navn, beskrivelse){
-    let productgroup = new Productgroup(navn, beskrivelse);
-    productgroups.push(productgroup);
-    return productgroup;
+function createProductgroup(navn, beskrivelse) {
+  let productgroup = new Productgroup(navn, beskrivelse);
+  productgroups.push(productgroup);
+  return productgroup;
 }
 
-function getProductgroup(){
+function getProductgroup() {
   return productgroups;
 }
 
-function removeAttribute(produkt, attribut){
-    produkt.removeAttribute(attribut);
+function removeAttribute(produkt, attribut) {
+  produkt.removeAttribute(attribut);
 }
 // TODO, måske: setNewProduktgruppe (undergruppe)
-function setNewAttribute(produkt, attribut, værdi){
-    produkt.setAttribute(attribut, værdi);
+function setNewAttribute(produkt, attribut, værdi) {
+  produkt.setAttribute(attribut, værdi);
 }
 
 class Product {
@@ -43,14 +43,14 @@ class Product {
 }
 
 class Productgroup {
-    constructor(navn, beskrivelse) {
-      this.navn = navn;
-      this.beskrivelse = beskrivelse;
-      this.produkter = [];
-    }
+  constructor(navn, beskrivelse) {
+    this.navn = navn;
+    this.beskrivelse = beskrivelse;
+    this.produkter = [];
   }
+}
 
-function getProducts(){
+function getProducts() {
   return products; // returnerer arrayet med alle produkter.
 }
 
@@ -91,11 +91,11 @@ function searchDynamic(arr, attribut, soegevaerdi) {
 }
 
 // finder en vare med det specifikke varenummer (skal indeholde 0'erne foran)
-function getProduct(varenr){
-    let index = products.findIndex(object => {
-        return object.varenr == varenr;
-      });
-      return products[index];
+function getProduct(varenr) {
+  let index = products.findIndex(object => {
+    return object.varenr == varenr;
+  });
+  return products[index];
 }
 
 
@@ -121,3 +121,74 @@ const app = initializeApp(firebaseConfig);
 */
 
 export default { Product, createProduct, getProduct, getProducts, getProductgroup, createProductgroup, removeAttribute, setNewAttribute, searchDynamic };
+
+
+//TODO Firebase inplementation
+
+function deleteProduct(product1) {
+  let deletedd = false;
+  try {
+    // Remove Product from ProudctGroup
+    let indexPG = product1.productgroup.products.indexOf(product1);
+    product1.productgroup.products.splice(indexPG, 1);
+    // Remove Product from Proudcts
+    let indexP = getProducts.indexOf(product1);
+    products.splice(indexP, 1);
+    // Set ProudctGroup from Proudct to undefiend
+    product1.productgroup = undefined;
+    product1 = undefined;
+    deletedd = true;
+  } catch (error) {
+    alert("Produkt blev ikke slettet. Fejl:" + error)
+  }
+
+  return deletedd;
+}
+
+function deleteProductGroup(productGroup1) {
+  let deletedd = false;
+  try {
+    if (productGroup1.products.length < 1) {
+      // Remove ProudctGroup from ProudctGroups
+      let indexPG = getProductgroup.indexOf(productGroup1);
+      getProductgroup.splice(indexPG, 1);
+      // Set Proudcts from ProudctGroup to undefiend
+      productGroup1 = undefined;
+      deletedd = true;
+    }
+  } catch (error) {
+    alert("Produkt blev ikke slettet. Fejl:" + error)
+  }
+  return deletedd;
+}
+
+function setProductGroup(productGroup, navn, beskrivelse) {
+  let setd = false;
+  try {
+    // Set ProudctGroup from ProudctGroups
+    productGroup.navn = navn;
+    productGroup.beskrivelse = beskrivelse;
+    setd = true;
+  } catch (error) {
+    alert("Produkt blev ikke ændret. Fejl:" + error)
+  }
+  return setd;
+}
+
+function setProduct(product, navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe) {
+  let setd = false;
+  try {
+    // Set Product from ProudctGroup
+    product.navn = navn;
+    product.pris = pris;
+    product.antal = antal;
+    product.EAN = EAN;
+    product.leverandør = leverandør;
+    product.bestillingsnummer = bestillingsnummer;
+    product.produktgruppe = produktgruppe;
+    setd = true;
+  } catch (error) {
+    alert("Produkt blev ikke ændret. Fejl:" + error)
+  }
+  return setd;
+}
