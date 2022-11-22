@@ -35,7 +35,9 @@ import {
   getDoc,
   query,
   where,
+  updateDoc,
 } from "firebase/firestore";
+import { Console } from "console";
 //import{storage} from 'firebase/storage'
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -75,10 +77,10 @@ async function getAllOrdrer() {
 
 //Numre til id af produkter og produktgrupper. 
 let result = await getAllNumbers();
-let gruppeNr = result.gruppeNr;
-let produktNr = result.produktNr;
-let ordreNr = result.ordreNr;
-let fakturaNr = result.fakturaNr;
+let gruppeNr = result[2].gruppeNr;
+let produktNr = result[1].produktNr;
+let ordreNr = result[3].ordreNr;
+let fakturaNr = result[0].fakturaNr;
 
 async function getAllFakturaer() {
   let fakturaCollection = collection(db, "fakturaer");
@@ -138,25 +140,44 @@ app.post("/opretProdukt", async (request, response) => {
 
 app.post("/opretProduktGruppe", async (request, response) => {
   const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
-  let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse, gruppeNr)
+  let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse)
   produktgrupper.push(nyProduktGruppe)
-  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: gruppeNr}
+  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNR: gruppeNr}
   addDoc(collection(db, "produktgrupper"),nyProduktGruppeFirebase);
   response.sendStatus(201);
-  gruppeNr++;
-  
-  const db = getDatabase();
-  set(ref(db, 'nummre/gruppeNr'), {
-    gruppeNr: gruppeNr
-  })
-  .then(() => {
-    // Data saved successfully!
-  })
-  .catch((error) => {
-    // The write failed...
-  });
+
+  // gruppeNr++;
+  // const gruppeNr = doc(db, "produktgrupper", "gruppeNr");
+  // // Set the "capital" field of the city 'DC'
+  // await updateDoc(gruppeNr, {
+  //   gruppeNr: gruppeNr
+  // });
+
+  // const db = getDatabase();
+  // set(ref(db, 'nummre/gruppeNr'), {
+  //   gruppeNr: gruppeNr
+  // })
+  // .then(() => {
+  //   //Data saved successfully!
+  // })
+  // .catch((error) => {
+  //   //The write failed...
+  // });
 
 });
+
+app.post('/sletBesked', (request, response) => {
+  console.log("Kommer her")
+  // const { beskedId } = request.body;
+  // let index = beskeder.findIndex(object => {
+  //     return object.beskedNr == beskedId;
+  //   });
+  //   beskeder.splice(index, 1);
+    
+  // console.log(index)
+  // response.sendStatus(201)
+
+})
 
 app.get("/kasse", async (request, response) => {
   response.render("kasse",  { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});

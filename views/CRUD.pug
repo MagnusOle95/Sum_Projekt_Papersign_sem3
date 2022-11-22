@@ -1,5 +1,22 @@
 
 script.
+  
+  let chosenProduckGoup;
+  document.addEventListener('DOMContentLoaded',()=>{
+      document
+        .getElementById('produktList')
+        .addEventListener('input', handleSelect)
+  })
+
+  function handleSelect (ev){
+    let chosenProduckGoup = ev.target.value;
+    console.log(chosenProduckGoup);
+
+    //- each data in produkter
+    //-     if data.produktgruppe == "chosenProduckGoup"
+    //-       option()= 'Navn: ' + data.navn
+  }
+
     //Post metode til funktion. 
     async function post(url, objekt) {
     const respons = await fetch(url, {
@@ -63,9 +80,10 @@ h1 PaperSign CRUD
     button S&oslash;g
     p#titleP Produktgrupper
     select#produktList(name='kurv' multiple='')
-      each data in produkter
-        option(value="" placeholder="")= 'Navn: ' + data.navn
-    button#tilfoejProduktG(onclick='createProductgroup(navnG.value, beskrilseG.value)') Tilf&oslash;j
+      each data in produktgrupper
+        option()= 'Navn: ' + data.navn
+        //option(value="" placeholder="")= 'Navn: ' + data.navn
+    button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
     button#tilfoejProduktG Opdater
     button#sletProduktG(onclick='deleteProductGroup()') slet
     input#navnG(type='text' placeholder='Navn')
@@ -74,6 +92,10 @@ h1 PaperSign CRUD
     p#titleB  
     p#titleK Produkter
     select#kurvList(name='kurv' multiple='')
+      //- each data in produkter
+      //-   if data.produktgruppe == "data.navn"
+      //-     option()= 'Navn: ' + data.navn
+      //-     //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProdukt(onclick='createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktList.selected.value)') Tilf&oslash;j
     button#tilfoejProdukt Opdater
     button#tilfoejProdukt Slet
