@@ -59,7 +59,19 @@ const db = getFirestore(appFireBase);
 let produkter = await getAllProducts();
 let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
+let ordrer = await getAllOrdrer();
 
+async function getAllOrdrer() {
+  let fakturaCollection = collection(db, "ordrer");
+  let ordrer = await getDocs(fakturaCollection);
+  let liste = ordrer.docs.map((doc) => {
+    let data = doc.data();
+    data.docID = doc.id;
+    return data;
+  });
+  console.table(liste);
+  return liste;
+}
 
 async function getAllFakturaer() {
   let fakturaCollection = collection(db, "fakturaer");
@@ -120,7 +132,7 @@ app.get("/crud/", async (request, response) => {
 });
 
 app.get("/faktura/", async (request, response) => {
-  response.render("faktura", { fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter});
+  response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter});
 });
 
 app.get("/crud/:data", async (request, response) => {
