@@ -7,9 +7,13 @@ head
   script(src='logik.js')
   title Search
 body
-    button Kasse
-    button Faktura
-    button Crud
+    .parent
+    form(action = "/kasse" method="get")
+        input(class="button" type="submit" value="Kasse")
+    form(action = "/faktura" method="get")
+        input(class="button" type="submit" value="Faktura")
+    form(action= "/crud/:data" method="get")
+        input(class="button" type="submit" value="CRUD")
     h1 PaperSign Search
     .parent
 
