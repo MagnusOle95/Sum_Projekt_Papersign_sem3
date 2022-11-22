@@ -1,11 +1,23 @@
 html{
-    background-color: lightgrey;
+    background-color: w;
 }
 #sig{
     border: 3px;
     margin: 2px;
     padding: 2px;
     border-style: solid;
-    border-color: black;
+    background-color: white;
+}
+
+.funct{
+    display: grid;
+    grid-template-columns: repeat(3, 235px);
+    grid-template-rows: repeat(1, 100%);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    padding: 2px;
+}
+
+div{
     background-color: white;
 }
