@@ -56,13 +56,22 @@ const firebaseConfig = {
 const appFireBase = initializeApp(firebaseConfig);
 const db = getFirestore(appFireBase);
 
-let produkterServerList = [];
-
-let products = await getAllProducts();
+let produkter = await getAllProducts();
 let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
+let ordrer = await getAllOrdrer();
 
-let valueForView = { produkter: produkterServerList };
+async function getAllOrdrer() {
+  let fakturaCollection = collection(db, "ordrer");
+  let ordrer = await getDocs(fakturaCollection);
+  let liste = ordrer.docs.map((doc) => {
+    let data = doc.data();
+    data.docID = doc.id;
+    return data;
+  });
+  console.table(liste);
+  return liste;
+}
 
 async function getAllFakturaer() {
   let fakturaCollection = collection(db, "fakturaer");
@@ -99,8 +108,8 @@ async function getAllProducts() {
   return vareliste;
 }
 app.get("/", async (request, response) => {
-  products = await getAllProducts();
-  response.render("kasse", valueForView);
+  produkter = await getAllProducts();
+  response.render("kasse");
 });
 
 app.post("/opretProdukt", async (request, response) => {
@@ -111,31 +120,30 @@ app.post("/opretProdukt", async (request, response) => {
 });
 
 app.get("/kasse", async (request, response) => {
-  response.render("kasse", valueForView);
+  response.render("kasse");
 });
 
 app.get("/underskrift", async (request, response) => {
-  response.render("underskrift", valueForView);
+  response.render("underskrift");
 });
 
 app.get("/crud/", async (request, response) => {
-  response.render("crud", { produktgrupper: produktgrupper, produktliste: products});
+  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter});
 });
 
 app.get("/faktura/", async (request, response) => {
-  response.render("faktura", { produktgrupper: produktgrupper, produktliste: products});
+  response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter});
 });
 
 app.get("/crud/:data", async (request, response) => {
   let produktID = request.params.data;
-  let produkter = products;
-  response.render("crud", { produktliste: produkter });
+  response.render("crud", { produktliste: produkter, produktID });
 });
 
 app.get("/search", async (request, response) => {
   var attribut = request.query.attribut;
   var vaerdi = request.query.vaerdi;
-  let searchresults = await logik.searchDynamic(products, attribut, vaerdi);
+  let searchresults = await logik.searchDynamic(produkter, attribut, vaerdi);
   response.render("search", { search: searchresults });
 });
 
