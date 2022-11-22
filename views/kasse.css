@@ -92,6 +92,17 @@ p, input, button, select{
 
 }
 
+.div2{
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    grid-template-rows: repeat(1, 100%);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    grid-row-start: 1;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
 body {
     overflow: hidden;
 }

@@ -63,6 +63,10 @@ function getProducts() {
   return products; // returnerer arrayet med alle produkter.
 }
 
+
+
+//TODO --------------------------------------------------------------------------------------------- Optimize
+
 function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   let found = false
   if ((obj[arrSplit[count]].toLocaleLowerCase()).includes(soegevaerdi1)) {
@@ -110,6 +114,8 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
 //TODO maybe sort
 return searchresults;
 }
+
+//TODO --------------------------------------------------------------------------------------------- Optimize
 
 let pg = createProductgroup("hej", "hej");
 

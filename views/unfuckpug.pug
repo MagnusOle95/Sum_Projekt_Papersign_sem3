@@ -1,7 +1,7 @@
 doctype html
 head
-  style 
-    include kasse.css
+  style
+    include guiCrud.css
   meta(charset='UTF-8')
   meta(http-equiv='X-UA-Compatible' content='IE=edge')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
@@ -12,10 +12,10 @@ button Crud
 h1 PaperSign Kasse
 .parent
   .child1
-    form.div2(type="hidden" action = "/search", method="get")
-      input#atribut(type='text' name="attribut" placeholder='attribute')
-      input#value(type='text' name="vaerdi" placeholder='søgeværdi')
-      input(class='button' type="submit", value="🔍👀 Søg")
+    form.div2(action = "/search", method="get")
+    input#atribut(type='text' name="attribut" placeholder='attribute')
+    input#value(type='text' name="vaerdi" placeholder='søgeværdi')
+    input(class='button' type="submit", value="🔍👀 Søg")
     p#titleP Produkt liste
     select#produktList(name='kurv' multiple='')
     input#antal(type='number' placeholder='Antal')
