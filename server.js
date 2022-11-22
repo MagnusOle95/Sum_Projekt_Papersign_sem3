@@ -119,7 +119,9 @@ app.get("/search", async (request, response) => {
   var attribut = request.query.attribut;
   var vaerdi = request.query.vaerdi;
   console.log("Søgeparametre: attribut:" + attribut + "  Værdi: " + vaerdi);
-  let searchresults = await searchResults(attribut, vaerdi);
+//   let searchresults = await searchResults(attribut, vaerdi);
+let searchresults = await logik.searchDynamic(products, attribut, vaerdi);
+
   console.log(searchresults);
   response.render("search", { search: searchresults });
 });

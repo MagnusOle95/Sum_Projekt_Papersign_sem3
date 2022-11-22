@@ -50,12 +50,12 @@ class Productgroup {
 }
 
 // tilføjer produktet på arrayet, hvis det ikke er der i forvejen.
-function addProducts(arrayofProducts){
+function addProducts(arrayofProducts) {
   for (let p of arrayofProducts) {
-    if(!products.includes(p)){
+    if (!products.includes(p)) {
       products.push(p);
     }
-}
+  }
 }
 
 
@@ -65,8 +65,8 @@ function getProducts() {
 
 function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   let found = false
-  if((obj[arrSplit[count]].toLocaleLowerCase()).includes(soegevaerdi1)){
-  // if (obj[arrSplit[count]] == soegevaerdi) {
+  if ((obj[arrSplit[count]].toLocaleLowerCase()).includes(soegevaerdi1)) {
+    // if (obj[arrSplit[count]] == soegevaerdi) {
     return true;
   }
   else if (count == arrSplit.length - 1) {
@@ -79,13 +79,14 @@ function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
 }
 
 async function searchDynamic(arr, attribut, soegevaerdi) {
-  let soegevaerdi1 ="" + soegevaerdi.toLowerCase();
+  let soegevaerdi1 = soegevaerdi;
+  soegevaerdi1.toLowerCase();
   let searchresults = [];
   let attributSplit = null;
   if (attribut.includes(".")) {
     attributSplit = attribut.split(".");
     for (let p of arr) {
-      let found = searchDynamicObject(p, attributSplit, 0, soegevaerdi);
+      let found = searchDynamicObject(p, attributSplit, 0, soegevaerdi1);
       if (found == true) {
         searchresults.push(p);
       }
@@ -93,13 +94,21 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
   }
   else {
     for (let p of arr) {
-      if ((p[attribut].toLocaleLowerCase()).includes(soegevaerdi1)) {
-        searchresults.push(p);
+      try {
+        let obj = p[attribut];
+        obj.toLowerCase();
+        if (obj.includes(soegevaerdi1)) {
+          searchresults.push(p);
+        }
+      } catch (error) {
+        console.log(error)
       }
-    };
-  }
-  //TODO maybe sort
-  return searchresults;
+
+    }
+  };
+
+//TODO maybe sort
+return searchresults;
 }
 
 let pg = createProductgroup("hej", "hej");
