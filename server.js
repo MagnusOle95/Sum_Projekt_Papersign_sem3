@@ -104,6 +104,10 @@ app.post("/opretProdukt", async (request, response) => {
   response.sendStatus(201);
 });
 
+app.get("/kasse", async (request, response) => {
+  response.render("kasse", valueForView);
+});
+
 app.get("/underskrift", async (request, response) => {
   response.render("underskrift", valueForView);
 });
