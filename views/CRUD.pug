@@ -18,8 +18,8 @@ h1 PaperSign CRUD
     button S&oslash;g
     p#titleP Produktgrupper
     select#produktList(name='kurv' multiple='')
-      each data in produktliste
-        option(value=produktliste.navn placeholder=produktliste.navn)= 'Navn: ' + data.navn
+      each data in produkter
+        option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='createProductgroup(navnG.value, beskrilseG.value)') Tilf&oslash;j
     button#tilfoejProduktG Opdater
     button#tilfoejProduktG Slet
