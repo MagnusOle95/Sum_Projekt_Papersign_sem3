@@ -6,14 +6,13 @@ head
   meta(name='viewport' content='width=device-width, initial-scale=1')
   title Signature
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous')
-| &#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x27A1;&#xFE0F;&#x27A1;&#xFE0F;&#x1F4DC;
-#app.container
-  div
-    canvas#sig
-div
+//- | &#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x27A1;&#xFE0F;&#x27A1;&#xFE0F;&#x1F4DC;
+#app
+  canvas#sig
+.funct
   input#text(type='text' placeholder='Navn' name="Navn" required)
-  button#gemSig.gem(type='button') gem&#x1F4BE;
-  button#sletSig.slet(type='button') slet&#x1F5D1;&#xFE0F;&#x1F480;
+  button#gemSig.gem(type='button') Gem
+  button#sletSig.slet(type='button') Slet 
 #image
 script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js' integrity='sha512-cLuyDTDg9CSseBSFWNd4wkEaZ0TBEpclX0zD3D6HjI19pO39M58AgJ1SjHp6c7ZOp0/OCRcC2BCvvySU9KJaGw==' crossorigin='anonymous' referrerpolicy='no-referrer')
 script(src='https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js')

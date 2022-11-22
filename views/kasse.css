@@ -105,4 +105,5 @@ p, input, button, select{
 
 body {
     overflow: hidden;
+    background-color: palegreen;
 }
