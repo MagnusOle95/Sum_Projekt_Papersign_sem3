@@ -2,16 +2,16 @@ let varenr = 0; // tælles op automatisk af inde i constructoren
 let products = []; // varer tilføjes automatisk her, når de oprettes.
 let productgroups = []; // all produktgrupper (en del af alle produkter)
 
-function createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe) {
-  let product = new Product(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe);
+function createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr) {
+  let product = new Product(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe, produktNr);
   products.push(product);
   produktgruppe.produkter.push(this); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
   return product;
 }
 
-function createProductgroup(navn, beskrivelse) {
-  let productgroup = new Productgroup(navn, beskrivelse);
-  productgroups.push(productgroup);
+function createProductgroup(navn, beskrivelse,GruppeNr) {
+  let productgroup = new Productgroup(navn, beskrivelse,GruppeNr);
+  //productgroups.push(productgroup);
   return productgroup;
 }
 

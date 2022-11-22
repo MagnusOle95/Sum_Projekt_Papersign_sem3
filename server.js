@@ -73,17 +73,13 @@ async function getAllOrdrer() {
   return liste;
 }
 
-async function getAllFakturaer() {
-  let fakturaCollection = collection(db, "fakturaer");
-  let fakturaer = await getDocs(fakturaCollection);
-  let liste = fakturaer.docs.map((doc) => {
-    let data = doc.data();
-    data.docID = doc.id;
-    return data;
-  });
-  console.table(liste);
-  return liste;
-}
+//Numre til id af produkter og produktgrupper. 
+let result = await getAllNumbers();
+let gruppeNr = result.gruppeNr;
+let produktNr = result.produktNr;
+let ordreNr = result.ordreNr;
+let fakturaNr = result.fakturaNr;
+
 async function getAllProductgroups() {
   let gruppeCollection = collection(db, "produktgrupper");
   let varegruppper = await getDocs(gruppeCollection);
@@ -93,6 +89,17 @@ async function getAllProductgroups() {
     return data;
   });
   console.table(liste);
+  return liste;
+}
+
+async function getAllNumbers() {
+  let gruppeCollection = collection(db, "nummre");
+  let nummre = await getDocs(gruppeCollection);
+  let liste = nummre.docs.map((doc) => {
+    let data = doc.data();
+    data.docID = doc.id;
+    return data;
+  });
   return liste;
 }
 
@@ -116,6 +123,28 @@ app.post("/opretProdukt", async (request, response) => {
   let nyProdukt = { navn: pNavn };
   addDoc(collection(db, "varer"), nyProdukt);
   response.sendStatus(201);
+});
+
+app.post("/opretProduktGruppe", async (request, response) => {
+  const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
+  let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse, gruppeNr)
+  produktgrupper.push(nyProduktGruppe)
+  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: gruppeNr}
+  addDoc(collection(db, "produktgrupper"),nyProduktGruppeFirebase);
+  response.sendStatus(201);
+  gruppeNr++;
+  
+  const db = getDatabase();
+  set(ref(db, 'nummre/gruppeNr'), {
+    gruppeNr: gruppeNr
+  })
+  .then(() => {
+    // Data saved successfully!
+  })
+  .catch((error) => {
+    // The write failed...
+  });
+
 });
 
 app.get("/kasse", async (request, response) => {
