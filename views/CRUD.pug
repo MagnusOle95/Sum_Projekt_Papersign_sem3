@@ -1,3 +1,43 @@
+
+script.
+    //Post metode til funktion. 
+    async function post(url, objekt) {
+    const respons = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(objekt),
+    headers: {
+    'Content-Type': 'application/json'
+    }
+    });
+    if (respons.status !== 201) // Created
+    throw new Error(respons.status);
+    return await respons.text();
+    }
+
+    let createProductgroup = async () => {
+        var produktGruppeNavn = document.getElementById("navnG").value;
+        var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
+        try {
+        await post("/opretProduktGruppe", {produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log("Fejl");
+        } 
+    }
+
+    let deleteProductGroup = async () => {
+        console.log("Når her til")
+        //- var produktGruppeNavn = document.getElementById("navnG").value;
+        //- var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
+        //- try {
+        //- await post("/opretProduktGruppe", {produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse});
+        //- window.location.href = "/CRUD"
+        //- }catch(e){
+        //- console.log("Fejl");
+        //- } 
+    }
+
+
 doctype html
 head
   meta(charset='UTF-8')
@@ -15,11 +55,11 @@ h1 PaperSign CRUD
   .child1
     p#titleP Produktgrupper
     select#produktList(name='kurv' multiple='')
-      each data in produktliste
-        option(value=produktliste.navn placeholder=produktliste.navn)= 'Navn: ' + data.navn
-    button#tilfoejProduktG(onclick='createProductgroup(navnG.value, beskrilseG.value)') Tilf&oslash;j
+      each data in produktgrupper
+        option()= 'Navn: ' + data.navn + ' beskrivelse: ' + data.beskrivelse
+    button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
     button#tilfoejProduktG Opdater
-    button#tilfoejProduktG Slet
+    button#sletProduktG(onclick='deleteProductGroup()') slet
     input#navnG(type='text' placeholder='Navn')
     input#beskrilseG(type='text' placeholder='Beskrivelse')
   .child2
