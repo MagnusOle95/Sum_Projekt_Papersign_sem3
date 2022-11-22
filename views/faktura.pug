@@ -15,4 +15,5 @@ body
     form(action= "/crud/" method="get")
         input(class="button" type="submit" value="CRUD")
     h1 PaperSign Faktura
-
+    each data in fakturaer 
+        div= data.navn
