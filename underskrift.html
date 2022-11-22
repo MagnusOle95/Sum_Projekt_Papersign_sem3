@@ -37,19 +37,19 @@ document.addEventListener("DOMContentLoaded",setupSigBox);
 
 function clearSig(){
    signaturePad.clear()
-   
 }
 document.getElementById("sletSig").addEventListener("click",clearSig)
 // gem funktion skal håndteres af express før den virker rigtig 
 var button= document.getElementById("gemSig")
+let counter=0;
 button.onclick=()=>{
   var text=document.getElementById("text").value
    var imageData= signaturePad.toDataURL();
    var doc = new jsPDF()
    doc.setFontSize(40)
-   doc.text("Lære navn: "+text,40,40)
    doc.addImage(imageData,"JPEG",15,40,180,180)
-   doc.save(`underskrift ${text}.pdf`)
+   doc.save(`underskrift ${text+" "+counter}.pdf`)
+   counter++;
 }
 </script>
 
