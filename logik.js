@@ -87,6 +87,9 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
   soegevaerdi1.toLowerCase();
   let searchresults = [];
   let attributSplit = null;
+  if(attribut == ""){
+    attribut = "navn";
+  }
   if (attribut.includes(".")) {
     attributSplit = attribut.split(".");
     for (let p of arr) {
