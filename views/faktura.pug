@@ -1,0 +1,20 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+
+  script(src='logik.js')
+  title Faktura
+body
+    .parent
+    form(action = "/kasse" method="get")
+        input(class="button" type="submit" value="Kasse")
+    form(action = "/faktura" method="get")
+        input(class="button" type="submit" value="Faktura")
+    form(action= "/crud/" method="get")
+        input(class="button" type="submit" value="CRUD")
+    h1 PaperSign Faktura
+    each data in fakturaer
+        h2 Fakturaoversigt 
+        div= data.navn
