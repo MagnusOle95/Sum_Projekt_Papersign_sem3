@@ -16,8 +16,10 @@ h1 PaperSign Kasse
       input#atribut(type='text' name="attribut" placeholder='attribute')
       input#value(type='text' name="vaerdi" placeholder='søgeværdi')
       input(class='button' type="submit", value="🔍👀 Søg")
-    p#titleP Produkt liste
+    p#titleP Produkter
     select#produktList(name='kurv' multiple='')
+      each data in produkter 
+        option(value="" placeholder="")= '' + data.navn
     input#antal(type='number' placeholder='Antal')
     button#tilfoejProdukt Tilf&oslash;j
   .child2

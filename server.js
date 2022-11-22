@@ -119,7 +119,7 @@ app.post("/opretProdukt", async (request, response) => {
 });
 
 app.get("/kasse", async (request, response) => {
-  response.render("kasse");
+  response.render("kasse",  { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});
 });
 
 app.get("/underskrift", async (request, response) => {
@@ -127,7 +127,7 @@ app.get("/underskrift", async (request, response) => {
 });
 
 app.get("/crud/", async (request, response) => {
-  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter});
+  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});
 });
 
 app.get("/faktura/", async (request, response) => {
@@ -142,6 +142,7 @@ app.get("/crud/:data", async (request, response) => {
 app.get("/search", async (request, response) => {
   var attribut = request.query.attribut;
   var vaerdi = request.query.vaerdi;
+  console.log("Attribut: " + attribut + " .   værdi: " + vaerdi)
   let searchresults = await logik.searchDynamic(produkter, attribut, vaerdi);
   response.render("search", { search: searchresults });
 });
