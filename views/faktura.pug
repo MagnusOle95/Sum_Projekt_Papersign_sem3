@@ -4,19 +4,19 @@ head
   meta(http-equiv='X-UA-Compatible' content='IE=edge')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   style 
-    include crud.css
-
+    include faktura.css
+    include common.css
   script(src='logik.js')
-  title PaperSign
-body
-    .parent
-    form(action = "/kasse" method="get")
-        input(class="button" type="submit" value="Kasse")
+  title Faktura
+.tabbtn
+  form(action = "/kasse" method="get")
+    input(class="button" type="submit" value="Kasse")
     form(action = "/faktura" method="get")
-        input(class="button" type="submit" value="Faktura")
-    form(action= "/crud/" method="get")
-        input(class="button" type="submit" value="CRUD")
-    h1 PaperSign Faktura
+      input(class="button" type="submit" value="Faktura")
+      form(action= "/crud" method="get")
+        input(class="button" type="submit" value="Crud")
+h1 PaperSign Faktura
+.parent
+  h2 Fakturaoversigt: 
     each data in fakturaer
-        h2 Fakturaoversigt 
         div= data.navn

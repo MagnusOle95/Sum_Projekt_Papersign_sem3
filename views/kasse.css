@@ -76,12 +76,6 @@
 
 }
 
-/* Font size */
-
-p, input, button, select{
-    font-size: 125%;
-}
-
 /* --------------------------------------------------------------- */
 
 .child2 #titleB {
@@ -105,5 +99,4 @@ p, input, button, select{
 
 body {
     overflow: hidden;
-    background-color: palegreen;
 }
