@@ -79,7 +79,7 @@ function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
 }
 
 async function searchDynamic(arr, attribut, soegevaerdi) {
-  let soegevaerdi1 = soegevaerdi.toLocaleLowerCase();
+  let soegevaerdi1 ="" + soegevaerdi.toLowerCase();
   let searchresults = [];
   let attributSplit = null;
   if (attribut.includes(".")) {
