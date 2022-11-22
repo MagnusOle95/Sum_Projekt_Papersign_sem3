@@ -80,6 +80,17 @@ let produktNr = result.produktNr;
 let ordreNr = result.ordreNr;
 let fakturaNr = result.fakturaNr;
 
+async function getAllFakturaer() {
+  let fakturaCollection = collection(db, "fakturaer");
+  let collection1 = await getDocs(fakturaCollection);
+  let liste = collection1.docs.map((doc) => {
+    let data = doc.data();
+    data.docID = doc.id;
+    return data;
+  });
+  console.table(liste);
+  return liste;
+}
 async function getAllProductgroups() {
   let gruppeCollection = collection(db, "produktgrupper");
   let varegruppper = await getDocs(gruppeCollection);
