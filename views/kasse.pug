@@ -1,14 +1,19 @@
 doctype html
 head
-  style 
-    include kasse.css
   meta(charset='UTF-8')
   meta(http-equiv='X-UA-Compatible' content='IE=edge')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  style 
+    include kasse.css
+    include common.css
   title PaperSign
-button Kasse
-button Faktura
-button Crud
+.tabbtn
+  form(action = "/kasse" method="get")
+    input(class="button" type="submit" value="Kasse")
+    form(action = "/faktura" method="get")
+      input(class="button" type="submit" value="Faktura")
+      form(action= "/crud" method="get")
+        input(class="button" type="submit" value="Crud")
 h1 PaperSign Kasse
 .parent
   .child1

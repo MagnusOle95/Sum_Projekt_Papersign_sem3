@@ -1,0 +1,17 @@
+/* Font size */
+
+p, input, button, select{
+    font-size: 125%;
+}
+
+/* Tab btns */
+
+.tabbtn input{
+    margin: 2px;
+}
+
+/* Background color */
+
+html{
+    background-color: white;
+}
