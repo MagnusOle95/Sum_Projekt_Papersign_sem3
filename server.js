@@ -58,11 +58,21 @@ const db = getFirestore(appFireBase);
 
 let produkterServerList = [];
 
-let products = await getAllProducts();; 
-
-
-
+let products = await getAllProducts();
+let produktgrupper = await getAllProductgroups();
 let valueForView = { produkter: produkterServerList };
+
+async function getAllProductgroups() {
+  let gruppeCollection = collection(db, "produktgrupper");
+  let varegruppper = await getDocs(gruppeCollection);
+  let liste = varegruppper.docs.map((doc) => {
+    let data = doc.data();
+    data.docID = doc.id;
+    return data;
+  });
+  console.table(liste);
+  return liste;
+}
 
 async function getAllProducts() {
   let varerCollection = collection(db, "varer");
@@ -79,23 +89,6 @@ app.get("/", async (request, response) => {
   products = await getAllProducts();
   response.render("kasse", valueForView);
 });
-// //-------------------------------------------------------------------------------------------------
-// app.post('/produkter',async (request, response) => {
-//     let produktCol=collection(db, 'vare');
-//     let produkterFireBase = await getDocs(produktCol);
-//     console.log(produkter.docs)
-
-//     produkterServerList.length = 0;
-//     //const { rumNavn } = request.body;
-//     for (let p of produkterFireBase.docs){
-//         let produkt = p._document.data.value.mapValue.fields
-//        // if (besked.chatrum.stringValue == rumNavn){
-//             produkterServerList.push({navn: produkt.navn.stringValue, produktId: p.id})
-//       //  }
-//     }
-//     response.sendStatus(201);
-//     console.log("Kommer her")
-// })
 
 app.post("/opretProdukt", async (request, response) => {
   const { pNavn } = request.body;
@@ -108,61 +101,27 @@ app.get("/underskrift", async (request, response) => {
   response.render("underskrift", valueForView);
 });
 
-app.get("/crud/:data", async (request, response) => {
-    let produktID = request.params.data;
-    let produkter = products;
-    response.render("crud", {produktliste: produkter});
+app.get("/crud/", async (request, response) => {
+  response.render("crud", {
+    produktgrupper: produktgrupper, produktliste: products,
   });
+});
+
+app.get("/crud/:data", async (request, response) => {
+  let produktID = request.params.data;
+  let produkter = products;
+  response.render("crud", { produktliste: produkter });
+});
 
 app.get("/search", async (request, response) => {
   let array = products;
   var attribut = request.query.attribut;
   var vaerdi = request.query.vaerdi;
   console.log("Søgeparametre: attribut:" + attribut + "  Værdi: " + vaerdi);
-//   let searchresults = await searchResults(attribut, vaerdi);
-let searchresults = await logik.searchDynamic(products, attribut, vaerdi);
-
+  let searchresults = await logik.searchDynamic(products, attribut, vaerdi);
   console.log(searchresults);
   response.render("search", { search: searchresults });
 });
-
-async function searchResults(attribut, searchString){
-    // 2 searchRecipe Funktioner for at søge både "under" og "over" søgestringen. (ellers skulle man bruge en 3.parts søgeAPI, som koster penge) 
-    const items = await searchProduct(attribut, searchString); // <= 
-    const items2 = await searchProduct2(attribut, searchString); // >
-    let allItems = items.concat(items2);
-    let produktliste = [];
-    for(let i = 0; i < allItems.length; i++){
-        if(allItems[i].navn <= searchString){
-            produktliste.push(allItems[i]);
-        }
-    }
-    return produktliste;
-  }
-  // mindre end! <=
-  async function searchProduct(attribut, produktnavn) {
-    let varerCol = collection(db, "varer");
-    let q = query(varerCol, where("navn", "<=", produktnavn));
-    let vare = await getDocs(q);
-    let vareList = vare.docs.map((doc) => {
-      let data = doc.data();
-      data.docID = doc.id;
-      return data;
-    });
-    return vareList;
-  }
-  // større end >
-  async function searchProduct2(attribut, produktnavn) {
-    let varerCol = collection(db, "varer");
-    let q = query(varerCol, where("navn", ">", produktnavn));
-    let vare = await getDocs(q);
-    let vareList = vare.docs.map((doc) => {
-      let data = doc.data();
-      data.docID = doc.id;
-      return data;
-    });
-    return vareList;
-  }
 
 app.listen(port);
 
