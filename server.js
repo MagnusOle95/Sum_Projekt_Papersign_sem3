@@ -179,3 +179,4 @@ app.get("/search", async (request, response) => {
 app.listen(port);
 
 console.log("Lytter på port " + port);
+ 
