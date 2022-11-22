@@ -142,6 +142,7 @@ app.get("/crud/:data", async (request, response) => {
 app.get("/search", async (request, response) => {
   var attribut = request.query.attribut;
   var vaerdi = request.query.vaerdi;
+  console.log("Attribut: " + attribut + " .   værdi: " + vaerdi)
   let searchresults = await logik.searchDynamic(produkter, attribut, vaerdi);
   response.render("search", { search: searchresults });
 });
