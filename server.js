@@ -60,8 +60,21 @@ let produkterServerList = [];
 
 let products = await getAllProducts();
 let produktgrupper = await getAllProductgroups();
+let fakturaer = await getAllFakturaer();
+
 let valueForView = { produkter: produkterServerList };
 
+async function getAllFakturaer() {
+  let fakturaCollection = collection(db, "fakturaer");
+  let fakturaer = await getDocs(fakturaCollection);
+  let liste = fakturaer.docs.map((doc) => {
+    let data = doc.data();
+    data.docID = doc.id;
+    return data;
+  });
+  console.table(liste);
+  return liste;
+}
 async function getAllProductgroups() {
   let gruppeCollection = collection(db, "produktgrupper");
   let varegruppper = await getDocs(gruppeCollection);
@@ -106,9 +119,11 @@ app.get("/underskrift", async (request, response) => {
 });
 
 app.get("/crud/", async (request, response) => {
-  response.render("crud", {
-    produktgrupper: produktgrupper, produktliste: products,
-  });
+  response.render("crud", { produktgrupper: produktgrupper, produktliste: products});
+});
+
+app.get("/faktura/", async (request, response) => {
+  response.render("faktura", { produktgrupper: produktgrupper, produktliste: products});
 });
 
 app.get("/crud/:data", async (request, response) => {
@@ -118,12 +133,9 @@ app.get("/crud/:data", async (request, response) => {
 });
 
 app.get("/search", async (request, response) => {
-  let array = products;
   var attribut = request.query.attribut;
   var vaerdi = request.query.vaerdi;
-  console.log("Søgeparametre: attribut:" + attribut + "  Værdi: " + vaerdi);
   let searchresults = await logik.searchDynamic(products, attribut, vaerdi);
-  console.log(searchresults);
   response.render("search", { search: searchresults });
 });
 
