@@ -119,6 +119,8 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
 return searchresults;
 }
 
+
+
 //TODO --------------------------------------------------------------------------------------------- Optimize
 
 let pg = createProductgroup("hej", "hej");

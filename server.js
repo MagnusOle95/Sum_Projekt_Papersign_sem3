@@ -63,6 +63,7 @@ let produkter = await getAllProducts();
 let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
 let ordrer = await getAllOrdrer();
+let ProduktInProduktGoup = [];
 
 async function getAllOrdrer() {
   let fakturaCollection = collection(db, "ordrer");
@@ -153,8 +154,7 @@ app.post("/opretProduktGruppe", async (request, response) => {
   response.sendStatus(201);
   });
 
-app.post('/sletBesked', (request, response) => {
-  console.log("Kommer her")
+app.post('/deleteProduktGroup', async (request, response) => {
   // const { beskedId } = request.body;
   // let index = beskeder.findIndex(object => {
   //     return object.beskedNr == beskedId;
@@ -164,7 +164,18 @@ app.post('/sletBesked', (request, response) => {
   // console.log(index)
   // response.sendStatus(201)
 
+
+    const { valgtGruppeNr } = request.body;
+    console.log(valgtGruppeNr + "Se her")
+    //await deleteDoc(doc(db, 'produktgrupper', groupIndex));
+    //response.sendStatus(201)
+
+    // let test = collection(db, "produktgrupper");
+    // console.log(test)
+
 })
+
+
 
 app.get("/kasse", async (request, response) => {
   response.render("kasse",  { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});
@@ -176,7 +187,7 @@ app.get("/underskrift", async (request, response) => {
 
 app.get("/crud/", async (request, response) => {
   produktgrupper = await getAllProductgroups();
-  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});
+  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup});
 });
 
 app.get("/faktura/", async (request, response) => {
@@ -188,17 +199,12 @@ app.get("/crud/:data", async (request, response) => {
   response.render("crud", { produktliste: produkter, produktID });
 });
 
-app.post("/seachProduktinGroup",async (request, respons) => {
+app.post("/seachProduktinGroup",async (request, response) => {
   const { valgtGruppeNr } = request.body;
   console.log(produkter)
   console.log(valgtGruppeNr)
-  let resultList = await logik.searchDynamic(produkter,"gruppeNr",valgtGruppeNr)
-  console.log(resultList)
-  console.log("Når her til")
-  
-
-
-
+  ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNr)
+  response.sendStatus(201);
 })
 
 
@@ -213,4 +219,16 @@ app.get("/search", async (request, response) => {
 app.listen(port);
 
 console.log("Lytter på port " + port);
+
+//Metoder--------------------------------------------------------------------------------------------------------------------------------------------------
+function searchProductByGroupNr(gruppeNr){
+  let list = [];
+  //let products = getProducts() // hent alle produkterne, i arrayet "produkter" fra server.js - måske navnet er forkert, eller også er der ingen getProducts, til den?)
+  for(let i = 0; i < produkter.length; i++){
+    if(produkter[i].gruppeNr == gruppeNr){
+      list.push(produkter[i]);
+    }
+  }
+  return list;
+}
  
