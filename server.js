@@ -130,7 +130,7 @@ async function getAllProducts() {
 app.get("/", async (request, response) => {
   produkter = await getAllProducts();
   let pg = await getAllProductgroups();
-  response.render("kasse", {produkter: produkter});});
+  response.render("kasse", {produkter: produkter, produktgrupper: pg});});
 
 app.post("/opretProdukt", async (request, response) => {
   const { pNavn } = request.body;
