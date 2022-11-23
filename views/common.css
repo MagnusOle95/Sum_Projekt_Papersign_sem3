@@ -1,17 +1,17 @@
-/* Font size */
+/* Font */
 
 p, input, button, select{
     font-size: 125%;
 }
 
-/* Tab btns */
+/* Tab Buttons */
 
 .tabbtn input{
     margin: 2px;
 }
 
-/* Background color */
+/* Background */
 
-html{
+html, div{
     background-color: white;
 }
