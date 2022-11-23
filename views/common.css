@@ -1,17 +1,35 @@
 /* Font */
 
-p, input, button, select{
+p,
+input,
+button,
+select {
     font-size: 125%;
 }
 
 /* Tab Buttons */
 
-.tabbtn input{
+.tabbtn input {
     margin: 2px;
 }
 
 /* Background */
 
-html, div{
+html,
+div {
     background-color: white;
 }
+
+/* body {
+    background-image: url("papersignLogo.png");
+} */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+  }

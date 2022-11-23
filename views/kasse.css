@@ -42,16 +42,16 @@
 .child1 #produktList {
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 3;
-    grid-row-end: 12;
+    grid-row-start: 4;
+    grid-row-end: 14;
 
 }
 
 .child2 #kurvList {
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 3;
-    grid-row-end: 11;
+    grid-row-start: 4;
+    grid-row-end: 13;
 
 }
 
@@ -63,7 +63,7 @@
 .child2 #titleK {
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 2;
+    grid-row-start: 3;
     grid-row-end: 4;
 
 }
@@ -71,7 +71,7 @@
 .child1 #titleP {
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 2;
+    grid-row-start: 3;
     grid-row-end: 4;
 
 }
@@ -93,6 +93,11 @@
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     grid-row-start: 1;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+#pg{
     grid-column-start: 1;
     grid-column-end: 4;
 }

@@ -10,10 +10,10 @@ head
 .tabbtn
   form(action = "/kasse" method="get")
     input(class="button" type="submit" value="Kasse")
-    form(action = "/faktura" method="get")
-      input(class="button" type="submit" value="Faktura")
-      form(action= "/crud" method="get")
-        input(class="button" type="submit" value="Crud")
+  form(action = "/faktura" method="get")
+    input(class="button" type="submit" value="Faktura")
+  form(action= "/crud" method="get")
+    input(class="button" type="submit" value="Crud")
 h1 PaperSign Kasse
 .parent
   .child1
@@ -21,6 +21,12 @@ h1 PaperSign Kasse
       input#atribut(type='text' name="attribut" placeholder='Attribute')
       input#value(type='text' name="vaerdi" placeholder='Søgeværdi')
       input(class='button' type="submit", value="Søg")
+    select#pg(name='pg')
+      option(value='' disabled='' selected='') Produktgrupper
+      option(value='') *Vis Alle
+      each d of produktgrupper 
+        option(value="" placeholder="")= '' + d.navn
+      option(value='') *Intet
     p#titleP Produkter
     select#produktList(name='kurv' multiple='')
       each data in produkter 
@@ -29,15 +35,17 @@ h1 PaperSign Kasse
     button#tilfoejProdukt Tilf&oslash;j
   .child2
     p#titleB  
+    p#titleB
     p#titleK Kurv
     select#kurvList(name='kurv' multiple='')
     button#tilfoejRabat Tilf&oslash;j Rabat
-    input#rabat(type='text' placeholder='Rabat')
+    input#rabat(type='number' placeholder='Rabat')
     button Slet
     select#produktList(name='kurv')
       option(value='' disabled='' selected='') Betallingsform
       option(value='kort') Kort
+      option(value='kredit') Kredit
       option(value='kontant') Kontant
       option(value='mobilPay') MobilPay
-    input#Beloeb(type='text' name='' placeholder='Beløb')
+    input#Beloeb(type='number' name='' placeholder='Beløb')
     button#koeb K&oslash;b

@@ -129,6 +129,7 @@ async function getAllProducts() {
 }
 app.get("/", async (request, response) => {
   produkter = await getAllProducts();
+  let pg = await getAllProductgroups();
   response.render("kasse", {produkter: produkter});});
 
 app.post("/opretProdukt", async (request, response) => {
