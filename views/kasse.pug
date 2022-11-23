@@ -21,11 +21,11 @@ h1 PaperSign Kasse
       input#atribut(type='text' name="attribut" placeholder='Attribute')
       input#value(type='text' name="vaerdi" placeholder='Søgeværdi')
       input(class='button' type="submit", value="Søg")
-    select#pg(name='pg')
+    select#pg(name='pg' onchange="alert(document.getElementById('pg').value);")
       option(value='' disabled='' selected='') Produktgrupper
       option(value='') *Vis Alle
       each d of produktgrupper 
-        option(value="" placeholder="")= '' + d.navn
+        option(value=""+d.navn+"")= '' + d.navn
       option(value='') *Intet
     p#titleP Produkter
     select#produktList(name='kurv' multiple='')
@@ -41,7 +41,7 @@ h1 PaperSign Kasse
     button#tilfoejRabat Tilf&oslash;j Rabat
     input#rabat(type='number' placeholder='Rabat')
     button Slet
-    select#produktList(name='kurv')
+    select#betalling(name='kurv' onchange= "if (this.selectedIndex==2) alert(document.getElementById('pg').value);")
       option(value='' disabled='' selected='') Betallingsform
       option(value='kort') Kort
       option(value='kredit') Kredit

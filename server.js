@@ -47,12 +47,12 @@ import { Console } from "console";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCwMpbafG7AkNlU28omo8MDhA7ZgIh7BlA",
-  authDomain: "papersign-19cd5.firebaseapp.com",
-  projectId: "papersign-19cd5",
-  storageBucket: "papersign-19cd5.appspot.com",
-  messagingSenderId: "477663863462",
-  appId: "1:477663863462:web:f765c4665f9f0610fd4a67",
+    apiKey: "AIzaSyCwMpbafG7AkNlU28omo8MDhA7ZgIh7BlA",
+    authDomain: "papersign-19cd5.firebaseapp.com",
+    projectId: "papersign-19cd5",
+    storageBucket: "papersign-19cd5.appspot.com",
+    messagingSenderId: "477663863462",
+    appId: "1:477663863462:web:f765c4665f9f0610fd4a67",
 };
 
 // Initialize Firebase
@@ -66,15 +66,15 @@ let ordrer = await getAllOrdrer();
 let ProduktInProduktGoup = [];
 
 async function getAllOrdrer() {
-  let fakturaCollection = collection(db, "ordrer");
-  let ordrer = await getDocs(fakturaCollection);
-  let liste = ordrer.docs.map((doc) => {
-    let data = doc.data();
-    data.docID = doc.id;
-    return data;
-  });
-  console.table(liste);
-  return liste;
+    let fakturaCollection = collection(db, "ordrer");
+    let ordrer = await getDocs(fakturaCollection);
+    let liste = ordrer.docs.map((doc) => {
+        let data = doc.data();
+        data.docID = doc.id;
+        return data;
+    });
+    console.table(liste);
+    return liste;
 }
 
 //Numre til id af produkter og produktgrupper. 
@@ -86,60 +86,70 @@ let fakturaNr = result[0].fakturaNr;
 console.log(result)
 
 async function getAllFakturaer() {
-  let fakturaCollection = collection(db, "fakturaer");
-  let collection1 = await getDocs(fakturaCollection);
-  let liste = collection1.docs.map((doc) => {
-    let data = doc.data();
-    data.docID = doc.id;
-    return data;
-  });
-  console.table(liste);
-  return liste;
+    let fakturaCollection = collection(db, "fakturaer");
+    let collection1 = await getDocs(fakturaCollection);
+    let liste = collection1.docs.map((doc) => {
+        let data = doc.data();
+        data.docID = doc.id;
+        return data;
+    });
+    console.table(liste);
+    return liste;
 }
 async function getAllProductgroups() {
-  let gruppeCollection = collection(db, "produktgrupper");
-  let varegruppper = await getDocs(gruppeCollection);
-  let liste = varegruppper.docs.map((doc) => {
-    let data = doc.data();
-    data.docID = doc.id;
-    return data;
-  });
-  console.table(liste);
-  return liste;
+    let gruppeCollection = collection(db, "produktgrupper");
+    let varegruppper = await getDocs(gruppeCollection);
+    let liste = varegruppper.docs.map((doc) => {
+        let data = doc.data();
+        data.docID = doc.id;
+        return data;
+    });
+    console.table(liste);
+    return liste;
 }
 
 async function getAllNumbers() {
-  let gruppeCollection = collection(db, "nummre");
-  let nummre = await getDocs(gruppeCollection);
-  let liste = nummre.docs.map((doc) => {
-    let data = doc.data();
-    data.docID = doc.id;
-    return data;
-  });
-  return liste;
+    let gruppeCollection = collection(db, "nummre");
+    let nummre = await getDocs(gruppeCollection);
+    let liste = nummre.docs.map((doc) => {
+        let data = doc.data();
+        data.docID = doc.id;
+        return data;
+    });
+    return liste;
 }
 
 async function getAllProducts() {
-  let varerCollection = collection(db, "varer");
-  let varer = await getDocs(varerCollection);
-  let vareliste = varer.docs.map((doc) => {
-    let data = doc.data();
-    data.docID = doc.id;
-    return data;
-  });
-  console.table(vareliste);
-  return vareliste;
+    let varerCollection = collection(db, "varer");
+    let varer = await getDocs(varerCollection);
+    let vareliste = varer.docs.map((doc) => {
+        let data = doc.data();
+        data.docID = doc.id;
+        return data;
+    });
+    console.table(vareliste);
+    return vareliste;
 }
+
+app.get("/kasse/:data", async (request, response) => {
+    let val = request.params.data;
+    let produkter = await getAllProducts();
+    let p = await logik.searchDynamic(produkter, "produktgruppe.navn", val);
+    let pg = await getAllProductgroups();
+    response.render("kasse", { produkter: p, produktgrupper: pg });
+});
+
 app.get("/", async (request, response) => {
-  produkter = await getAllProducts();
-  let pg = await getAllProductgroups();
-  response.render("kasse", {produkter: produkter, produktgrupper: pg});});
+    produkter = await getAllProducts();
+    let pg = await getAllProductgroups();
+    response.render("kasse", { produkter: produkter, produktgrupper: pg });
+});
 
 app.post("/opretProdukt", async (request, response) => {
-  const { pNavn } = request.body;
-  let nyProdukt = { navn: pNavn };
-  addDoc(collection(db, "varer"), nyProdukt);
-  response.sendStatus(201);
+    const { pNavn } = request.body;
+    let nyProdukt = { navn: pNavn };
+    addDoc(collection(db, "varer"), nyProdukt);
+    response.sendStatus(201);
 });
 
 app.post("/opretProduktGruppe", async (request, response) => {
@@ -178,11 +188,11 @@ app.post('/deleteProduktGroup', async (request, response) => {
 
 
 app.get("/kasse", async (request, response) => {
-  response.render("kasse",  { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});
+    response.render("kasse", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter });
 });
 
 app.get("/underskrift", async (request, response) => {
-  response.render("underskrift");
+    response.render("underskrift");
 });
 
 app.get("/crud/", async (request, response) => {
@@ -191,12 +201,12 @@ app.get("/crud/", async (request, response) => {
 });
 
 app.get("/faktura/", async (request, response) => {
-  response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter});
+    response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter });
 });
 
 app.get("/crud/:data", async (request, response) => {
-  let produktID = request.params.data;
-  response.render("crud", { produktliste: produkter, produktID });
+    let produktID = request.params.data;
+    response.render("crud", { produktliste: produkter, produktID });
 });
 
 app.post("/seachProduktinGroup",async (request, response) => {
@@ -209,11 +219,11 @@ app.post("/seachProduktinGroup",async (request, response) => {
 
 
 app.get("/search", async (request, response) => {
-  var attribut = request.query.attribut;
-  var vaerdi = request.query.vaerdi;
-  console.log("Attribut: " + attribut + " .   værdi: " + vaerdi)
-  let searchresults = await logik.searchDynamic(produkter, attribut, vaerdi);
-  response.render("search", { search: searchresults });
+    var attribut = request.query.attribut;
+    var vaerdi = request.query.vaerdi;
+    console.log("Attribut: " + attribut + " .   værdi: " + vaerdi)
+    let searchresults = await logik.searchDynamic(produkter, attribut, vaerdi);
+    response.render("search", { search: searchresults });
 });
 
 app.listen(port);

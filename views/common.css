@@ -9,27 +9,33 @@ select {
 
 /* Tab Buttons */
 
+.tabbtn {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+}
+
 .tabbtn input {
     margin: 2px;
+    width: 100px;
 }
 
 /* Background */
-
-html,
-div {
-    background-color: white;
+body {
+    background-image: linear-gradient(white, gray);
+    background-attachment: fixed;
+    height: 100%;
 }
 
-/* body {
-    background-image: url("papersignLogo.png");
-} */
-
+/* Set number inputs to have no arrows */
+/* others */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
+/* firefox */
 input[type=number] {
     -moz-appearance: textfield;
   }

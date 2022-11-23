@@ -21,34 +21,34 @@ head
   button#gemSig.gem(type='button') Gem
   button#sletSig.slet(type='button') Slet 
 #image
-script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js' integrity='sha512-cLuyDTDg9CSseBSFWNd4wkEaZ0TBEpclX0zD3D6HjI19pO39M58AgJ1SjHp6c7ZOp0/OCRcC2BCvvySU9KJaGw==' crossorigin='anonymous' referrerpolicy='no-referrer')
-script(src='https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js')
-script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3' crossorigin='anonymous')
-script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js' integrity='sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3' crossorigin='anonymous')
-script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js' integrity='sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk' crossorigin='anonymous')
-script(type='module').
-  let count =0;
-  var signaturePad
-  var canvas;
-  function setupSigBox(){
-  canvas = document.querySelector("canvas");
-  canvas.setAttribute("width", 700);
-  canvas.setAttribute("height", 400);
-  signaturePad = new SignaturePad(canvas);
-  }
-  document.addEventListener("DOMContentLoaded",setupSigBox);
-  function clearSig(){
-  signaturePad.clear()
-  }
-  document.getElementById("sletSig").addEventListener("click",clearSig)
-  // gem funktion skal håndteres af express før den virker rigtig
-  var button= document.getElementById("gemSig")
-  button.onclick=()=>{
-  var text=document.getElementById("text").value
-  var imageData= signaturePad.toDataURL();
-  var doc = new jsPDF()
-  doc.setFontSize(40)
-  doc.text("Lærer navn: "+text,40,40)
-  doc.addImage(imageData,"JPEG",15,40,180,180)
-  doc.save(`underskrift ${text}.pdf`)
-  }
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js' integrity='sha512-cLuyDTDg9CSseBSFWNd4wkEaZ0TBEpclX0zD3D6HjI19pO39M58AgJ1SjHp6c7ZOp0/OCRcC2BCvvySU9KJaGw==' crossorigin='anonymous' referrerpolicy='no-referrer')
+  script(src='https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js')
+  script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3' crossorigin='anonymous')
+  script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js' integrity='sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3' crossorigin='anonymous')
+  script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js' integrity='sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk' crossorigin='anonymous')
+  script(type='module').
+    let count =0;
+    var signaturePad
+    var canvas;
+    function setupSigBox(){
+    canvas = document.querySelector("canvas");
+    canvas.setAttribute("width", 700);
+    canvas.setAttribute("height", 400);
+    signaturePad = new SignaturePad(canvas);
+    }
+    document.addEventListener("DOMContentLoaded",setupSigBox);
+    function clearSig(){
+    signaturePad.clear()
+    }
+    document.getElementById("sletSig").addEventListener("click",clearSig)
+    // gem funktion skal håndteres af express før den virker rigtig
+    var button= document.getElementById("gemSig")
+    button.onclick=()=>{
+    var text=document.getElementById("text").value
+    var imageData= signaturePad.toDataURL();
+    var doc = new jsPDF()
+    doc.setFontSize(40)
+    doc.text("Lærer navn: "+text,40,40)
+    doc.addImage(imageData,"JPEG",15,40,180,180)
+    doc.save(`underskrift ${text}.pdf`)
+    }

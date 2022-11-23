@@ -70,7 +70,6 @@ function getProducts() {
 function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   let found = false
   if ((obj[arrSplit[count]].toLocaleLowerCase()).includes(soegevaerdi1)) {
-    // if (obj[arrSplit[count]] == soegevaerdi) {
     return true;
   }
   else if (count == arrSplit.length - 1) {
@@ -83,17 +82,18 @@ function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
 }
 
 async function searchDynamic(arr, attribut, soegevaerdi) {
-  let soegevaerdi1 = soegevaerdi;
-  soegevaerdi1.toLowerCase();
+  // let soegevaerdi1 = soegevaerdi;
+  soegevaerdi.toLowerCase();
   let searchresults = [];
   let attributSplit = null;
   if(attribut == ""){
     attribut = "navn";
   }
+
   if (attribut.includes(".")) {
     attributSplit = attribut.split(".");
     for (let p of arr) {
-      let found = searchDynamicObject(p, attributSplit, 0, soegevaerdi1);
+      let found = searchDynamicObject(p, attributSplit, 0, soegevaerdi);
       if (found == true) {
         searchresults.push(p);
       }
@@ -102,10 +102,8 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
   else {
     for (let p of arr) {
       try {
-        let obj = p[attribut];
-        console.log(obj)
-        obj.toLowerCase();
-        if (obj.includes(soegevaerdi1)) {
+        let val = p[attribut].toLowerCase();
+        if (val.includes(soegevaerdi)) {
           searchresults.push(p);
         }
       } catch (error) {
@@ -130,8 +128,10 @@ let p2 = createProduct("Hat1", 20, 10, 4567890, "Mowgli inc", 932005, pg);
 let p3 = createProduct("Hat2", 20, 10, 4567890, "Mowgli inc", 932005, pg);
 let p4 = createProduct("1Hat", 20, 10, 4567890, "Mowgli inc", 932005, pg);
 let p5 = createProduct("2Hat", 20, 10, 4567890, "Mowgli inc", 932005, pg);
+let p6 = createProduct("1", 20, 10, 4567890, "Mowgli inc", 932005, pg);
 
-console.log(searchDynamic(products, "navn", "1"));
+
+console.log(searchDynamic(products, "navn", 1+""));
 
 
 // finder en vare med det specifikke varenummer (skal indeholde 0'erne foran)
