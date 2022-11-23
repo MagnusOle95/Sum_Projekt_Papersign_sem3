@@ -1,7 +1,7 @@
 
 script.
   
-  let chosenProduckGoup;
+  let result;
   document.addEventListener('DOMContentLoaded',()=>{
       document
         .getElementById('produktList')
@@ -10,12 +10,29 @@ script.
 
   function handleSelect (ev){
     let chosenProduckGoup = ev.target.value;
-    console.log(chosenProduckGoup);
+
+    result = chosenProduckGoup.split(" ");
+    let index = result.length - 1
+    console.log(result[index])
+    seachProduckt(index)
+
+    
 
     //- each data in produkter
     //-     if data.produktgruppe == "chosenProduckGoup"
     //-       option()= 'Navn: ' + data.navn
   }
+
+  let seachProduckt = async (index) => {
+  try {
+    await post("/seachProduktinGroup", {valgtGruppeNr: result[index]});
+    window.location.href = "/CRUD"
+    }catch(e){
+    console.log("Fejl");
+      }
+  }
+
+  
 
     //Post metode til funktion. 
     async function post(url, objekt) {
@@ -81,7 +98,7 @@ h1 PaperSign CRUD
     p#titleP Produktgrupper
     select#produktList(name='kurv' multiple='')
       each data in produktgrupper
-        option()= 'Navn: ' + data.navn
+        option()= data.navn + " "+ data.gruppeNr
         //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
     button#tilfoejProduktG Opdater
@@ -92,10 +109,10 @@ h1 PaperSign CRUD
     p#titleB  
     p#titleK Produkter
     select#kurvList(name='kurv' multiple='')
-      //- each data in produkter
-      //-   if data.produktgruppe == "data.navn"
-      //-     option()= 'Navn: ' + data.navn
-      //-     //option(value="" placeholder="")= 'Navn: ' + data.navn
+      each data in produkter
+        if data.produktgruppe == result
+          option()= 'Navn: ' + data.navn
+          //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProdukt(onclick='createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktList.selected.value)') Tilf&oslash;j
     button#tilfoejProdukt Opdater
     button#tilfoejProdukt Slet

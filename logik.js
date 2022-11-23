@@ -28,8 +28,7 @@ function setNewAttribute(produkt, attribut, værdi) {
 }
 
 class Product {
-  constructor(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe) {
-    this.varenr = varenr.toString().padStart(6, '0'); // sætter (op til 6) 0'er foran varenummeret
+  constructor(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr) {
     this.navn = navn;
     this.pris = pris;
     this.antal = antal;
@@ -37,15 +36,16 @@ class Product {
     this.leverandør = leverandør;
     this.bestillingsnummer = bestillingsnummer;
     this.produktgruppe = produktgruppe;
-    varenr++;
+    this.produktNr = produktNr;
   }
 }
 
 class Productgroup {
-  constructor(navn, beskrivelse) {
+  constructor(navn, beskrivelse,GruppeNr) {
     this.navn = navn;
     this.beskrivelse = beskrivelse;
     this.produkter = [];
+    this.GruppeNr = GruppeNr;
   }
 }
 
@@ -103,6 +103,7 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
     for (let p of arr) {
       try {
         let obj = p[attribut];
+        console.log(obj)
         obj.toLowerCase();
         if (obj.includes(soegevaerdi1)) {
           searchresults.push(p);

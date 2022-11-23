@@ -32,6 +32,7 @@ import {
   doc,
   deleteDoc,
   addDoc,
+  setDoc,
   getDoc,
   query,
   where,
@@ -77,10 +78,11 @@ async function getAllOrdrer() {
 
 //Numre til id af produkter og produktgrupper. 
 let result = await getAllNumbers();
-let gruppeNr = result[2].gruppeNr;
+let gruppeNr = result[3].gruppeNr;
 let produktNr = result[1].produktNr;
-let ordreNr = result[3].ordreNr;
+let ordreNr = result[2].ordreNr;
 let fakturaNr = result[0].fakturaNr;
+console.log(result)
 
 async function getAllFakturaer() {
   let fakturaCollection = collection(db, "fakturaer");
@@ -140,31 +142,15 @@ app.post("/opretProdukt", async (request, response) => {
 
 app.post("/opretProduktGruppe", async (request, response) => {
   const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
-  let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse)
+  let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse,gruppeNr)
   produktgrupper.push(nyProduktGruppe)
-  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNR: gruppeNr}
-  addDoc(collection(db, "produktgrupper"),nyProduktGruppeFirebase);
+  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: gruppeNr}
+  await setDoc(doc(db,"produktgrupper",`${gruppeNr}`),nyProduktGruppeFirebase)
+  gruppeNr++; 
+  let gruppenrUpdate={gruppeNr: gruppeNr}
+  await setDoc(doc(db,"nummre/gruppeNr"),gruppenrUpdate)
   response.sendStatus(201);
-
-  // gruppeNr++;
-  // const gruppeNr = doc(db, "produktgrupper", "gruppeNr");
-  // // Set the "capital" field of the city 'DC'
-  // await updateDoc(gruppeNr, {
-  //   gruppeNr: gruppeNr
-  // });
-
-  // const db = getDatabase();
-  // set(ref(db, 'nummre/gruppeNr'), {
-  //   gruppeNr: gruppeNr
-  // })
-  // .then(() => {
-  //   //Data saved successfully!
-  // })
-  // .catch((error) => {
-  //   //The write failed...
-  // });
-
-});
+  });
 
 app.post('/sletBesked', (request, response) => {
   console.log("Kommer her")
@@ -188,6 +174,7 @@ app.get("/underskrift", async (request, response) => {
 });
 
 app.get("/crud/", async (request, response) => {
+  produktgrupper = await getAllProductgroups();
   response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});
 });
 
@@ -199,6 +186,20 @@ app.get("/crud/:data", async (request, response) => {
   let produktID = request.params.data;
   response.render("crud", { produktliste: produkter, produktID });
 });
+
+app.post("/seachProduktinGroup",async (request, respons) => {
+  const { valgtGruppeNr } = request.body;
+  console.log(produkter)
+  console.log(valgtGruppeNr)
+  let resultList = await logik.searchDynamic(produkter,"gruppeNr",valgtGruppeNr)
+  console.log(resultList)
+  console.log("Når her til")
+  
+
+
+
+})
+
 
 app.get("/search", async (request, response) => {
   var attribut = request.query.attribut;
