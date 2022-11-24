@@ -6,6 +6,7 @@ head
   style 
     include kasse.css
     include common.css
+  script(src="server.js")
   title PaperSign
 .tabbtn
   form(action = "/kasse" method="get")
@@ -21,12 +22,13 @@ h1 PaperSign Kasse
       input#atribut(type='text' name="attribut" placeholder='Attribute')
       input#value(type='text' name="vaerdi" placeholder='Søgeværdi')
       input(class='button' type="submit", value="Søg")
-    select#pg(name='pg' onchange="alert(document.getElementById('pg').value);")
-      option(value='' disabled='' selected='') Produktgrupper
-      option(value='') *Vis Alle
-      each d of produktgrupper 
-        option(value=""+d.navn+"")= '' + d.navn
-      option(value='') *Intet
+    form#pg(type="hidden" action = "/kasse", method="get")
+      select#pg(name='pgroup' onchange="this.form.submit()")
+        option(value='' disabled='' selected='') Produktgrupper
+        option(value='') *Vis Alle
+        each d of produktgrupper 
+          option(value=""+d.gruppeNr+"")= '' + d.navn
+        option(value='') *Intet
     p#titleP Produkter
     select#produktList(name='kurv' multiple='')
       each data in produkter 

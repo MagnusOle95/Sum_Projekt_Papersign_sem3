@@ -26,6 +26,8 @@ body {
     background-image: linear-gradient(white, gray);
     background-attachment: fixed;
     height: 100%;
+    font-family: 'SF Pixelate', sans-serif;
+
 }
 
 /* Set number inputs to have no arrows */
