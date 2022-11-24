@@ -33,6 +33,7 @@ import {
   doc,
   deleteDoc,
   addDoc,
+  setDoc,
   getDoc,
   query,
   where,
@@ -64,6 +65,7 @@ let produkter = await getAllProducts();
 let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
 let ordrer = await getAllOrdrer();
+let ProduktInProduktGoup = [];
 
 async function getAllOrdrer() {
   let fakturaCollection = collection(db, "ordrer");
@@ -79,10 +81,11 @@ async function getAllOrdrer() {
 
 //Numre til id af produkter og produktgrupper. 
 let result = await getAllNumbers();
-let gruppeNr = result[2].gruppeNr;
+let gruppeNr = result[3].gruppeNr;
 let produktNr = result[1].produktNr;
-let ordreNr = result[3].ordreNr;
+let ordreNr = result[2].ordreNr;
 let fakturaNR = result[0].fakturaNr;
+console.log(result)
 
 async function getAllFakturaer() {
   let fakturaCollection = collection(db, "fakturaer");
@@ -131,7 +134,8 @@ async function getAllProducts() {
 }
 app.get("/", async (request, response) => {
   produkter = await getAllProducts();
-  response.render("kasse", {produkter: produkter});});
+  let pg = await getAllProductgroups();
+  response.render("kasse", {produkter: produkter, produktgrupper: pg});});
 
 app.post("/opretProdukt", async (request, response) => {
   const { pNavn } = request.body;
@@ -142,58 +146,17 @@ app.post("/opretProdukt", async (request, response) => {
 
 app.post("/opretProduktGruppe", async (request, response) => {
   const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
-  let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse)
+  let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse,gruppeNr)
   produktgrupper.push(nyProduktGruppe)
-  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse}
-  await setDoc(doc(db,"produktgrupper",`${gruppeNr}`),nyProduktGruppeFirebase)  
-  gruppeNr++;
+  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: gruppeNr}
+  await setDoc(doc(db,"produktgrupper",`${gruppeNr}`),nyProduktGruppeFirebase)
+  gruppeNr++; 
   let gruppenrUpdate={gruppeNr: gruppeNr}
   await setDoc(doc(db,"nummre/gruppeNr"),gruppenrUpdate)
-})
+  response.sendStatus(201);
+  });
 
-app.post("/opretOrdre", async (request, response) => {
-  const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
-  let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
-  await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
-  ordreNr++;
-  let ordreNrUpdate={ordreNr: ordreNr}
-  await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
-})
-
-app.post("/opretFaktura", async (request, response) => {
-  const {navn,dato,ordrelinjer,fakturaNr} = request.body;
-  let fakturaNy=ordre.createFaktura(navn);
-  fakturaNy.fakturanr=fakturaNR;
-  fakturaer.push(fakturaNy);
-  let nyFakturaFirebase = {navn: navn, dato: dato, ordrelinjer: ordrelinjer, fakturaNr: fakturaNr}
-  await setDoc(doc(db,"ordrer",`${ordreNr}`),nyFakturaFirebase)  
-  fakturaNR++;
-  let fakturaNrUpdate={fakturaNr: fakturaNR}
-  await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
-})
-
-  // gruppeNr++;
-  // const gruppeNr = doc(db, "produktgrupper", "gruppeNr");
-  // // Set the "capital" field of the city 'DC'
-  // await updateDoc(gruppeNr, {
-  //   gruppeNr: gruppeNr
-  // });
-
-  // const db = getDatabase();
-  // set(ref(db, 'nummre/gruppeNr'), {
-  //   gruppeNr: gruppeNr
-  // })
-  // .then(() => {
-  //   //Data saved successfully!
-  // })
-  // .catch((error) => {
-  //   //The write failed...
-  // });
-
-
-
-app.post('/sletBesked', (request, response) => {
-  console.log("Kommer her")
+app.post('/deleteProduktGroup', async (request, response) => {
   // const { beskedId } = request.body;
   // let index = beskeder.findIndex(object => {
   //     return object.beskedNr == beskedId;
@@ -203,7 +166,18 @@ app.post('/sletBesked', (request, response) => {
   // console.log(index)
   // response.sendStatus(201)
 
+
+    const { valgtGruppeNr } = request.body;
+    console.log(valgtGruppeNr + "Se her")
+    //await deleteDoc(doc(db, 'produktgrupper', groupIndex));
+    //response.sendStatus(201)
+
+    // let test = collection(db, "produktgrupper");
+    // console.log(test)
+
 })
+
+
 
 app.get("/kasse", async (request, response) => {
   response.render("kasse",  { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});
@@ -214,7 +188,8 @@ app.get("/underskrift", async (request, response) => {
 });
 
 app.get("/crud/", async (request, response) => {
-  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter});
+  produktgrupper = await getAllProductgroups();
+  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup});
 });
 
 app.get("/faktura/", async (request, response) => {
@@ -225,6 +200,15 @@ app.get("/crud/:data", async (request, response) => {
   let produktID = request.params.data;
   response.render("crud", { produktliste: produkter, produktID });
 });
+
+app.post("/seachProduktinGroup",async (request, response) => {
+  const { valgtGruppeNr } = request.body;
+  console.log(produkter)
+  console.log(valgtGruppeNr)
+  ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNr)
+  response.sendStatus(201);
+})
+
 
 app.get("/search", async (request, response) => {
   var attribut = request.query.attribut;
@@ -237,4 +221,16 @@ app.get("/search", async (request, response) => {
 app.listen(port);
 
 console.log("Lytter på port " + port);
+
+//Metoder--------------------------------------------------------------------------------------------------------------------------------------------------
+function searchProductByGroupNr(gruppeNr){
+  let list = [];
+  //let products = getProducts() // hent alle produkterne, i arrayet "produkter" fra server.js - måske navnet er forkert, eller også er der ingen getProducts, til den?)
+  for(let i = 0; i < produkter.length; i++){
+    if(produkter[i].gruppeNr == gruppeNr){
+      list.push(produkter[i]);
+    }
+  }
+  return list;
+}
  

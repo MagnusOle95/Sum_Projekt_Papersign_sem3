@@ -1,7 +1,8 @@
 
+
 script.
-  
-  let chosenProduckGoup;
+  let aktuelGroupNr;
+
   document.addEventListener('DOMContentLoaded',()=>{
       document
         .getElementById('produktList')
@@ -10,13 +11,28 @@ script.
 
   function handleSelect (ev){
     let chosenProduckGoup = ev.target.value;
-    console.log(chosenProduckGoup);
+
+    result = chosenProduckGoup.split(" ");
+    index = result.length - 1
+    aktuelGroupNr = result[index]
+    console.log(aktuelGroupNr)
+    produktsInGroup(aktuelGroupNr)
 
     //- each data in produkter
     //-     if data.produktgruppe == "chosenProduckGoup"
     //-       option()= 'Navn: ' + data.navn
   }
 
+  let produktsInGroup = async (aktuelGroupNr) => {
+  try {
+    await post("/seachProduktinGroup", {valgtGruppeNr: aktuelGroupNr});
+    window.location.href = "/CRUD"
+    }catch(e){
+    console.log("Fejl");
+      }
+  }
+
+  
     //Post metode til funktion. 
     async function post(url, objekt) {
     const respons = await fetch(url, {
@@ -42,16 +58,15 @@ script.
         } 
     }
 
-    let deleteProductGroup = async () => {
+    let deleteProductGroup = async (x) => {
         console.log("Når her til")
-        //- var produktGruppeNavn = document.getElementById("navnG").value;
-        //- var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
-        //- try {
-        //- await post("/opretProduktGruppe", {produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse});
-        //- window.location.href = "/CRUD"
-        //- }catch(e){
-        //- console.log("Fejl");
-        //- } 
+        console.log(x)
+        try {
+        await post("/deleteProduktGroup", {aktuelGroupNr: x});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log("Fejl");
+        } 
     }
 
 
@@ -68,10 +83,10 @@ head
 .tabbtn
   form(action = "/kasse" method="get")
     input(class="button" type="submit" value="Kasse")
-    form(action = "/faktura" method="get")
-      input(class="button" type="submit" value="Faktura")
-      form(action= "/crud" method="get")
-        input(class="button" type="submit" value="Crud")
+  form(action = "/faktura" method="get")
+    input(class="button" type="submit" value="Faktura")
+  form(action= "/crud" method="get")
+    input(class="button" type="submit" value="Crud")
 h1 PaperSign CRUD
 .parent
   .child1
@@ -81,7 +96,7 @@ h1 PaperSign CRUD
     p#titleP Produktgrupper
     select#produktList(name='kurv' multiple='')
       each data in produktgrupper
-        option()= 'Navn: ' + data.navn
+        option()= data.navn + " "+ data.gruppeNr
         //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
     button#tilfoejProduktG Opdater
@@ -92,10 +107,9 @@ h1 PaperSign CRUD
     p#titleB  
     p#titleK Produkter
     select#kurvList(name='kurv' multiple='')
-      //- each data in produkter
-      //-   if data.produktgruppe == "data.navn"
-      //-     option()= 'Navn: ' + data.navn
-      //-     //option(value="" placeholder="")= 'Navn: ' + data.navn
+      each data in ProduktInProduktGoup
+          option()= 'Navn: ' + data.navn
+          //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProdukt(onclick='createProduct(navn.value, pris.value, antal.value, EAN.value, leverandør.value, bestillingsnummer.value, produktList.selected.value)') Tilf&oslash;j
     button#tilfoejProdukt Opdater
     button#tilfoejProdukt Slet
