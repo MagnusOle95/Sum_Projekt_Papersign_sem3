@@ -137,12 +137,9 @@ app.get("/", async (request, response) => {
   response.render("kasse", {produkter: produkter, produktgrupper: pg});});
 
 app.post("/opretProdukt", async (request, response) => {
-  const {navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr,addAttribut } = request.body;
-  let nytProdukt=logik.createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr);
-  nytProdukt.setAttribut(addAttribut);
-  produkter.push(nytProdukt);
-  let nyProdukt = {navn:navn, pris:pris, antal:antal,EAN: EAN,leverandør: leverandør,bestillingsnummer: bestillingsnummer,produktgruppe: produktgruppe,produktNr:produktNr,addAttribut:addAttribut};
-  addDoc(collection(db, "produktNr"), nyProdukt);
+  const { pNavn } = request.body;
+  let nyProdukt = { navn: pNavn };
+  addDoc(collection(db, "varer"), nyProdukt);
   response.sendStatus(201);
 });
 
