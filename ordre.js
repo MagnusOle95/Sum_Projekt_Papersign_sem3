@@ -1,11 +1,11 @@
-import logik from '../logik.js';
-
+import logik from './logik.js';
 let ordrelinjenr = 1;
 let fakturanr = 0;
 let følgdeseddelnr = 0;
 
 let fakturaer = [];
 let følgesedler = [];
+let ordrelinjer=[];
 
 // faktura (ordre) indeholder flere ordrelinjer
 class Faktura {
@@ -14,36 +14,33 @@ class Faktura {
     this.ordrelinjer = [];
     this.fakturanr = fakturanr;
     this.navn = navn;
-    fakturanr++;
     fakturaer.push(this);
   }
 
-  addOrdrelinje(produkt, antal) {
-    // ordrelinje er de enkelte linker på en faktura
-    class Ordrelinje {
-      constructor(produkt, antal) {
-        this.produkt = produkt;
-        this.antal = antal;
-        this.total = antal * produkt.pris;
-        this.ordrelinjenr = ordrelinjenr;
-        ordrelinjenr++;
-      }
-    }
-
+  addOrdrelinje(orderLinje) {
+    // ordrelinje er de enkelte linjer på en faktura
     if (antal >= 1 && produkt instanceof logik.Product) {
-      let ordrelinje = new Ordrelinje(produkt, antal);
+      let ordrelinje = orderLinje;
       this.ordrelinjer.push(ordrelinje);
     }
   }
 }
-
+class Ordrelinje {
+  constructor(produkt, antal) {
+    this.produkt = produkt;
+    this.antal = antal;
+    this.total = antal * produkt.pris;
+    this.ordrelinjenr = ordrelinjenr;
+    ordrelinjer.push(this)
+  }
+  
+}
 // følgeseddel indeholder flere fakturaer (det er dem, som skal sendes til økonomiafdelingen)
 class Følgeseddel {
   constructor() {
     // navn på personen som skriver under
     this.dato = new Date();
     this.følgeseddelnr = følgeseddelnr;
-    følgdeseddelnr++;
     this.fakturaer = [];
     følgesedler.push(this);
   }
@@ -63,4 +60,8 @@ function createFølgeseddel(){
   let følgeseddel= new Følgeseddel();
   return følgeseddel
 }
-export default{Faktura,Følgeseddel,createFaktura,createFølgeseddel}
+function createOrdrelinje(produkt,antal,ordelinjeNr){
+let ordrelinje=new Ordrelinje(produkt,antal,ordelinjeNr);
+return ordrelinje;
+}
+export default{Faktura,Følgeseddel,createFaktura,createFølgeseddel,createOrdrelinje}

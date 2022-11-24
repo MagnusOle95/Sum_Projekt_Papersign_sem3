@@ -33,7 +33,6 @@ import {
   doc,
   deleteDoc,
   addDoc,
-  setDoc,
   getDoc,
   query,
   where,
@@ -64,7 +63,7 @@ const db = getFirestore(appFireBase);
 let produkter = await getAllProducts();
 let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
-let ordrer = await getAllOrdrer();
+let ordrelinjer = await getAllOrdrer();
 let ProduktInProduktGoup = [];
 
 async function getAllOrdrer() {
@@ -138,8 +137,11 @@ app.get("/", async (request, response) => {
   response.render("kasse", {produkter: produkter, produktgrupper: pg});});
 
 app.post("/opretProdukt", async (request, response) => {
-  const { pNavn } = request.body;
-  let nyProdukt = { navn: pNavn };
+  const {navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr,addAttribut } = request.body;
+  let nytProdukt=logik.createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr);
+  nytProdukt.setAttribut(addAttribut);
+  produkter.push(nytProdukt);
+  let nyProdukt = {navn:navn, pris:pris, antal:antal,EAN: EAN,leverandør: leverandør,bestillingsnummer: bestillingsnummer,produktgruppe: produktgruppe,produktNr:produktNr,addAttribut:addAttribut};
   addDoc(collection(db, "varer"), nyProdukt);
   response.sendStatus(201);
 });
@@ -156,13 +158,15 @@ app.post("/opretProduktGruppe", async (request, response) => {
   response.sendStatus(201);
   });
 
-  app.post("/opretOrdre", async (request, response) => {
+  app.post("/opretOrdreLinje", async (request, response) => {
     const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
-    let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
-    await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
+    let ordreLinje= ordre.createOrdrelinje(produkt,antal,ordreNr)
+    ordrelinjer.push(ordreLinje);
+    let nyOrdreLinjeFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
+    await setDoc(doc(db,"ordrerlinjer",`${ordreNr}`),nyOrdreLinjeFirebase)  
     ordreNr++;
     let ordreNrUpdate={ordreNr: ordreNr}
-    await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
+    await setDoc(doc(db,"nummre/ordreNr"),ordreNrUpdate)
   })
   
   app.post("/opretFaktura", async (request, response) => {
