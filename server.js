@@ -1,4 +1,5 @@
 import logik from "./logik.js";
+import ordre from "./ordre.js"
 
 //laver express server.
 const port = 6969;
@@ -36,6 +37,7 @@ import {
   query,
   where,
   updateDoc,
+  setDoc,
 } from "firebase/firestore";
 import { Console } from "console";
 //import{storage} from 'firebase/storage'
@@ -80,7 +82,7 @@ let result = await getAllNumbers();
 let gruppeNr = result[2].gruppeNr;
 let produktNr = result[1].produktNr;
 let ordreNr = result[3].ordreNr;
-let fakturaNr = result[0].fakturaNr;
+let fakturaNR = result[0].fakturaNr;
 
 async function getAllFakturaer() {
   let fakturaCollection = collection(db, "fakturaer");
@@ -142,9 +144,33 @@ app.post("/opretProduktGruppe", async (request, response) => {
   const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
   let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse)
   produktgrupper.push(nyProduktGruppe)
-  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNR: gruppeNr}
-  addDoc(collection(db, "produktgrupper"),nyProduktGruppeFirebase);
-  response.sendStatus(201);
+  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse}
+  await setDoc(doc(db,"produktgrupper",`${gruppeNr}`),nyProduktGruppeFirebase)  
+  gruppeNr++;
+  let gruppenrUpdate={gruppeNr: gruppeNr}
+  await setDoc(doc(db,"nummre/gruppeNr"),gruppenrUpdate)
+})
+
+app.post("/opretOrdre", async (request, response) => {
+  const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
+  let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
+  await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
+  ordreNr++;
+  let ordreNrUpdate={ordreNr: ordreNr}
+  await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
+})
+
+app.post("/opretFaktura", async (request, response) => {
+  const {navn,dato,ordrelinjer,fakturaNr} = request.body;
+  let fakturaNy=ordre.createFaktura(navn);
+  fakturaNy.fakturanr=fakturaNR;
+  fakturaer.push(fakturaNy);
+  let nyFakturaFirebase = {navn: navn, dato: dato, ordrelinjer: ordrelinjer, fakturaNr: fakturaNr}
+  await setDoc(doc(db,"ordrer",`${ordreNr}`),nyFakturaFirebase)  
+  fakturaNR++;
+  let fakturaNrUpdate={fakturaNr: fakturaNR}
+  await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
+})
 
   // gruppeNr++;
   // const gruppeNr = doc(db, "produktgrupper", "gruppeNr");
@@ -164,7 +190,7 @@ app.post("/opretProduktGruppe", async (request, response) => {
   //   //The write failed...
   // });
 
-});
+
 
 app.post('/sletBesked', (request, response) => {
   console.log("Kommer her")
