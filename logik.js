@@ -37,7 +37,12 @@ class Product {
     this.bestillingsnummer = bestillingsnummer;
     this.produktgruppe = produktgruppe;
     this.produktNr = produktNr;
+    this.addAttribut=null
   }
+  setAttribut(addAttribut){
+    this.addAttribut=addAttribut;
+  }
+
 }
 
 class Productgroup {
