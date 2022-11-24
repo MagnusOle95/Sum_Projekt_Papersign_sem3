@@ -142,7 +142,7 @@ app.post("/opretProdukt", async (request, response) => {
   nytProdukt.setAttribut(addAttribut);
   produkter.push(nytProdukt);
   let nyProdukt = {navn:navn, pris:pris, antal:antal,EAN: EAN,leverandør: leverandør,bestillingsnummer: bestillingsnummer,produktgruppe: produktgruppe,produktNr:produktNr,addAttribut:addAttribut};
-  addDoc(collection(db, "varer"), nyProdukt);
+  addDoc(collection(db, "produktNr"), nyProdukt);
   response.sendStatus(201);
 });
 
@@ -175,10 +175,10 @@ app.post("/opretProduktGruppe", async (request, response) => {
     fakturaNy.fakturanr=fakturaNR;
     fakturaer.push(fakturaNy);
     let nyFakturaFirebase = {navn: navn, dato: dato, ordrelinjer: ordrelinjer, fakturaNr: fakturaNr}
-    await setDoc(doc(db,"ordrer",`${ordreNr}`),nyFakturaFirebase)  
+    await setDoc(doc(db,"fakturaer",`${ordreNr}`),nyFakturaFirebase)  
     fakturaNR++;
     let fakturaNrUpdate={fakturaNr: fakturaNR}
-    await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
+    await setDoc(doc(db,"nummre/fakturaNr"),fakturaNrUpdate)
   })
 
 app.post('/deleteProduktGroup', async (request, response) => {
