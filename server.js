@@ -37,7 +37,6 @@ import {
   query,
   where,
   updateDoc,
-  setDoc,
 } from "firebase/firestore";
 import { Console } from "console";
 //import{storage} from 'firebase/storage'
@@ -223,11 +222,11 @@ app.get("/kasse", async (request, response) => {
 });
 
 app.post("/seachProduktinGroup", async (request, response) => {
-    const { valgtGruppeNr } = request.body;
+    const { aktuelGroupNr } = request.body;
     console.log(produkter)
-    console.log(valgtGruppeNr)
-    ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNr)
-    response.sendStatus(201);
+    console.log(aktuelGroupNr)
+    ProduktInProduktGoup = searchProductByGroupNr(aktuelGroupNr)
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, aktuelGroupNr: aktuelGroupNr});
 })
 
 

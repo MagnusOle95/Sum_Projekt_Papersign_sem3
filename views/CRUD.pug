@@ -7,9 +7,9 @@ head
     include crud.css
     include common.css
   script(src='logik.js')
+  
   script.
-
-    let aktuelGroupNr;
+    let test = aktuelGroupNr
 
     document.addEventListener('DOMContentLoaded',()=>{
       document
@@ -31,8 +31,7 @@ head
 
     let produktsInGroup = async (aktuelGroupNr) => {
       try {
-        await post("/seachProduktinGroup", {valgtGruppeNr: aktuelGroupNr});
-        window.location.href = "/CRUD"
+        await post("/seachProduktinGroup", {aktuelGroupNr: aktuelGroupNr});
       }catch(e){
         console.log("Fejl");
       }
@@ -90,7 +89,7 @@ h1 PaperSign CRUD
     p#titleP Produktgrupper
     select#produktList(name='kurv' multiple='')
       each data in produktgrupper
-        option(onclick="alert("+data.gruppeNr+")")= data.navn + " "+ data.gruppeNr
+        option()= data.navn + " "+ data.gruppeNr
         //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
     button#tilfoejProduktG Opdater

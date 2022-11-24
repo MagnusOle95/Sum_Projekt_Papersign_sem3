@@ -1,4 +1,5 @@
 import logik from './logik.js';
+
 let ordrelinjenr = 1;
 let fakturanr = 0;
 let følgdeseddelnr = 0;
