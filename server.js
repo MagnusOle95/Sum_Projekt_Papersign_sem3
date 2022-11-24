@@ -33,7 +33,6 @@ import {
   doc,
   deleteDoc,
   addDoc,
-  setDoc,
   getDoc,
   query,
   where,
@@ -64,7 +63,7 @@ const db = getFirestore(appFireBase);
 let produkter = await getAllProducts();
 let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
-let ordrer = await getAllOrdrer();
+let ordrelinjer = await getAllOrdrer();
 let ProduktInProduktGoup = [];
 
 async function getAllOrdrer() {
@@ -158,13 +157,15 @@ app.post("/opretProduktGruppe", async (request, response) => {
     response.sendStatus(201);
 });
 
-  app.post("/opretOrdre", async (request, response) => {
+  app.post("/opretOrdreLinje", async (request, response) => {
     const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
-    let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
-    await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
+    let ordreLinje= ordre.createOrdrelinje(produkt,antal,ordreNr)
+    ordrelinjer.push(ordreLinje);
+    let nyOrdreLinjeFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
+    await setDoc(doc(db,"ordrerlinjer",`${ordreNr}`),nyOrdreLinjeFirebase)  
     ordreNr++;
     let ordreNrUpdate={ordreNr: ordreNr}
-    await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
+    await setDoc(doc(db,"nummre/ordreNr"),ordreNrUpdate)
   })
   
   app.post("/opretFaktura", async (request, response) => {
@@ -173,10 +174,10 @@ app.post("/opretProduktGruppe", async (request, response) => {
     fakturaNy.fakturanr=fakturaNR;
     fakturaer.push(fakturaNy);
     let nyFakturaFirebase = {navn: navn, dato: dato, ordrelinjer: ordrelinjer, fakturaNr: fakturaNr}
-    await setDoc(doc(db,"ordrer",`${ordreNr}`),nyFakturaFirebase)  
+    await setDoc(doc(db,"fakturaer",`${ordreNr}`),nyFakturaFirebase)  
     fakturaNR++;
     let fakturaNrUpdate={fakturaNr: fakturaNR}
-    await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
+    await setDoc(doc(db,"nummre/fakturaNr"),fakturaNrUpdate)
   })
 
 app.post('/deleteProduktGroup', async (request, response) => {
