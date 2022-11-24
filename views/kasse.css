@@ -100,6 +100,8 @@
 #pg{
     grid-column-start: 1;
     grid-column-end: 4;
+    width: 99.9%;
+    height: 100%;
 }
 
 body {

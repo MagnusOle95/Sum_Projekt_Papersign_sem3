@@ -26,17 +26,17 @@ const __dirname = dirname(__filename);
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  deleteDoc,
-  addDoc,
-  setDoc,
-  getDoc,
-  query,
-  where,
-  updateDoc,
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    deleteDoc,
+    addDoc,
+    setDoc,
+    getDoc,
+    query,
+    where,
+    updateDoc,
 } from "firebase/firestore";
 import { Console } from "console";
 //import{storage} from 'firebase/storage'
@@ -131,14 +131,6 @@ async function getAllProducts() {
     return vareliste;
 }
 
-app.get("/kasse/:data", async (request, response) => {
-    let val = request.params.data;
-    let produkter = await getAllProducts();
-    let p = await logik.searchDynamic(produkter, "produktgruppe.navn", val);
-    let pg = await getAllProductgroups();
-    response.render("kasse", { produkter: p, produktgrupper: pg });
-});
-
 app.get("/", async (request, response) => {
     produkter = await getAllProducts();
     let pg = await getAllProductgroups();
@@ -153,26 +145,26 @@ app.post("/opretProdukt", async (request, response) => {
 });
 
 app.post("/opretProduktGruppe", async (request, response) => {
-  const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
-  let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse,gruppeNr)
-  produktgrupper.push(nyProduktGruppe)
-  let nyProduktGruppeFirebase = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: gruppeNr}
-  await setDoc(doc(db,"produktgrupper",`${gruppeNr}`),nyProduktGruppeFirebase)
-  gruppeNr++; 
-  let gruppenrUpdate={gruppeNr: gruppeNr}
-  await setDoc(doc(db,"nummre/gruppeNr"),gruppenrUpdate)
-  response.sendStatus(201);
-  });
+    const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
+    let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse, gruppeNr)
+    produktgrupper.push(nyProduktGruppe)
+    let nyProduktGruppeFirebase = { navn: produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: gruppeNr }
+    await setDoc(doc(db, "produktgrupper", `${gruppeNr}`), nyProduktGruppeFirebase)
+    gruppeNr++;
+    let gruppenrUpdate = { gruppeNr: gruppeNr }
+    await setDoc(doc(db, "nummre/gruppeNr"), gruppenrUpdate)
+    response.sendStatus(201);
+});
 
 app.post('/deleteProduktGroup', async (request, response) => {
-  // const { beskedId } = request.body;
-  // let index = beskeder.findIndex(object => {
-  //     return object.beskedNr == beskedId;
-  //   });
-  //   beskeder.splice(index, 1);
-    
-  // console.log(index)
-  // response.sendStatus(201)
+    // const { beskedId } = request.body;
+    // let index = beskeder.findIndex(object => {
+    //     return object.beskedNr == beskedId;
+    //   });
+    //   beskeder.splice(index, 1);
+
+    // console.log(index)
+    // response.sendStatus(201)
 
 
     const { valgtGruppeNr } = request.body;
@@ -185,36 +177,33 @@ app.post('/deleteProduktGroup', async (request, response) => {
 
 })
 
-
-
-app.get("/kasse", async (request, response) => {
-    response.render("kasse", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter });
-});
-
 app.get("/underskrift", async (request, response) => {
     response.render("underskrift");
 });
 
 app.get("/crud/", async (request, response) => {
-  produktgrupper = await getAllProductgroups();
-  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup});
+    produktgrupper = await getAllProductgroups();
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup });
 });
 
 app.get("/faktura/", async (request, response) => {
     response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter });
 });
 
-app.get("/crud/:data", async (request, response) => {
-    let produktID = request.params.data;
-    response.render("crud", { produktliste: produkter, produktID });
+app.get("/kasse", async (request, response) => {
+    let pgid = request.query.pgroup;
+    console.log(pgid)
+    let p = await searchProductByGroupNr(pgid)
+    let pg = await getAllProductgroups();
+    response.render("kasse", { produkter: p, produktgrupper: pg });
 });
 
-app.post("/seachProduktinGroup",async (request, response) => {
-  const { valgtGruppeNr } = request.body;
-  console.log(produkter)
-  console.log(valgtGruppeNr)
-  ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNr)
-  response.sendStatus(201);
+app.post("/seachProduktinGroup", async (request, response) => {
+    const { valgtGruppeNr } = request.body;
+    console.log(produkter)
+    console.log(valgtGruppeNr)
+    ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNr)
+    response.sendStatus(201);
 })
 
 
@@ -231,14 +220,13 @@ app.listen(port);
 console.log("Lytter på port " + port);
 
 //Metoder--------------------------------------------------------------------------------------------------------------------------------------------------
-function searchProductByGroupNr(gruppeNr){
-  let list = [];
-  //let products = getProducts() // hent alle produkterne, i arrayet "produkter" fra server.js - måske navnet er forkert, eller også er der ingen getProducts, til den?)
-  for(let i = 0; i < produkter.length; i++){
-    if(produkter[i].gruppeNr == gruppeNr){
-      list.push(produkter[i]);
+function searchProductByGroupNr(gruppeNr) {
+    let list = [];
+    //let products = getProducts() // hent alle produkterne, i arrayet "produkter" fra server.js - måske navnet er forkert, eller også er der ingen getProducts, til den?)
+    for (let i = 0; i < produkter.length; i++) {
+        if (produkter[i].gruppeNr == gruppeNr) {
+            list.push(produkter[i]);
+        }
     }
-  }
-  return list;
+    return list;
 }
- 
