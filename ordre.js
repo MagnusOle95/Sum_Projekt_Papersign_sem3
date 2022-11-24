@@ -55,5 +55,12 @@ class Følgeseddel {
     fakturaer.splice(index, 1);
   }
 }
-
-module.exports = {Faktura, Følgeseddel, fakturaer };
+function createFaktura(navn){
+  let faktura= new Faktura(navn);
+  return faktura
+}
+function createFølgeseddel(){
+  let følgeseddel= new Følgeseddel();
+  return følgeseddel
+}
+export default{Faktura,Følgeseddel,createFaktura,createFølgeseddel}
