@@ -156,6 +156,27 @@ app.post("/opretProduktGruppe", async (request, response) => {
   response.sendStatus(201);
   });
 
+  app.post("/opretOrdre", async (request, response) => {
+    const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
+    let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
+    await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
+    ordreNr++;
+    let ordreNrUpdate={ordreNr: ordreNr}
+    await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
+  })
+  
+  app.post("/opretFaktura", async (request, response) => {
+    const {navn,dato,ordrelinjer,fakturaNr} = request.body;
+    let fakturaNy=ordre.createFaktura(navn);
+    fakturaNy.fakturanr=fakturaNR;
+    fakturaer.push(fakturaNy);
+    let nyFakturaFirebase = {navn: navn, dato: dato, ordrelinjer: ordrelinjer, fakturaNr: fakturaNr}
+    await setDoc(doc(db,"ordrer",`${ordreNr}`),nyFakturaFirebase)  
+    fakturaNR++;
+    let fakturaNrUpdate={fakturaNr: fakturaNR}
+    await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
+  })
+
 app.post('/deleteProduktGroup', async (request, response) => {
   // const { beskedId } = request.body;
   // let index = beskeder.findIndex(object => {
