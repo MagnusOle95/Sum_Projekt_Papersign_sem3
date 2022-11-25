@@ -16,6 +16,7 @@ head
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
 h1 PaperSign Kasse
+h1= pgid
 .parent
   .child1
     form.div2(type="hidden" action = "/search", method="get")
@@ -27,7 +28,7 @@ h1 PaperSign Kasse
         option(value='' disabled='' selected='') Produktgrupper
         option(value='') *Vis Alle
         each d of produktgrupper
-          if(d.gruppeNr==qnr)
+          if(d.gruppeNr==pgid)
             option(value=""+d.gruppeNr+"" selected)= '' + d.navn
           else 
             option(value=""+d.gruppeNr+"")= '' + d.navn

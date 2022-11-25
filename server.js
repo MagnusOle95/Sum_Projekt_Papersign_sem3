@@ -137,7 +137,7 @@ app.get("/", async (request, response) => {
     let pgid = request.query.pgroup;
     let p = await searchProductByGroupNr(pgid)
     let pg = await getAllProductgroups();
-    response.render("kasse", {produkter: p, produktgrupper: pg, produktgruppeid: "jdhkjhdkjs" });
+    response.render("kasse", {produkter: p, produktgrupper: pg});
 });
 
 app.post("/opretProdukt", async (request, response) => {
@@ -224,13 +224,13 @@ app.get("/kasse", async (request, response) => {
     response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
 });
 
-app.post("/kasse", async (request, response) => {
-    pgid = request.query.pgroup;
-    kurv = request.query.kurv;
-    let p = await searchProductByGroupNr(pgid);
-    let pg = await getAllProductgroups();
-    response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
-});
+// app.post("/kasse", async (request, response) => {
+//     pgid = request.query.pgroup;
+//     kurv = request.query.kurv;
+//     let p = await searchProductByGroupNr(pgid);
+//     let pg = await getAllProductgroups();
+//     response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
+// });
 
 app.post("/seachProduktinGroup", async (request, response) => {
     const { aktuelGroupNr } = request.body;
