@@ -1,5 +1,5 @@
 import logik from "./logik.js";
-import ordre from "./ordre.js"
+// import ordre from "ordre.js"
 
 //laver express server.
 const port = 6969;
@@ -38,7 +38,6 @@ import {
   query,
   where,
   updateDoc,
-  setDoc,
 } from "firebase/firestore";
 import { Console } from "console";
 //import{storage} from 'firebase/storage'
@@ -66,6 +65,8 @@ let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
 let ordrer = await getAllOrdrer();
 let ProduktInProduktGoup = [];
+let kurv = [];
+let pgid = -1;
 
 async function getAllOrdrer() {
     let fakturaCollection = collection(db, "ordrer");
@@ -134,9 +135,10 @@ async function getAllProducts() {
 }
 
 app.get("/", async (request, response) => {
-    produkter = await getAllProducts();
+    let pgid = request.query.pgroup;
+    let p = await searchProductByGroupNr(pgid)
     let pg = await getAllProductgroups();
-    response.render("kasse", { produkter: produkter, produktgrupper: pg });
+    response.render("kasse", {produkter: p, produktgrupper: pg, produktgruppeid: "jdhkjhdkjs" });
 });
 
 app.post("/opretProdukt", async (request, response) => {
@@ -158,26 +160,26 @@ app.post("/opretProduktGruppe", async (request, response) => {
     response.sendStatus(201);
 });
 
-  app.post("/opretOrdre", async (request, response) => {
-    const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
-    let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
-    await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
-    ordreNr++;
-    let ordreNrUpdate={ordreNr: ordreNr}
-    await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
-  })
+//   app.post("/opretOrdre", async (request, response) => {
+//     const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
+//     let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
+//     await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
+//     ordreNr++;
+//     let ordreNrUpdate={ordreNr: ordreNr}
+//     await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
+//   })
   
-  app.post("/opretFaktura", async (request, response) => {
-    const {navn,dato,ordrelinjer,fakturaNr} = request.body;
-    let fakturaNy=ordre.createFaktura(navn);
-    fakturaNy.fakturanr=fakturaNR;
-    fakturaer.push(fakturaNy);
-    let nyFakturaFirebase = {navn: navn, dato: dato, ordrelinjer: ordrelinjer, fakturaNr: fakturaNr}
-    await setDoc(doc(db,"ordrer",`${ordreNr}`),nyFakturaFirebase)  
-    fakturaNR++;
-    let fakturaNrUpdate={fakturaNr: fakturaNR}
-    await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
-  })
+//   app.post("/opretFaktura", async (request, response) => {
+//     const {navn,dato,ordrelinjer,fakturaNr} = request.body;
+//     let fakturaNy=ordre.createFaktura(navn);
+//     fakturaNy.fakturanr=fakturaNR;
+//     fakturaer.push(fakturaNy);
+//     let nyFakturaFirebase = {navn: navn, dato: dato, ordrelinjer: ordrelinjer, fakturaNr: fakturaNr}
+//     await setDoc(doc(db,"ordrer",`${ordreNr}`),nyFakturaFirebase)  
+//     fakturaNR++;
+//     let fakturaNrUpdate={fakturaNr: fakturaNR}
+//     await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
+//   })
 
 app.post('/deleteProduktGroup', async (request, response) => {
     // const { beskedId } = request.body;
@@ -214,11 +216,19 @@ app.get("/faktura/", async (request, response) => {
 });
 
 app.get("/kasse", async (request, response) => {
-    let pgid = request.query.pgroup;
-    console.log(pgid)
-    let p = await searchProductByGroupNr(pgid)
+    pgid = request.query.pgroup;
+    kurv = request.query.kurv;
+    let p = await searchProductByGroupNr(pgid);
     let pg = await getAllProductgroups();
-    response.render("kasse", { produkter: p, produktgrupper: pg });
+    response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
+});
+
+app.post("/kasse", async (request, response) => {
+    pgid = request.query.pgroup;
+    kurv = request.query.kurv;
+    let p = await searchProductByGroupNr(pgid);
+    let pg = await getAllProductgroups();
+    response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
 });
 
 app.post("/seachProduktinGroup", async (request, response) => {
