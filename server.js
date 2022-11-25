@@ -1,5 +1,5 @@
 import logik from "./logik.js";
-import ordre from "./ordre.js"
+// import ordre from "ordre.js"
 
 //laver express server.
 const port = 6969;
@@ -37,7 +37,6 @@ import {
   query,
   where,
   updateDoc,
-  setDoc,
 } from "firebase/firestore";
 import { Console } from "console";
 //import{storage} from 'firebase/storage'
@@ -65,6 +64,8 @@ let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
 let ordrelinjer = await getAllOrdrer();
 let ProduktInProduktGoup = [];
+let kurv = [];
+let pgid = -1;
 
 async function getAllOrdrer() {
     let fakturaCollection = collection(db, "ordrer");
@@ -133,9 +134,10 @@ async function getAllProducts() {
 }
 
 app.get("/", async (request, response) => {
-    produkter = await getAllProducts();
+    let pgid = request.query.pgroup;
+    let p = await searchProductByGroupNr(pgid)
     let pg = await getAllProductgroups();
-    response.render("kasse", { produkter: produkter, produktgrupper: pg });
+    response.render("kasse", {produkter: p, produktgrupper: pg, produktgruppeid: "jdhkjhdkjs" });
 });
 
 app.post("/opretProdukt", async (request, response) => {
@@ -215,11 +217,19 @@ app.get("/faktura/", async (request, response) => {
 });
 
 app.get("/kasse", async (request, response) => {
-    let pgid = request.query.pgroup;
-    console.log(pgid)
-    let p = await searchProductByGroupNr(pgid)
+    pgid = request.query.pgroup;
+    kurv = request.query.kurv;
+    let p = await searchProductByGroupNr(pgid);
     let pg = await getAllProductgroups();
-    response.render("kasse", { produkter: p, produktgrupper: pg });
+    response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
+});
+
+app.post("/kasse", async (request, response) => {
+    pgid = request.query.pgroup;
+    kurv = request.query.kurv;
+    let p = await searchProductByGroupNr(pgid);
+    let pg = await getAllProductgroups();
+    response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
 });
 
 app.post("/seachProduktinGroup", async (request, response) => {

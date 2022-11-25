@@ -26,20 +26,27 @@ h1 PaperSign Kasse
       select#pg(name='pgroup' onchange="this.form.submit()")
         option(value='' disabled='' selected='') Produktgrupper
         option(value='') *Vis Alle
-        each d of produktgrupper 
-          option(value=""+d.gruppeNr+"")= '' + d.navn
+        each d of produktgrupper
+          if(d.gruppeNr==qnr)
+            option(value=""+d.gruppeNr+"" selected)= '' + d.navn
+          else 
+            option(value=""+d.gruppeNr+"")= '' + d.navn
         option(value='') *Intet
     p#titleP Produkter
     select#produktList(name='kurv' multiple='')
-      each data in produkter 
+      each data in produkter
         option(value="" placeholder="")= '' + data.navn
-    input#antal(type='number' placeholder='Antal')
-    button#tilfoejProdukt Tilf&oslash;j
+    form.div3(type="hidden" action = "/kasse", method="post") 
+      input#antal(type='number' name="antal" placeholder='Antal')
+      button#tilfoejProdukt(class='button' type="submit") Tilf&oslash;j
   .child2
     p#titleB  
     p#titleB
     p#titleK Kurv
     select#kurvList(name='kurv' multiple='')
+      if (kurv!=null)
+        each k of kurv
+          option(value=""+k.nanv+"" selected)= '' + k.navn
     button#tilfoejRabat Tilf&oslash;j Rabat
     input#rabat(type='number' placeholder='Rabat')
     button Slet
