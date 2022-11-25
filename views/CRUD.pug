@@ -1,3 +1,82 @@
+
+script.
+  let index;
+
+  document.addEventListener('DOMContentLoaded',()=>{
+      document
+        .getElementById('produktList')
+        .addEventListener('input', handleSelect)
+  })
+
+  function handleSelect (ev){
+    let chosenProduckGoup = ev.target.value;
+
+    result = chosenProduckGoup.split(" ");
+    index = result.length - 1
+    aktuelGroupNr = result[index]
+    console.log(aktuelGroupNr)
+    produktsInGroup(aktuelGroupNr)
+  
+  }
+
+  let produktsInGroup = async (aktuelGroupNr) => {
+    localStorage.setItem('groupNr',aktuelGroupNr)
+
+    try {
+    await post("/seachProduktinGroup", {valgtGruppeNr: aktuelGroupNr});
+    window.location.href = "/CRUD"
+    }catch(e){
+    console.log("Fejl");
+    }
+  }
+
+  
+    //Post metode til funktion. 
+    async function post(url, objekt) {
+    const respons = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(objekt),
+    headers: {
+    'Content-Type': 'application/json'
+    }
+    });
+    if (respons.status !== 201) // Created
+    throw new Error(respons.status);
+    return await respons.text();
+    }
+
+    let createProductgroup = async () => {
+        var produktGruppeNavn = document.getElementById("navnG").value;
+        var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
+        try {
+        await post("/opretProduktGruppe", {produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log("Fejl");
+        } 
+    }
+
+    let deleteProductGroup = async () => {
+        try {
+        await post("/deleteProduktGroup", {aktuelGroupNr: localStorage.getItem('groupNr')});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log("Fejl");
+        } 
+    }
+
+    let updateProductGroup = async () => {
+        var produktGruppeNavn = document.getElementById("navnG").value;
+        var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
+        try {
+        await post("/updateProduktGroup", {aktuelGroupNr: localStorage.getItem('groupNr'),produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse });
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log("Fejl");
+        } 
+    }
+
+
 doctype html
 head
   meta(charset='UTF-8')
@@ -7,71 +86,6 @@ head
     include crud.css
     include common.css
   script(src='logik.js')
-  
-  script.
-    let test = aktuelGroupNr
-
-    document.addEventListener('DOMContentLoaded',()=>{
-      document
-        .getElementById('produktList')
-        .addEventListener('input', handleSelect)
-    });
-
-    function handleSelect (ev){
-      let chosenProduckGoup = ev.target.value;
-      result = chosenProduckGoup.split(" ");
-      index = result.length - 1;
-      aktuelGroupNr = result[index];
-      console.log(aktuelGroupNr);
-      produktsInGroup(aktuelGroupNr);
-    //- each data in produkter
-    //-     if data.produktgruppe == "chosenProduckGoup"
-    //-       option()= 'Navn: ' + data.navn
-    }
-
-    let produktsInGroup = async (aktuelGroupNr) => {
-      try {
-        await post("/seachProduktinGroup", {aktuelGroupNr: aktuelGroupNr});
-      }catch(e){
-        console.log("Fejl");
-      }
-    }
-
-    //Post metode til funktion. 
-    async function post(url, objekt) {
-      const respons = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(objekt),
-        headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    if (respons.status !== 201) // Created
-      throw new Error(respons.status);
-    return await respons.text();
-    }
-
-    let createProductgroup = async () => {
-      var produktGruppeNavn = document.getElementById("navnG").value;
-      var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
-      try {
-        await post("/opretProduktGruppe", {produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse});
-        window.location.href = "/CRUD"
-      }catch(e){
-        console.log("Fejl");
-      } 
-    }
-
-    let deleteProductGroup = async (x) => {
-      console.log("Når her til")
-      console.log(x)
-      try {
-        await post("/deleteProduktGroup", {aktuelGroupNr: x});
-        window.location.href = "/CRUD"
-      }catch(e){
-        console.log("Fejl");
-      } 
-    }
   title PaperSign
 .tabbtn
   form(action = "/kasse" method="get")
@@ -92,10 +106,10 @@ h1 PaperSign CRUD
         option()= data.navn + " "+ data.gruppeNr
         //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
-    button#tilfoejProduktG Opdater
+    button#updaterProduktG(onclick='updateProductGroup()') Opdater
     button#sletProduktG(onclick='deleteProductGroup()') slet
-    input#navnG(type='text' placeholder='Navn')
-    input#beskrilseG(type='text' placeholder='Beskrivelse')
+    input#navnG(type='text' placeholder='Navn' value = "Forsæt her")
+    input#beskrilseG(type='text' placeholder='Beskrivelse' value = "Forsæt her")
   .child2
     p#titleB  
     p#titleK Produkter
