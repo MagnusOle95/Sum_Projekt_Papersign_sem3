@@ -7,6 +7,7 @@ head
     include kasse.css
     include common.css
   script(src="server.js")
+  script(src="logik.js")
   title PaperSign
 .tabbtn
   form(action = "/kasse" method="get")
@@ -15,6 +16,7 @@ head
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
+  button(class="button" id="dmode" value="Dark Mode" onclick='(function(){var element = document.body; element.classList.toggle("dark-mode");})();')    
 h1 PaperSign Kasse
 .parent
   .child1
@@ -25,25 +27,25 @@ h1 PaperSign Kasse
     form#pg(type="hidden" action = "/kasse", method="get")
       select#pg(name='pgroup' onchange="this.form.submit()")
         option(value='' disabled='' selected='') Produktgrupper
-        option(value='') *Vis Alle
+        option(id='visalt' value='visalt') VisAlle
         each d of produktgrupper
           if(d.gruppeNr==pgid)
             option(value=""+d.gruppeNr+"" selected)= '' + d.navn
           else 
             option(value=""+d.gruppeNr+"")= '' + d.navn
-        option(value='') *Intet
+        option(id='intet' value='intet') *Intet
     p#titleP Produkter
     select#produktList(name='kurv' multiple='')
       each data in produkter
-        option(value="" placeholder="")= '' + data.navn
-    form.div3(type="hidden" action = "/kasse", method="post") 
+        option(value="" placeholder="")= data.produktnr + " " + data.navn + ' ' + data.pris + ',-kr'
+    form.div3(type="hidden" action = "/kasse", method="get") 
       input#antal(type='number' name="antal" placeholder='Antal')
       button#tilfoejProdukt(class='button' type="submit") Tilf&oslash;j
   .child2
     p#titleB  
     p#titleB
     p#titleK Kurv
-    select#kurvList(name='kurv' multiple='')
+    select#kurv(name='kurv' multiple='')
       if (kurv!=null)
         each k of kurv
           option(value=""+k.nanv+"" selected)= '' + k.navn

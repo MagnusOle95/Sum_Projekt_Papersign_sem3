@@ -101,7 +101,7 @@ h1 PaperSign CRUD
     input#value(type='text' placeholder='Værdi')
     button S&oslash;g
     p#titleP Produktgrupper
-    select#produktList(name='kurv' multiple='')
+    select#produktList(name='pgroups' multiple='')
       each data in produktgrupper
         option()= data.navn + " "+ data.gruppeNr
         //option(value="" placeholder="")= 'Navn: ' + data.navn
@@ -113,7 +113,7 @@ h1 PaperSign CRUD
   .child2
     p#titleB  
     p#titleK Produkter
-    select#kurvList(name='kurv' multiple='')
+    select#kurvList(name='productsForGroup' multiple='')
       each data in ProduktInProduktGoup
           option()= 'Navn: ' + data.navn
           //option(value="" placeholder="")= 'Navn: ' + data.navn

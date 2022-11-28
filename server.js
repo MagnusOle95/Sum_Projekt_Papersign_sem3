@@ -223,14 +223,6 @@ app.get("/kasse", async (request, response) => {
     response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
 });
 
-// app.post("/kasse", async (request, response) => {
-//     pgid = request.query.pgroup;
-//     kurv = request.query.kurv;
-//     let p = await searchProductByGroupNr(pgid);
-//     let pg = await getAllProductgroups();
-//     response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
-// });
-
 app.post("/seachProduktinGroup", async (request, response) => {
     const { valgtGruppeNr } = request.body;
     console.log(produkter)
@@ -254,6 +246,7 @@ console.log("Lytter på port " + port);
 
 //Metoder--------------------------------------------------------------------------------------------------------------------------------------------------
 function searchProductByGroupNr(gruppeNr) {
+    if(gruppeNr=="visalt") return produkter;
     let list = [];
     //let products = getProducts() // hent alle produkterne, i arrayet "produkter" fra server.js - måske navnet er forkert, eller også er der ingen getProducts, til den?)
     for (let i = 0; i < produkter.length; i++) {
@@ -262,4 +255,15 @@ function searchProductByGroupNr(gruppeNr) {
         }
     }
     return list;
+}
+
+function addToKurv(){
+let kurv = document.querySelector("kurv")
+let product = document.querySelector("kurv")
+let antal = document.querySelector("antal")
+kurv.innerHTML = kurv.innerHTML + "option(value="+k.nanv+" selected)= '' + k.navn";
+// for (let input of autoLabel) {
+//     input.defaultValue = 0;
+//     input.outerHTML = "<label for='" + input.id + "' id=" + input.id + "'Label' class=yeatzyLabel>" + input.id + "</label>" + input.outerHTML;
+// }
 }
