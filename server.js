@@ -141,12 +141,12 @@ app.get("/", async (request, response) => {
     response.render("kasse", {produkter: p, produktgrupper: pg});
 });
 
-app.post("/opretProdukt", async (request, response) => {
-    const { pNavn } = request.body;
-    let nyProdukt = { navn: pNavn };
-    addDoc(collection(db, "varer"), nyProdukt);
-    response.sendStatus(201);
-});
+// app.post("/opretProdukt", async (request, response) => {
+//     const { pNavn } = request.body;
+//     let nyProdukt = { navn: pNavn };
+//     addDoc(collection(db, "varer"), nyProdukt);
+//     response.sendStatus(201);
+// });
 
 app.post("/opretProduktGruppe", async (request, response) => {
     const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
@@ -159,6 +159,42 @@ app.post("/opretProduktGruppe", async (request, response) => {
     await setDoc(doc(db, "nummre/gruppeNr"), gruppenrUpdate)
     response.sendStatus(201);
 });
+
+app.post('/deleteProduktGroup', async (request, response) => {
+    const { aktuelGroupNr } = request.body;
+    console.log(aktuelGroupNr + " Se her")
+    await deleteDoc(doc(db, 'produktgrupper', aktuelGroupNr));
+    response.sendStatus(201)
+})
+
+app.post('/updateProduktGroup', async (request, response) => {
+    const { aktuelGroupNr, produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
+    let updatetProduktGroup = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: aktuelGroupNr}
+    await setDoc(doc(db,"produktgrupper/" + aktuelGroupNr),updatetProduktGroup)
+    response.sendStatus(201)
+  })
+
+
+  app.post("/opretProdukt", async (request, response) => {
+    const { gruppeNr, produktNavn, produktPris, produktAntal } = request.body;
+    // let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse, gruppeNr)
+    // produktgrupper.push(nyProduktGruppe)
+    let nyProduktFirebase = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, Antal: produktAntal }
+    await setDoc(doc(db, "varer", `${produktNr}`), nyProduktFirebase)
+    produktNr++;
+    let produktnrUpdate = { produktNr: produktNr }
+    await setDoc(doc(db, "nummre/produktNr"), produktnrUpdate)
+    response.sendStatus(201);
+});
+
+app.post('/deleteProdukt', async (request, response) => {
+    const { aktuelProduktNr } = request.body;
+    // console.log(aktuelGroupNr + " Se her")
+    // await deleteDoc(doc(db, 'produktgrupper', aktuelGroupNr));
+    // response.sendStatus(201)
+    console.log("test")
+    console.log(aktuelProduktNr + "")
+})
 
 //   app.post("/opretOrdre", async (request, response) => {
 //     const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
@@ -181,26 +217,6 @@ app.post("/opretProduktGruppe", async (request, response) => {
 //     await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
 //   })
 
-app.post('/deleteProduktGroup', async (request, response) => {
-    // const { beskedId } = request.body;
-    // let index = beskeder.findIndex(object => {
-    //     return object.beskedNr == beskedId;
-    //   });
-    //   beskeder.splice(index, 1);
-
-    // console.log(index)
-    // response.sendStatus(201)
-
-
-    const { valgtGruppeNr } = request.body;
-    console.log(valgtGruppeNr + "Se her")
-    //await deleteDoc(doc(db, 'produktgrupper', groupIndex));
-    //response.sendStatus(201)
-
-    // let test = collection(db, "produktgrupper");
-    // console.log(test)
-
-})
 
 app.get("/underskrift", async (request, response) => {
     response.render("underskrift");
