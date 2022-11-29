@@ -20,8 +20,11 @@ h1 PaperSign Ordre
   h2= "Ordre: " + specifikOrdre.ordrenr
     H2#productHeader= "Dato: "+ specifikOrdre.dato
     H2#productHeader= "Total: "+ specifikOrdre.sammletpris
-    H2#productHeader= "Betalingsmetode:" + specifikOrdre.betalingsmetode
-    H2#productHeader= "Betaler: " + specifikOrdre.navn
+    H2#productHeader= "Betalingsmetode: " + specifikOrdre.betalingsmetode + " "
+    if (specifikOrdre.navn == "")
+        H2#productHeader= "Anonym betaling " + specifikOrdre.navn
+    else
+        H2#productHeader= "Betaler: " + specifikOrdre.navn
 
 .ordrelinjer
     .overskrift Varenummer
