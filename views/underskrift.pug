@@ -6,20 +6,21 @@ head
   style 
     include underskrift.css
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous')
-| &#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x27A1;&#xFE0F;&#x27A1;&#xFE0F;&#x1F4DC;
+.tabbtn
+  form(action = "/kasse" method="get")
+    input(class="button" type="submit" value="Kasse")
+  form(action = "/faktura" method="get")
+    input(class="button" type="submit" value="Faktura")
+  form(action= "/crud" method="get")
+    input(class="button" type="submit" value="Crud")
 #app.container
   div
     canvas#sig
 div
-  input#text(type='text' placeholder='skriv navn på lære' required='')
+  input#text(type='text' placeholder='navn' required='')
   button#gemSig.gem(type='button') gem
   button#sletSig.slet(type='button') slet
-.parent
-  .child2
-    p#titleK Ordre
-    select#kurvList(name='kurv' multiple='')
-    button#tilfoejProduktG(onclick='') Tilf&oslash;j
-    button#tilfoejProduktG Slet
+
   #content
     .parent
       .child1
