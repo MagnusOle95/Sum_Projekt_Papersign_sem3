@@ -221,7 +221,7 @@ app.post('/deleteProdukt', async (request, response) => {
 
 
 app.get("/underskrift", async (request, response) => {
-    response.render("underskrift");
+    response.render("underskrift",{ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
 app.get("/crud/", async (request, response) => {
@@ -230,7 +230,7 @@ app.get("/crud/", async (request, response) => {
 });
 
 app.get("/faktura/", async (request, response) => {
-    response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter });
+    response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
 // app.get("/kasse", async (request, response) => {

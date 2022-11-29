@@ -36,7 +36,7 @@
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 1;
-    grid-row-end: 11;
+    grid-row-end: 10;
 
 }
 
@@ -44,7 +44,7 @@
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 4;
-    grid-row-end: 13;
+    grid-row-end: 12;
 
 }
 
@@ -110,4 +110,10 @@
 
 body {
     overflow: hidden;
+}
+
+#total{
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: right;
 }
