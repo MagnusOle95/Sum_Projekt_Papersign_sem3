@@ -26,9 +26,9 @@ div
     .parent
       .child1
         p#titleP OrdreLinjer
-        select#produktList(name='kurv' multiple="")
+        #produktList(name='kurv')
           each k of kurv
-            option(value=""+k.navn+"" selected)= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
+            div(value=k.navn)= k.antal +'stk.' + k.navn + '' + k.pris+'Total:' + k.total
         input(type="text" placeholder="00kr" disabled)
   #image
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js' integrity='sha512-cLuyDTDg9CSseBSFWNd4wkEaZ0TBEpclX0zD3D6HjI19pO39M58AgJ1SjHp6c7ZOp0/OCRcC2BCvvySU9KJaGw==' crossorigin='anonymous' referrerpolicy='no-referrer')
@@ -57,12 +57,15 @@ div
     var imageData= signaturePad.toDataURL();
     var text="Navn: "+document.getElementById("text").value
     var pageHeight= pdf.internal.pageSize.height;
-    var y=500;
+    
+  
     pdf.html(document.getElementById('content'), {
     html2canvas: {
-    scale: [0.65],
+    scale: [0.60],
     x: -20,
     y: 20,
+    letterRendering:true,
+
     },
     callback: function (pdf) {
     var pageCount = pdf.internal.getNumberOfPages();
