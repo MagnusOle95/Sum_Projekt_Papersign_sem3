@@ -117,3 +117,9 @@ body {
     grid-column-end: 4;
     text-align: right;
 }
+
+#betalling{
+    grid-column-start: 1;
+    width: 99.9%;
+    height: 100%;
+}
