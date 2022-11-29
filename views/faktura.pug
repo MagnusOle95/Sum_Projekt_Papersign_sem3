@@ -5,7 +5,6 @@ head
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   style 
     include faktura.css
-    include common.css
   script(src='logik.js')
   title PaperSign
 .tabbtn
@@ -17,6 +16,9 @@ head
     input(class="button" type="submit" value="Crud")
 h1 PaperSign Faktura
 .parent
-  h2 Fakturaoversigt: 
-    each data in fakturaer
-        div= data.navn
+  h2 Fakturaoversigt: <br><br>
+    each data in ordrer 
+    
+      a#productHeader(class='productHeader' href='/ordre/'+ data.docID +'')= '' + "data.dato " + " 192931 " + " Paul Hansen " + " Kr. 1271" 
+
+        
