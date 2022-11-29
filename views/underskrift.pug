@@ -5,6 +5,7 @@ head
   title Signature
   style 
     include underskrift.css
+    include common.css
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous')
 .tabbtn
   form(action = "/kasse" method="get")
@@ -25,7 +26,10 @@ div
     .parent
       .child1
         p#titleP OrdreLinjer
-        select#produktList(name='kurv' multiple='')
+        select#produktList(name='kurv' multiple="")
+          each k of kurv
+            option(value=""+k.navn+"" selected)= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
+        input(type="text" placeholder="00kr" disabled)
   #image
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js' integrity='sha512-cLuyDTDg9CSseBSFWNd4wkEaZ0TBEpclX0zD3D6HjI19pO39M58AgJ1SjHp6c7ZOp0/OCRcC2BCvvySU9KJaGw==' crossorigin='anonymous' referrerpolicy='no-referrer')
   script(src='https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js')
@@ -68,7 +72,6 @@ div
     pdf.text(52,10,text)
     pdf.addImage(imageData,"JPEG",60,200,80,80)
     // total pris skal have en egentlig total pris.
-    pdf.text(55,190,"total pris: ")
     // text i pdf.save skal være ordrenr istedet
     pdf.save(`${text}.pdf`);
     }
