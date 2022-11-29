@@ -25,7 +25,7 @@ h1 PaperSign Kasse
       input#value(type='text' name="vaerdi" placeholder='Søgeværdi')
       input(class='button' type="submit", value="Søg")
     form#pg(type="hidden" action = "/kasse", method="get")
-      select#pg(name='pgroup' onchange='{this.form.submit(); server.getLastClickedButton("ohh");}')
+      select#pg(name='pgroup' onchange='this.form.submit()')
         option(value='' disabled='' selected='') Produktgrupper
         option(id='visalt' value='visalt') VisAlle
         each d of produktgrupper
@@ -40,7 +40,7 @@ h1 PaperSign Kasse
         each data in produkter
           option(value=(data.navn+"."+data.pris) placeholder="")= data.produktnr + " " + data.navn + ' ' + data.pris + ',-kr'
       input#antal(type='number' name="antal" placeholder='Antal')
-      button#tilfoejProdukt(class='button' type="submit" onclick='getLastClickedButton("kurv")') Tilføj
+      button#tilfoejProdukt(class='button' type="submit") Tilføj
   .child2
     p#titleB  
     p#titleB
@@ -49,14 +49,16 @@ h1 PaperSign Kasse
       if (kurv!=null)
         each k of kurv
           option(value=""+k.navn+"" selected)= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
+    input#total(type='text' placeholder='00kr' disabled)
     button#tilfoejRabat Tilf&oslash;j Rabat
     input#rabat(type='number' placeholder='Rabat')
     button Slet
-    select#betalling(name='kurv' onchange= "if (this.selectedIndex==2) alert(document.getElementById('pg').value);")
-      option(value='' disabled='' selected='') Betallingsform
-      option(value='kort') Kort
-      option(value='kredit') Kredit
-      option(value='kontant') Kontant
-      option(value='mobilPay') MobilPay
+    form#betalling(type="hidden" action = "underskrift", method="get") 
+      select#betalling(name='kurv' onchange= "if (this.selectedIndex==4) this.form.submit()")
+        option(value='' disabled='' selected='') Betallingsform
+        option(value='kort') Kort
+        option(value='kontant') Kontant
+        option(value='mobilPay') MobilPay
+        option(value='underskrift') Underskrift
     input#Beloeb(type='number' name='' placeholder='Beløb')
     button#koeb K&oslash;b
