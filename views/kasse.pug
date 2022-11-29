@@ -49,7 +49,7 @@ h1 PaperSign Kasse
       if (kurv!=null)
         each k of kurv
           option(value=""+k.navn+"" selected)= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
-    input#total(type='text' placeholder='00kr' disabled)
+    input#total(type='text' placeholder=''+total+'kr' disabled)
     button#tilfoejRabat Tilf&oslash;j Rabat
     input#rabat(type='number' placeholder='Rabat')
     button Slet
@@ -60,5 +60,5 @@ h1 PaperSign Kasse
         option(value='kontant') Kontant
         option(value='mobilPay') MobilPay
         option(value='underskrift') Underskrift
-    input#Beloeb(type='number' name='' placeholder='Beløb')
+    input#Beloeb(type='number' name='' value=''+total+'')
     button#koeb K&oslash;b

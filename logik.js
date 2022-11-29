@@ -74,7 +74,10 @@ function getProducts() {
 
 function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   let found = false
-  if ((obj[arrSplit[count]].toLocaleLowerCase()).includes(soegevaerdi1)) {
+  // let val = obj[arrSplit[count]].toLowerCase();
+  // if (val.includes(soegevaerdi)) {
+  //         searchresults.push(p);
+  if ((obj[arrSplit[count]].toLowerCase()).includes(soegevaerdi)) {
     return true;
   }
   else if (count == arrSplit.length - 1) {
