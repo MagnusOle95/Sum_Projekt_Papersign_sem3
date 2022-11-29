@@ -2,38 +2,42 @@ doctype html
 head
   meta(charset='utf-8')
   meta(name='viewport' content='width=device-width, initial-scale=1')
-  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous')
+  title Signature
   style 
     include underskrift.css
-    include common.css
-  title Signature
-.tabbtn
-  form(action = "/kasse" method="get")
-    input(class="button" type="submit" value="Kasse")
-  form(action = "/faktura" method="get")
-    input(class="button" type="submit" value="Faktura")
-  form(action= "/crud" method="get")
-    input(class="button" type="submit" value="Crud")
-#app
-  canvas#sig
-.funct
-  input#text(type='text' placeholder='Navn' name="Navn" required)
-  button#gemSig.gem(type='button') Gem
-  button#sletSig.slet(type='button') Slet 
-#image
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous')
+| &#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x1F525;&#x27A1;&#xFE0F;&#x27A1;&#xFE0F;&#x1F4DC;
+#app.container
+  div
+    canvas#sig
+div
+  input#text(type='text' placeholder='skriv navn på lære' required='')
+  button#gemSig.gem(type='button') gem
+  button#sletSig.slet(type='button') slet
+.parent
+  .child2
+    p#titleK Ordre
+    select#kurvList(name='kurv' multiple='')
+    button#tilfoejProduktG(onclick='') Tilf&oslash;j
+    button#tilfoejProduktG Slet
+  #content
+    .parent
+      .child1
+        p#titleP OrdreLinjer
+        select#produktList(name='kurv' multiple='')
+  #image
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js' integrity='sha512-cLuyDTDg9CSseBSFWNd4wkEaZ0TBEpclX0zD3D6HjI19pO39M58AgJ1SjHp6c7ZOp0/OCRcC2BCvvySU9KJaGw==' crossorigin='anonymous' referrerpolicy='no-referrer')
   script(src='https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js')
   script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3' crossorigin='anonymous')
   script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js' integrity='sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3' crossorigin='anonymous')
   script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js' integrity='sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk' crossorigin='anonymous')
+  script(src='https://html2canvas.hertzen.com/dist/html2canvas.min.js')
   script(type='module').
     let count =0;
     var signaturePad
     var canvas;
     function setupSigBox(){
     canvas = document.querySelector("canvas");
-    canvas.setAttribute("width", 700);
-    canvas.setAttribute("height", 400);
     signaturePad = new SignaturePad(canvas);
     }
     document.addEventListener("DOMContentLoaded",setupSigBox);
@@ -44,11 +48,28 @@ head
     // gem funktion skal håndteres af express før den virker rigtig
     var button= document.getElementById("gemSig")
     button.onclick=()=>{
-    var text=document.getElementById("text").value
+    var pdf = new jsPDF("p", "mm", "a4");
     var imageData= signaturePad.toDataURL();
-    var doc = new jsPDF()
-    doc.setFontSize(40)
-    doc.text("Lærer navn: "+text,40,40)
-    doc.addImage(imageData,"JPEG",15,40,180,180)
-    doc.save(`underskrift ${text}.pdf`)
+    var text="Navn: "+document.getElementById("text").value
+    var pageHeight= pdf.internal.pageSize.height;
+    var y=500;
+    pdf.html(document.getElementById('content'), {
+    html2canvas: {
+    scale: [0.65],
+    x: -80,
+    y: 20,
+    },
+    callback: function (pdf) {
+    var pageCount = pdf.internal.getNumberOfPages();
+    pdf.deletePage(pageCount)
+    var pageCount2= pdf.internal.getNumberOfPages();
+    pdf.deletePage(pageCount2)
+    pdf.text(52,10,text)
+    pdf.addImage(imageData,"JPEG",60,200,80,80)
+    // total pris skal have en egentlig total pris.
+    pdf.text(55,190,"total pris: ")
+    // text i pdf.save skal være ordrenr istedet
+    pdf.save(`${text}.pdf`);
+    }
+    })
     }
