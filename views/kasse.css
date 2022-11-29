@@ -35,12 +35,12 @@
 .child1 #produktList {
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 4;
-    grid-row-end: 14;
+    grid-row-start: 1;
+    grid-row-end: 11;
 
 }
 
-.child2 #kurvList {
+.child2 #kurv {
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 4;
@@ -93,7 +93,7 @@
 .div3{
     display: grid;
     grid-template-columns: repeat(3, 33%);
-    grid-template-rows: repeat(1, 100%);
+    grid-template-rows: repeat(11, 100%);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     /* grid-row-start: 1; */

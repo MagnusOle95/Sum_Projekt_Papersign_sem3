@@ -6,8 +6,8 @@ head
   style 
     include kasse.css
     include common.css
-  script(src="server.js")
-  script(src="logik.js")
+  script(src="/server.js")
+  script(src="/logik.js")
   title PaperSign
 .tabbtn
   form(action = "/kasse" method="get")
@@ -25,7 +25,7 @@ h1 PaperSign Kasse
       input#value(type='text' name="vaerdi" placeholder='Søgeværdi')
       input(class='button' type="submit", value="Søg")
     form#pg(type="hidden" action = "/kasse", method="get")
-      select#pg(name='pgroup' onchange="this.form.submit()")
+      select#pg(name='pgroup' onchange='{this.form.submit(); server.getLastClickedButton("ohh");}')
         option(value='' disabled='' selected='') Produktgrupper
         option(id='visalt' value='visalt') VisAlle
         each d of produktgrupper
@@ -35,20 +35,20 @@ h1 PaperSign Kasse
             option(value=""+d.gruppeNr+"")= '' + d.navn
         option(id='intet' value='intet') *Intet
     p#titleP Produkter
-    select#produktList(name='kurv' multiple='')
-      each data in produkter
-        option(value="" placeholder="")= data.produktnr + " " + data.navn + ' ' + data.pris + ',-kr'
-    form.div3(type="hidden" action = "/kasse", method="get") 
+    form.div3(type="hidden" action = "kasse", method="get") 
+      select#produktList(value="" name='produktList' size="3")
+        each data in produkter
+          option(value=(data.navn+"."+data.pris) placeholder="")= data.produktnr + " " + data.navn + ' ' + data.pris + ',-kr'
       input#antal(type='number' name="antal" placeholder='Antal')
-      button#tilfoejProdukt(class='button' type="submit") Tilf&oslash;j
+      button#tilfoejProdukt(class='button' type="submit" onclick='getLastClickedButton("kurv")') Tilføj
   .child2
     p#titleB  
     p#titleB
     p#titleK Kurv
-    select#kurv(name='kurv' multiple='')
+    select#kurv(name='kurv' size="3")
       if (kurv!=null)
         each k of kurv
-          option(value=""+k.nanv+"" selected)= '' + k.navn
+          option(value=""+k.navn+"" selected)= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
     button#tilfoejRabat Tilf&oslash;j Rabat
     input#rabat(type='number' placeholder='Rabat')
     button Slet

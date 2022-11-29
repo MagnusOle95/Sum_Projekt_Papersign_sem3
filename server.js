@@ -27,19 +27,20 @@ const __dirname = dirname(__filename);
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  deleteDoc,
-  addDoc,
-  setDoc,
-  getDoc,
-  query,
-  where,
-  updateDoc,
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    deleteDoc,
+    addDoc,
+    setDoc,
+    getDoc,
+    query,
+    where,
+    updateDoc,
 } from "firebase/firestore";
 import { Console } from "console";
+import { get } from "http";
 //import{storage} from 'firebase/storage'
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -67,6 +68,7 @@ let ordrer = await getAllOrdrer();
 let ProduktInProduktGoup = [];
 let kurv = [];
 let pgid = -1;
+let lastClickedButton = "";
 
 async function getAllOrdrer() {
     let fakturaCollection = collection(db, "ordrer");
@@ -135,10 +137,10 @@ async function getAllProducts() {
 }
 
 app.get("/", async (request, response) => {
-    let pgid = request.query.pgroup;
+    pgid = request.query.pgroup;
     let p = await searchProductByGroupNr(pgid)
     let pg = await getAllProductgroups();
-    response.render("kasse", {produkter: p, produktgrupper: pg});
+    response.render("kasse", { produkter: p, produktgrupper: pg });
 });
 
 app.post("/opretProdukt", async (request, response) => {
@@ -168,7 +170,7 @@ app.post("/opretProduktGruppe", async (request, response) => {
 //     let ordreNrUpdate={ordreNr: ordreNr}
 //     await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
 //   })
-  
+
 //   app.post("/opretFaktura", async (request, response) => {
 //     const {navn,dato,ordrelinjer,fakturaNr} = request.body;
 //     let fakturaNy=ordre.createFaktura(navn);
@@ -215,12 +217,32 @@ app.get("/faktura/", async (request, response) => {
     response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter });
 });
 
+// app.get("/kasse", async (request, response) => {
+//     pgid = request.query.pgroup;
+//     // kurv = request.query.kurv;
+//     let p = await searchProductByGroupNr(pgid);
+//     let pg = await getAllProductgroups();
+//     response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
+// });
+
 app.get("/kasse", async (request, response) => {
-    pgid = request.query.pgroup;
-    kurv = request.query.kurv;
+    // let test = request.
+    // request.
+    console.log(lastClickedButton);
+    let temppgid = request.query.pgroup;
+    if(temppgid!=undefined){
+        pgid=temppgid
+    }
+    let antal = request.query.antal;
+    let produktList = request.query.produktList;
     let p = await searchProductByGroupNr(pgid);
     let pg = await getAllProductgroups();
-    response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
+    //add to kurv
+    if(antal != undefined && produktList != undefined) {
+        let splitProduct = produktList.split(".")
+        addToKurv(antal, splitProduct[0], splitProduct[1]); 
+    }
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv });
 });
 
 app.post("/seachProduktinGroup", async (request, response) => {
@@ -246,7 +268,7 @@ console.log("Lytter på port " + port);
 
 //Metoder--------------------------------------------------------------------------------------------------------------------------------------------------
 function searchProductByGroupNr(gruppeNr) {
-    if(gruppeNr=="visalt") return produkter;
+    if (gruppeNr == "visalt") return produkter;
     let list = [];
     //let products = getProducts() // hent alle produkterne, i arrayet "produkter" fra server.js - måske navnet er forkert, eller også er der ingen getProducts, til den?)
     for (let i = 0; i < produkter.length; i++) {
@@ -257,13 +279,23 @@ function searchProductByGroupNr(gruppeNr) {
     return list;
 }
 
-function addToKurv(){
-let kurv = document.querySelector("kurv")
-let product = document.querySelector("kurv")
-let antal = document.querySelector("antal")
-kurv.innerHTML = kurv.innerHTML + "option(value="+k.nanv+" selected)= '' + k.navn";
-// for (let input of autoLabel) {
-//     input.defaultValue = 0;
-//     input.outerHTML = "<label for='" + input.id + "' id=" + input.id + "'Label' class=yeatzyLabel>" + input.id + "</label>" + input.outerHTML;
-// }
+function addToKurv(antal, navn, pris) {
+    let total = antal * pris;
+    let ordre = { antal: antal, navn: navn, pris: pris, total: total };
+    kurv.push(ordre);
+
+    // let kurvlist = document.querySelector("kurv")
+    // let product = document.querySelector("kurv")
+    // let antal = document.querySelector("antal")
+    // kurvlist.innerHTML = kurvlist.innerHTML + "option(id="+kurv.length+" value='' selected)= '' "+product.value+" | "+antal.value+"";
+
+
+    // for (let input of autoLabel) {
+    //     input.defaultValue = 0;
+    //     input.outerHTML = "<label for='" + input.id + "' id=" + input.id + "'Label' class=yeatzyLabel>" + input.id + "</label>" + input.outerHTML;
+    // }
+}
+
+function getLastClickedButton(id){
+    lastClickedButton = id;
 }
