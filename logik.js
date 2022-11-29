@@ -2,10 +2,9 @@ let varenr = 0; // tælles op automatisk af inde i constructoren
 let products = []; // varer tilføjes automatisk her, når de oprettes.
 let productgroups = []; // all produktgrupper (en del af alle produkter)
 
-function createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr) {
-  let product = new Product(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe, produktNr);
-  products.push(product);
-  produktgruppe.produkter.push(this); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
+function createProduct(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe,produktNr) {
+  let product = new Product(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe, produktNr);
+  products.push(product); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
   return product;
 }
 
@@ -28,16 +27,14 @@ function setNewAttribute(produkt, attribut, værdi) {
 }
 
 class Product {
-  constructor(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr) {
+  constructor(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe,produktNr) {
     this.navn = navn;
     this.pris = pris;
     this.antal = antal;
-    this.EAN = EAN;
     this.leverandør = leverandør;
     this.bestillingsnummer = bestillingsnummer;
     this.produktgruppe = produktgruppe;
     this.produktNr = produktNr;
-    this.addAttribut=null
   }
   setAttribut(addAttribut){
     this.addAttribut=addAttribut;

@@ -85,9 +85,9 @@ async function getAllOrdrer() {
 
 //Numre til id af produkter og produktgrupper. 
 let result = await getAllNumbers();
-let gruppeNr = result[3].gruppeNr;
-let produktNr = result[1].produktNr;
-let ordreNr = result[2].ordreNr;
+let gruppeNr = result[2].gruppeNr;
+let produktNr = result[3].produktNr;
+let ordreNr = result[1].ordreNr;
 let fakturaNR = result[0].fakturaNr;
 console.log(result)
 
@@ -179,10 +179,11 @@ app.post('/updateProduktGroup', async (request, response) => {
 
 
 app.post("/opretProdukt", async (request, response) => {
-    const { gruppeNr, produktNavn, produktPris, produktAntal } = request.body;
-    // let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse, gruppeNr)
-    // produktgrupper.push(nyProduktGruppe)
-    let nyProduktFirebase = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, Antal: produktAntal }
+    const { gruppeNr, produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer } = request.body;
+    let nyProdukt = logik.createProduct(produktNavn,produktPris,produktAntal,leveradør,bestillingsnummer,gruppeNr,produktNr)
+    console.log(gruppeNr + " " + produktNavn + " " + produktPris + " " + produktAntal + " " + leveradør + " " + bestillingsnummer)
+    produkter.push(nyProdukt)
+    let nyProduktFirebase = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: produktNr }
     await setDoc(doc(db, "varer", `${produktNr}`), nyProduktFirebase)
     produktNr++;
     let produktnrUpdate = { produktNr: produktNr }

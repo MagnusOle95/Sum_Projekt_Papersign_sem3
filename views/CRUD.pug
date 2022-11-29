@@ -74,18 +74,21 @@ script.
         console.log("Fejl");
         } 
     }
-
-
-     let createProduct = async () => {
+    
+    let createProduct = async () => {
         var produktNavn = document.getElementById("navn").value;
         var produktPris = document.getElementById("pris").value;
         var produktAntal = document.getElementById("antal").value;
+        var leveradør = document.getElementById("leverandoer").value;
+        var bestillingsnummer = document.getElementById("bestillingsnummer").value;
+        console.log(produktNavn + " " + produktPris + " " + produktAntal + " " + leveradør + " " + bestillingsnummer)
         try {
-        await post("/opretProdukt", {gruppeNr: localStorage.getItem('groupNr'), produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal});
+        await post("/opretProdukt", {gruppeNr: localStorage.getItem('groupNr'), produktNavn:  produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer});
         window.location.href = "/CRUD"
         }catch(e){
-        console.log("Fejl");
+        console.log(Fejl);
         } 
+        console.log("test")
     }
 
     let deleteProduct = async () => {
@@ -146,8 +149,7 @@ h1 PaperSign CRUD
     input#navn(type='text' placeholder='Navn')
     input#pris(type='text' placeholder='Pris')
     input#antal(type='text' placeholder='Antal')
-    input#ean(type='text' placeholder='EAN')
-    input(type='text' id='leverandør' placeholder='Leverandør')
+    input#leverandoer(type='text' placeholder='Leverandør')
     input#bestillingsnummer(type='text' placeholder='Bestillingsnummer')
-    input#tilfoejAtr(type='text' placeholder='Skriv tekst her')
-    button#tilfoejAtrBut Tilf&oslash;j
+    //input#tilfoejAtr(type='text' placeholder='Skriv tekst her')
+    //button#tilfoejAtrBut Tilf&oslash;j
