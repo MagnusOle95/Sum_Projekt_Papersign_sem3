@@ -229,6 +229,17 @@ app.get("/crud/", async (request, response) => {
     response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup });
 });
 
+app.get("/crud/:data", async (request, response) => {
+  let produktID = request.params.data;
+  response.render("crud", { produktliste: produkter, produktID });
+});
+
+app.get("/ordre/:data", async (request, response) => {
+  let ordreID = request.params.data;
+  let specifikOrdre = getOrdre(ordreID);
+  response.render("ordre", { specifikOrdre, ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter });
+});
+
 app.get("/faktura/", async (request, response) => {
     response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
@@ -314,4 +325,14 @@ function addToKurv(antal, navn, pris) {
 
 function getLastClickedButton(id){
     lastClickedButton = id;
+}
+
+function getOrdre(ordreID){
+  console.table(ordrer);
+  console.log(ordrer[0].docID);
+  for(let i = 0; i<ordrer.length; i++){
+    if(ordrer[i].docID == ordreID){
+      return ordrer[i];
+    }
+  }
 }

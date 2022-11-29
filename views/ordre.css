@@ -60,11 +60,11 @@ input[type=number] {
     color: white;
   }
 
-  .parent
+  .ordrelinjer
   {
     display: grid;
-    grid-template-columns: repeat(5, 35%);
-    grid-template-rows: repeat(10, 100px);
+    grid-template-columns: repeat(5, 15%);
+    grid-template-rows: repeat(100, 5%);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
 }
