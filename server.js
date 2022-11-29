@@ -41,6 +41,7 @@ import {
 } from "firebase/firestore";
 import { Console } from "console";
 import { get } from "http";
+import { DefaultDeserializer } from "v8";
 //import{storage} from 'firebase/storage'
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -68,7 +69,7 @@ let ordrer = await getAllOrdrer();
 let ProduktInProduktGoup = [];
 let kurv = [];
 let pgid = -1;
-let lastClickedButton = "";
+let total = 0;
 
 async function getAllOrdrer() {
     let fakturaCollection = collection(db, "ordrer");
@@ -171,13 +172,13 @@ app.post('/deleteProduktGroup', async (request, response) => {
 
 app.post('/updateProduktGroup', async (request, response) => {
     const { aktuelGroupNr, produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
-    let updatetProduktGroup = {navn : produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: aktuelGroupNr}
-    await setDoc(doc(db,"produktgrupper/" + aktuelGroupNr),updatetProduktGroup)
+    let updatetProduktGroup = { navn: produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: aktuelGroupNr }
+    await setDoc(doc(db, "produktgrupper/" + aktuelGroupNr), updatetProduktGroup)
     response.sendStatus(201)
-  })
+})
 
 
-  app.post("/opretProdukt", async (request, response) => {
+app.post("/opretProdukt", async (request, response) => {
     const { gruppeNr, produktNavn, produktPris, produktAntal } = request.body;
     // let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse, gruppeNr)
     // produktgrupper.push(nyProduktGruppe)
@@ -221,7 +222,7 @@ app.post('/deleteProdukt', async (request, response) => {
 
 
 app.get("/underskrift", async (request, response) => {
-    response.render("underskrift",{ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
+    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
 app.get("/crud/", async (request, response) => {
@@ -241,7 +242,7 @@ app.get("/ordre/:data", async (request, response) => {
 });
 
 app.get("/faktura/", async (request, response) => {
-    response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
+    response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
 // app.get("/kasse", async (request, response) => {
@@ -255,21 +256,21 @@ app.get("/faktura/", async (request, response) => {
 app.get("/kasse", async (request, response) => {
     // let test = request.
     // request.
-    console.log(lastClickedButton);
     let temppgid = request.query.pgroup;
-    if(temppgid!=undefined){
-        pgid=temppgid
+    if (temppgid != undefined) {
+        pgid = temppgid
     }
     let antal = request.query.antal;
     let produktList = request.query.produktList;
     let p = await searchProductByGroupNr(pgid);
     let pg = await getAllProductgroups();
     //add to kurv
-    if(antal != undefined && produktList != undefined) {
+    if (antal != undefined && produktList != undefined) {
         let splitProduct = produktList.split(".")
-        addToKurv(antal, splitProduct[0], splitProduct[1]); 
+        addToKurv(antal, splitProduct[0], splitProduct[1]);
+        sumTotal();
     }
-    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv });
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total });
 });
 
 app.post("/seachProduktinGroup", async (request, response) => {
@@ -309,22 +310,35 @@ function searchProductByGroupNr(gruppeNr) {
 function addToKurv(antal, navn, pris) {
     let total = antal * pris;
     let ordre = { antal: antal, navn: navn, pris: pris, total: total };
-    kurv.push(ordre);
-
-    // let kurvlist = document.querySelector("kurv")
-    // let product = document.querySelector("kurv")
-    // let antal = document.querySelector("antal")
-    // kurvlist.innerHTML = kurvlist.innerHTML + "option(id="+kurv.length+" value='' selected)= '' "+product.value+" | "+antal.value+"";
-
-
-    // for (let input of autoLabel) {
-    //     input.defaultValue = 0;
-    //     input.outerHTML = "<label for='" + input.id + "' id=" + input.id + "'Label' class=yeatzyLabel>" + input.id + "</label>" + input.outerHTML;
-    // }
+    let found = containsOrdre(navn);
+    if (found !== false) {
+        kurv[found].total += total
+        kurv[found].antal = Number(kurv[found].antal) + Number(antal)
+    }
+    else { 
+        kurv.push(ordre); 
+    }
 }
 
-function getLastClickedButton(id){
-    lastClickedButton = id;
+function containsOrdre(searchvalue) {
+    let tempkurv = kurv;
+    let found = false;
+    let index = 0
+    while (found === false && index < tempkurv.length) {
+        let obj = tempkurv[index]
+        if (obj.navn == searchvalue) {
+            found = index;
+        }
+        else index++;
+    }
+    return found;
+}
+
+function sumTotal() {
+    total = 0;
+    for (let k of kurv) {
+        total += k.total;
+    }
 }
 
 function getOrdre(ordreID){
