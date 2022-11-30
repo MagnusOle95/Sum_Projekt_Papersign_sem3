@@ -27,8 +27,8 @@
 /* Grid Content */
 
 /* Listviews */
-.child1 #produktList,
-.child2 #kurvList {
+.child1 #produktGList,
+.child2 #produktList {
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 3;

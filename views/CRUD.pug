@@ -1,9 +1,10 @@
 
 script.
 
+  //Valg af produktgruppe. 
   document.addEventListener('DOMContentLoaded',()=>{
       document
-        .getElementById('produktList')
+        .getElementById('produktGList')
         .addEventListener('input', handleSelect)
   })
 
@@ -28,6 +29,23 @@ script.
     console.log("Fejl");
     }
   }
+
+  //valg af produkt. 
+  document.addEventListener('DOMContentLoaded',() => {
+    document
+      .getElementById('produktList')
+      .addEventListener('input', handleSelect2)
+  })
+  
+  function handleSelect2 (ev){
+    let chosenProdukt = ev.target.value;
+    result = chosenProdukt.split(" ");
+    index = result.length - 1
+    aktuelProduktNr = result[index]
+    localStorage.setItem('produktNr',aktuelProduktNr)
+    console.log(aktuelProduktNr)
+  }
+
 
   
     //Post metode til funktion. 
@@ -56,8 +74,9 @@ script.
     }
 
     let deleteProductGroup = async () => {
+      console.log("Lort")
         try {
-        await post("/deleteProduktGroup", {aktuelGroupNr: localStorage.getItem('groupNr')});
+        await post("/deleteProductGroup", {aktuelGroupNr: localStorage.getItem('groupNr')});
         window.location.href = "/CRUD"
         }catch(e){
         console.log("Fejl");
@@ -79,7 +98,7 @@ script.
         var produktNavn = document.getElementById("navn").value;
         var produktPris = document.getElementById("pris").value;
         var produktAntal = document.getElementById("antal").value;
-        var leveradør = document.getElementById("leverandoer").value;
+        var leveradør = document.getElementById("leveradoer").value;
         var bestillingsnummer = document.getElementById("bestillingsnummer").value;
         console.log(produktNavn + " " + produktPris + " " + produktAntal + " " + leveradør + " " + bestillingsnummer)
         try {
@@ -93,12 +112,27 @@ script.
 
     let deleteProduct = async () => {
         try {
-        await post("/deleteProdukt", {aktuelProduktNr: "Per"});
+        await post("/deleteProdukt", {aktuelProduktNr: localStorage.getItem('produktNr')});
         window.location.href = "/CRUD"
         }catch(e){
         console.log("Fejl");
         } 
     }
+
+    let updateProduct = async () => {
+        var produktNavn = document.getElementById("navn").value;
+        var produktPris = document.getElementById("pris").value;
+        var produktAntal = document.getElementById("antal").value;
+        var leveradør = document.getElementById("leveradoer").value;
+        var bestillingsnummer = document.getElementById("bestillingsnummer").value;
+        try {
+        await post("/updateProdukt", {aktuelProduktNr: localStorage.getItem('produktNr'), gruppeNr: localStorage.getItem('groupNr'), produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log(Fejl);
+        } 
+    }
+    
 
 
 doctype html
@@ -125,13 +159,13 @@ h1 PaperSign CRUD
     input#value(type='text' placeholder='Værdi')
     button S&oslash;g
     p#titleP Produktgrupper
-    select#produktList(name='pgroups' multiple='')
+    select#produktGList(name='pgroups' multiple='')
       each data in produktgrupper
         option()= data.navn + " "+ data.gruppeNr
         //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
     button#updaterProduktG(onclick='updateProductGroup()') Opdater
-    button#sletProduktG(onclick='deleteProduct') slet
+    button#sletProduktG(onclick='deleteProductGroup()') slet
 
     input#navnG(type='text' placeholder='Navn')
     input#beskrilseG(type='text' placeholder='Beskrivelse')
@@ -139,17 +173,17 @@ h1 PaperSign CRUD
   .child2
     p#titleB  
     p#titleK Produkter
-    select#kurvList(name='productsForGroup' multiple='')
+    select#produktList(name='productsForGroup' multiple='')
       each data in ProduktInProduktGoup
-          option()= 'Navn: ' + data.navn
+          option()= 'Navn: ' + data.navn + " " + data.produktNr
           //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProdukt(onclick='createProduct()') Tilf&oslash;j
-    button#updateProdukt Opdater
+    button#updateProdukt(onclick='updateProduct()') Opdater
     button#sletProdukt(onclick='deleteProduct()') Slet
     input#navn(type='text' placeholder='Navn')
     input#pris(type='text' placeholder='Pris')
     input#antal(type='text' placeholder='Antal')
-    input#leverandoer(type='text' placeholder='Leverandør')
+    input#leveradoer(type='text' placeholder='Leverandør')
     input#bestillingsnummer(type='text' placeholder='Bestillingsnummer')
     //input#tilfoejAtr(type='text' placeholder='Skriv tekst her')
     //button#tilfoejAtrBut Tilf&oslash;j
