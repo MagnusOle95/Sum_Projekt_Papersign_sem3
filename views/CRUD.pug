@@ -167,8 +167,10 @@ h1 PaperSign CRUD
     button#updaterProduktG(onclick='updateProductGroup()') Opdater
     button#sletProduktG(onclick='deleteProductGroup()') slet
 
-    input#navnG(type='text' placeholder='Navn')
-    input#beskrilseG(type='text' placeholder='Beskrivelse')
+    each data in produktgrupper
+      if (data.gruppeNr == 14)
+        input#navnG(type='text' placeholder='Navn' value=data.navn)
+        input#beskrilseG(type='text' placeholder='Beskrivelse' value=data.beskrivelse)
   
   .child2
     p#titleB  
