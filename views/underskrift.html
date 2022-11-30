@@ -64,34 +64,24 @@ function clearSig(){
 document.getElementById("sletSig").addEventListener("click",clearSig)
 // gem funktion skal håndteres af express før den virker rigtig 
 var button= document.getElementById("gemSig")
-button.onclick=()=>{
-                            
-           var pdf = new jsPDF("p", "mm", "a4");
-           var imageData= signaturePad.toDataURL();
-           var text="Navn: "+document.getElementById("text").value
-           var pageHeight= pdf.internal.pageSize.height;
-           var y=500;
-
-        pdf.html(document.getElementById('content'), {  
-          html2canvas: {
-        scale: [0.65],
-        x: -80,
-        y: 20,
-        },
-            callback: function (pdf) {
-              var pageCount = pdf.internal.getNumberOfPages();
-              pdf.deletePage(pageCount)
-              var pageCount2= pdf.internal.getNumberOfPages();
-              pdf.deletePage(pageCount2)
-              pdf.text(52,10,text)
-              pdf.addImage(imageData,"JPEG",60,200,80,80)
-              // total pris skal have en egentlig total pris.
-              pdf.text(55,190,"total pris: ")
-              // text i pdf.save skal være ordrenr istedet 
-              pdf.save(`${text}.pdf`);
-            }
-        })
+  button.onclick=()=>{
+  let count=0;
+  var text=document.getElementById("text").value
+  var imageData= signaturePad.toDataURL();
+  var doc = new jsPDF()
+  doc.setFontSize(40)
+  doc.text("Lærer navn: "+text,40,40)
+  doc.addImage(imageData,"JPEG",15,40,180,180)
+  for(let k of kurv){
+    doc.text(k,40+count,40+count)
+    count+=10;
+    let splitter= kurv[i].value;
+    splitter.split(" ");
+    let total=splitter;
+    doc.text(total,60,180)
   }
+  doc.save(`underskrift ${text}.pdf`)
+}
                         
 </script>
 
