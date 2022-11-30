@@ -182,8 +182,8 @@ app.post('/updateProduktGroup', async (request, response) => {
 app.post("/opretProdukt", async (request, response) => {
     const { gruppeNr, produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer } = request.body;
     let nyProdukt = logik.createProduct(produktNavn,produktPris,produktAntal,leveradør,bestillingsnummer,gruppeNr,produktNr)
-    console.log(gruppeNr + " " + produktNavn + " " + produktPris + " " + produktAntal + " " + leveradør + " " + bestillingsnummer)
     produkter.push(nyProdukt)
+    ProduktInProduktGoup.push(nyProdukt)
     let nyProduktFirebase = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: produktNr }
     await setDoc(doc(db, "varer", `${produktNr}`), nyProduktFirebase)
     produktNr++;
@@ -195,7 +195,16 @@ app.post("/opretProdukt", async (request, response) => {
 app.post('/deleteProdukt', async (request, response) => {
     const { aktuelProduktNr } = request.body;
     await deleteDoc(doc(db, 'varer', aktuelProduktNr));
-    console.log(aktuelProduktNr)
+
+    //Her finder jeg hvor i arrayet produkterne befinder sig og sletter dem. 
+    for(let i = 0; i < produkter.length; i++){
+        if(produkter[i].produktNr == aktuelProduktNr){
+            produkter.splice(i,1);
+        }
+        if(ProduktInProduktGoup[i].produktNr == aktuelProduktNr){
+            ProduktInProduktGoup.splice(i,1);
+        }
+    }
     response.sendStatus(201)
 })
 
@@ -205,7 +214,21 @@ app.post('/updateProdukt', async (request, response) => {
     let updatetProdukt = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
     console.log(updatetProdukt)
     await setDoc(doc(db,"varer/" + aktuelProduktNr),updatetProdukt)
+
+    //Her finder jeg hvor i arrayet produkterne befinder sig og opdatere dem. 
+    for(let i = 0; i < produkter.length; i++){
+        if(produkter[i].produktNr == aktuelProduktNr){
+            produkter[i] = {gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
+        }
+        if(ProduktInProduktGoup[i].produktNr == aktuelProduktNr){
+            ProduktInProduktGoup[i] = {gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
+        }
+    }
+
     response.sendStatus(201)
+    console.log("Test888")
+    console.log(produkter)
+    console.log(ProduktInProduktGoup)
   })
 
 
@@ -289,6 +312,8 @@ app.post("/seachProduktinGroup", async (request, response) => {
     console.log(produkter)
     console.log(valgtGruppeNr)
     ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNr)
+    console.log(ProduktInProduktGoup);
+    console.log("Over")
     response.sendStatus(201);
 })
 

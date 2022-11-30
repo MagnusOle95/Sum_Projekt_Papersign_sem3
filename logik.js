@@ -27,13 +27,13 @@ function setNewAttribute(produkt, attribut, værdi) {
 }
 
 class Product {
-  constructor(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe,produktNr) {
+  constructor(navn, pris, antal, leverandør, bestillingsnummer, gruppeNr,produktNr) {
     this.navn = navn;
     this.pris = pris;
     this.antal = antal;
     this.leverandør = leverandør;
     this.bestillingsnummer = bestillingsnummer;
-    this.produktgruppe = produktgruppe;
+    this.gruppeNr = gruppeNr;
     this.produktNr = produktNr;
   }
   setAttribut(addAttribut){
