@@ -337,7 +337,7 @@ app.get("/kasserabat", async (request, response) => {
     //get index of product
     let productIndex = containsOrdre(request.query.kurv)
     let rabat = request.query.rabat;
-    if(rabat != undefined && productIndex!==false){
+    if (rabat != undefined && productIndex !== false) {
         kurv[productIndex].pris = rabat
         kurv[productIndex].total = Number(kurv[productIndex].pris) * Number(kurv[productIndex].antal)
     }
@@ -386,6 +386,9 @@ function addToKurv(antal, navn, pris) {
     let ordre = { antal: antal, navn: navn, pris: pris, total: total };
     let found = containsOrdre(navn);
     if (found !== false) {
+        if (kurv[found].pris != pris) {
+            total=antal*kurv[found].pris;
+        }
         kurv[found].total += total
         kurv[found].antal = Number(kurv[found].antal) + Number(antal)
     }

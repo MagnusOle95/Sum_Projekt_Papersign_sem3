@@ -14,7 +14,6 @@
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     grid-row-start: 1;
-    background-color: blue;
 }
 
 .child2 {
@@ -25,7 +24,6 @@
     grid-row-gap: 2px;
     grid-column-start: 2;
     grid-row-start: 1;  
-    background-color: yellow;  
 }
 
 /* --------------------------------------------------------------- */
@@ -131,7 +129,6 @@ body {
     grid-template-rows: repeat(15, 40px);
     grid-column-gap: 2.85px;
     grid-row-gap: 2px;
-    background-color: red;
     padding: 0px;
     margin: 0px;
     width: 90%;
