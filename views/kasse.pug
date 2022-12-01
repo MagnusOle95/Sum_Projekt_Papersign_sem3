@@ -38,14 +38,14 @@ h1 PaperSign Kasse
     form.div3(type="hidden" action = "kasse", method="get") 
       select#produktList(value="" name='produktList' size="3")
         each data in produkter
-          option(value=(data.navn+"."+data.pris) placeholder="")= data.produktnr + " " + data.navn + ' ' + data.pris + ',-kr'
+          option(value=(data.navn+"."+data.pris) placeholder="")= data.produktNr + ": " + data.navn + ' ' + data.pris + ',-kr'
       input#antal(type='number' name="antal" placeholder='Antal')
       button#tilfoejProdukt(class='button' type="submit") Tilføj
   .child2
-    p#titleB
-    p#titleB
+    p#titleB 
+    p#titleB 
     p#titleK Kurv
-    form#c2() 
+    form#c2(action="underskrift") 
       .child22
         select#kurv(name='kurv' size="3")
           if (kurv!=null)
@@ -56,7 +56,7 @@ h1 PaperSign Kasse
         input#rabat(name="rabat" type='number' placeholder='Rabat')
         button(class="button" type="submit" value="slet" formaction="kasseslet" method="get") Slet
         //- form#betalling(type="hidden" action = "underskrift", method="get") 
-        select#betalling(name='betalling' onchange= "if (this.selectedIndex==4) this.form.submit()" formaction="underskrift")
+        select#betalling(name='betalling' method="" onchange="if (this.selectedIndex==4) this.form.submit()")
           option(value='' disabled='' selected='') Betallingsform
           option(value='kort') Kort
           option(value='kontant') Kontant
