@@ -31,7 +31,7 @@ class Product {
     this.navn = navn;
     this.pris = pris;
     this.antal = antal;
-    this.leverandør = leverandør;
+    this.leveradør = leverandør;
     this.bestillingsnummer = bestillingsnummer;
     this.gruppeNr = gruppeNr;
     this.produktNr = produktNr;
