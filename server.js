@@ -276,7 +276,12 @@ app.get("/ordre/:data", async (request, response) => {
 });
 
 app.get("/faktura/", async (request, response) => {
+<<<<<<< HEAD
     response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
+=======
+    ordrer = await getAllOrdrer();
+    response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
+>>>>>>> mikkel
 });
 
 // app.get("/kasse", async (request, response) => {

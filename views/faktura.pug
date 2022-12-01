@@ -14,11 +14,10 @@ head
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
-h1 PaperSign Faktura
+h1 PaperSign Ordrer
 .parent
-  h2 Fakturaoversigt: <br><br>
-    each data in ordrer 
-    
-      a#productHeader(class='productHeader' href='/ordre/'+ data.docID +'')= '' + "data.dato " + " 192931 " + " Paul Hansen " + " Kr. 1271" 
-
+  h2 Ordreoversigt: <br><br>
+    each data in ordrer
+      a#productHeader(class='productHeader' href='/ordre/'+ data.docID +'')= data.ordreNr + ' - Dato:' + data.dato + " Samlet pris: " + " Kr. " + data.samletpris
+      <br> 
         
