@@ -241,6 +241,7 @@ app.get("/ordre/:data", async (request, response) => {
 });
 
 app.get("/faktura/", async (request, response) => {
+    ordrer = await getAllOrdrer();
     response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
