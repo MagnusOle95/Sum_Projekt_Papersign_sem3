@@ -256,7 +256,7 @@ app.post('/updateProdukt', async (request, response) => {
 
 
 app.get("/underskrift", async (request, response) => {
-    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
+    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv, total: total });
 });
 
 app.get("/crud/", async (request, response) => {
@@ -307,6 +307,44 @@ app.get("/kasse", async (request, response) => {
     response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total });
 });
 
+app.get("/kasseslet", async (request, response) => {
+    // check if pgid is changed and chang
+    let temppgid = request.query.pgroup;
+    if (temppgid != undefined) {
+        pgid = temppgid
+    }
+    // let tempkurv = request.query.kurv;
+    let p = await searchProductByGroupNr(pgid);
+    let pg = await getAllProductgroups();
+    //get index of product
+    let productIndex = containsOrdre(request.query.kurv)
+    //splice
+    kurv.splice(productIndex, 1);
+    sumTotal();
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total });
+});
+
+app.get("/kasserabat", async (request, response) => {
+    // check if pgid is changed and chang
+    let temppgid = request.query.pgroup;
+    let tempp = request.query.pgroup;
+    if (temppgid != undefined) {
+        pgid = temppgid
+    }
+    // let tempkurv = request.query.kurv;
+    let p = await searchProductByGroupNr(pgid);
+    let pg = await getAllProductgroups();
+    //get index of product
+    let productIndex = containsOrdre(request.query.kurv)
+    let rabat = request.query.rabat;
+    if(rabat != undefined && productIndex!==false){
+        kurv[productIndex].pris = rabat
+        kurv[productIndex].total = Number(kurv[productIndex].pris) * Number(kurv[productIndex].antal)
+    }
+    sumTotal();
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total });
+});
+
 app.post("/seachProduktinGroup", async (request, response) => {
     const { valgtGruppeNr } = request.body;
     console.log(produkter)
@@ -351,10 +389,12 @@ function addToKurv(antal, navn, pris) {
         kurv[found].total += total
         kurv[found].antal = Number(kurv[found].antal) + Number(antal)
     }
-    else { 
-        kurv.push(ordre); 
+    else {
+        kurv.push(ordre);
     }
 }
+
+//TODO fjern tempkurv
 
 function containsOrdre(searchvalue) {
     let tempkurv = kurv;

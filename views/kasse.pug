@@ -42,23 +42,25 @@ h1 PaperSign Kasse
       input#antal(type='number' name="antal" placeholder='Antal')
       button#tilfoejProdukt(class='button' type="submit") Tilføj
   .child2
-    p#titleB  
+    p#titleB
     p#titleB
     p#titleK Kurv
-    select#kurv(name='kurv' size="3")
-      if (kurv!=null)
-        each k of kurv
-          option(value=""+k.navn+"" selected)= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
-    input#total(type='text' placeholder=''+total+'kr' disabled)
-    button#tilfoejRabat Tilf&oslash;j Rabat
-    input#rabat(type='number' placeholder='Rabat')
-    button Slet
-    form#betalling(type="hidden" action = "underskrift", method="get") 
-      select#betalling(name='kurv' onchange= "if (this.selectedIndex==4) this.form.submit()")
-        option(value='' disabled='' selected='') Betallingsform
-        option(value='kort') Kort
-        option(value='kontant') Kontant
-        option(value='mobilPay') MobilPay
-        option(value='underskrift') Underskrift
-    input#Beloeb(type='number' name='' value=''+total+'')
-    button#koeb K&oslash;b
+    form#c2() 
+      .child22
+        select#kurv(name='kurv' size="3")
+          if (kurv!=null)
+            each k of kurv
+              option(value=""+k.navn+"" selected)= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
+        input#total(type='text' placeholder=''+total+'kr' readonly)
+        button#rrabat(name="rrabat" value="rabat" formaction="kasserabat") Tilf&oslash;j Rabat
+        input#rabat(name="rabat" type='number' placeholder='Rabat')
+        button(class="button" type="submit" value="slet" formaction="kasseslet" method="get") Slet
+        //- form#betalling(type="hidden" action = "underskrift", method="get") 
+        select#betalling(name='betalling' onchange= "if (this.selectedIndex==4) this.form.submit()" formaction="underskrift")
+          option(value='' disabled='' selected='') Betallingsform
+          option(value='kort') Kort
+          option(value='kontant') Kontant
+          option(value='mobilPay') MobilPay
+          option(value='underskrift') Underskrift
+        input#Beloeb(type='number' name='' value=''+total+'')
+        button#koeb(formaction="kassebetal" method="get") K&oslash;b
