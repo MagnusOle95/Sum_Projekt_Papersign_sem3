@@ -2,10 +2,9 @@ let varenr = 0; // tælles op automatisk af inde i constructoren
 let products = []; // varer tilføjes automatisk her, når de oprettes.
 let productgroups = []; // all produktgrupper (en del af alle produkter)
 
-function createProduct(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr) {
-  let product = new Product(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe, produktNr);
-  products.push(product);
-  produktgruppe.produkter.push(this); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
+function createProduct(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe,produktNr) {
+  let product = new Product(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe, produktNr);
+  products.push(product); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
   return product;
 }
 
@@ -28,16 +27,14 @@ function setNewAttribute(produkt, attribut, værdi) {
 }
 
 class Product {
-  constructor(navn, pris, antal, EAN, leverandør, bestillingsnummer, produktgruppe,produktNr) {
+  constructor(navn, pris, antal, leverandør, bestillingsnummer, gruppeNr,produktNr) {
     this.navn = navn;
     this.pris = pris;
     this.antal = antal;
-    this.EAN = EAN;
     this.leverandør = leverandør;
     this.bestillingsnummer = bestillingsnummer;
-    this.produktgruppe = produktgruppe;
+    this.gruppeNr = gruppeNr;
     this.produktNr = produktNr;
-    this.addAttribut=null
   }
   setAttribut(addAttribut){
     this.addAttribut=addAttribut;
@@ -74,7 +71,10 @@ function getProducts() {
 
 function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   let found = false
-  if ((obj[arrSplit[count]].toLocaleLowerCase()).includes(soegevaerdi1)) {
+  // let val = obj[arrSplit[count]].toLowerCase();
+  // if (val.includes(soegevaerdi)) {
+  //         searchresults.push(p);
+  if ((obj[arrSplit[count]].toLowerCase()).includes(soegevaerdi)) {
     return true;
   }
   else if (count == arrSplit.length - 1) {

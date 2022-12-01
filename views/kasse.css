@@ -14,6 +14,7 @@
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     grid-row-start: 1;
+    background-color: blue;
 }
 
 .child2 {
@@ -23,8 +24,8 @@
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     grid-column-start: 2;
-    grid-row-start: 1;
-    
+    grid-row-start: 1;  
+    background-color: yellow;  
 }
 
 /* --------------------------------------------------------------- */
@@ -32,23 +33,22 @@
 /* Grid Content */
 
 /* Listviews */
-.child1 #produktList {
+#produktList {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 11;
+
+}
+
+#kurv {
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 10;
-
 }
 
-.child2 #kurv {
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 4;
-    grid-row-end: 12;
-
-}
-
-.child2 #betalling {
+#betalling {
     text-align: center;
 }
 
@@ -116,4 +116,24 @@ body {
     grid-column-start: 1;
     grid-column-end: 4;
     text-align: right;
+}
+
+#c2{
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 12;
+}
+
+.child22{
+    display: grid;
+    grid-template-columns: repeat(3, 36.5%);
+    grid-template-rows: repeat(15, 40px);
+    grid-column-gap: 2.85px;
+    grid-row-gap: 2px;
+    background-color: red;
+    padding: 0px;
+    margin: 0px;
+    width: 90%;
+
 }
