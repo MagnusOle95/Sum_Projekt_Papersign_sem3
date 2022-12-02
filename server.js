@@ -485,7 +485,7 @@ app.post("/aktuelProduktNrTilServer", async (request, response) => {
 
 
 app.get("/search", async (request, response) => {
-    var attribut = request.query.attribut;
+    var attribut = request.query.atribut;
     var vaerdi = request.query.vaerdi;
     console.log("Attribut: " + attribut + " .   værdi: " + vaerdi)
     let searchresults = await logik.searchDynamic(produkter, attribut, vaerdi);

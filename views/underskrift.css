@@ -8,18 +8,18 @@
 
 .funct{
     display: grid;
-    grid-template-columns: repeat(3, 235.5px);
-    grid-template-rows: repeat(8, 24%);
+    grid-template-columns: repeat(4, 151px);
+    grid-template-rows: repeat(8, 20%);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     padding: 2px;
 }
 
-#varelist {
+#vareList {
     grid-column-start: 1;
-    grid-column-end: 4;
+    grid-column-end: 5;
     grid-row-start: 2;
-    grid-row-end: 5;
+    grid-row-end: 4;
 }
 
 html, body{
@@ -27,7 +27,8 @@ html, body{
 }
 
 #total{
+    grid-row-start: 4;
     grid-column-start: 1;
-    grid-column-end: 4;
+    grid-column-end: 5;
     text-align: right;
 }

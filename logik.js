@@ -2,14 +2,14 @@ let varenr = 0; // tælles op automatisk af inde i constructoren
 let products = []; // varer tilføjes automatisk her, når de oprettes.
 let productgroups = []; // all produktgrupper (en del af alle produkter)
 
-function createProduct(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe,produktNr) {
+function createProduct(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe, produktNr) {
   let product = new Product(navn, pris, antal, leverandør, bestillingsnummer, produktgruppe, produktNr);
   products.push(product); // prouktet puttes ind i produktgruppes liste, over de forskellige produkter, som den har
   return product;
 }
 
-function createProductgroup(navn, beskrivelse,GruppeNr) {
-  let productgroup = new Productgroup(navn, beskrivelse,GruppeNr);
+function createProductgroup(navn, beskrivelse, GruppeNr) {
+  let productgroup = new Productgroup(navn, beskrivelse, GruppeNr);
   //productgroups.push(productgroup);
   return productgroup;
 }
@@ -27,7 +27,7 @@ function setNewAttribute(produkt, attribut, værdi) {
 }
 
 class Product {
-  constructor(navn, pris, antal, leverandør, bestillingsnummer, gruppeNr,produktNr) {
+  constructor(navn, pris, antal, leverandør, bestillingsnummer, gruppeNr, produktNr) {
     this.navn = navn;
     this.pris = pris;
     this.antal = antal;
@@ -36,14 +36,14 @@ class Product {
     this.gruppeNr = gruppeNr;
     this.produktNr = produktNr;
   }
-  setAttribut(addAttribut){
-    this.addAttribut=addAttribut;
+  setAttribut(addAttribut) {
+    this.addAttribut = addAttribut;
   }
 
 }
 
 class Productgroup {
-  constructor(navn, beskrivelse,GruppeNr) {
+  constructor(navn, beskrivelse, GruppeNr) {
     this.navn = navn;
     this.beskrivelse = beskrivelse;
     this.produkter = [];
@@ -66,60 +66,73 @@ function getProducts() {
 }
 
 
-
-//TODO --------------------------------------------------------------------------------------------- Optimize
-
-function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
-  let found = false
-  // let val = obj[arrSplit[count]].toLowerCase();
-  // if (val.includes(soegevaerdi)) {
-  //         searchresults.push(p);
-  if ((obj[arrSplit[count]].toLowerCase()).includes(soegevaerdi)) {
-    return true;
-  }
-  else if (count == arrSplit.length - 1) {
-    return false;
-  }
-  else {
-    found = searchDynamicObject(obj[arrSplit[count]], arrSplit, count + 1, soegevaerdi);
-  }
-  return found;
-}
+// search dynamic
 
 async function searchDynamic(arr, attribut, soegevaerdi) {
-  // let soegevaerdi1 = soegevaerdi;
-  soegevaerdi.toLowerCase();
-  let searchresults = [];
-  let attributSplit = null;
-  if(attribut == ""){
-    attribut = "navn";
-  }
-
-  if (attribut.includes(".")) {
-    attributSplit = attribut.split(".");
-    for (let p of arr) {
-      let found = searchDynamicObject(p, attributSplit, 0, soegevaerdi);
-      if (found == true) {
-        searchresults.push(p);
-      }
+  if (arr != undefined && soegevaerdi != undefined) {
+    try {
+      soegevaerdi.toLowerCase();
+    } catch (error) {
+      console.log(error)
     }
-  }
-  else {
-    for (let p of arr) {
-      try {
-        let val = p[attribut].toLowerCase();
-        if (val.includes(soegevaerdi)) {
+    let searchresults = [];
+    let attributSplit = null;
+    if (attribut == "") {
+      attribut = "navn";
+    }
+    if (attribut.includes(".")) {
+      attributSplit = attribut.split(".");
+      for (let p of arr) {
+        let found = searchDynamicObject(p, attributSplit, 0, soegevaerdi);
+        if (found == true) {
           searchresults.push(p);
         }
-      } catch (error) {
-        console.log(error)
       }
-
     }
-  };
+    else {
+      for (let p of arr) {
+        let val = p[attribut];
+        try {
+          val.toLowerCase();
+          if (val.includes(soegevaerdi)) {
+            searchresults.push(p);
+          }
+          else if (val == soegevaerdi) {
+            searchresults.push(p);
+          }
 
-//TODO maybe sort
-return searchresults;
+        } catch (error) {
+          console.log(error);
+        }
+
+      }
+    };
+    return searchresults.sort();
+  }
+//returns false if arr or soegevaedi is undefined
+  else return false;
+}
+
+//if given arraypath with (.) split, it will follow path recursive to check if search value and value at path ende is equal
+function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
+  let found = false;
+  let val = obj[arrSplit[count]];
+  try {
+    val.toLowerCase();
+    if (val.includes(soegevaerdi) || val == soegevaerdi) {
+      return true;
+    }
+    else if (count == arrSplit.length - 1) {
+      return false;
+    }
+
+    else {
+      found = searchDynamicObject(obj[arrSplit[count]], arrSplit, count + 1, soegevaerdi);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  return found;
 }
 
 
@@ -136,7 +149,7 @@ let p5 = createProduct("2Hat", 20, 10, 4567890, "Mowgli inc", 932005, pg);
 let p6 = createProduct("1", 20, 10, 4567890, "Mowgli inc", 932005, pg);
 
 
-console.log(searchDynamic(products, "navn", 1+""));
+console.log(searchDynamic(products, "navn", 1 + ""));
 
 
 // finder en vare med det specifikke varenummer (skal indeholde 0'erne foran)
