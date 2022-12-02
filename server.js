@@ -270,8 +270,15 @@ app.post('/updateProdukt', async (request, response) => {
 
 
 app.get("/underskrift", async (request, response) => {
-    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv, total: total });
+    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv, total: total,fakturaNr: fakturaNR});
 });
+app.post("/underskrift", async (request,response)=>{
+    let fakturanrUpdate = { fakturaNR: fakturaNR }
+    fakturaNR++;
+    await setDoc(doc(db, "nummre/fakturaNr"), fakturanrUpdate)
+    response.sendStatus(201);
+})
+
 
 app.get("/crud/", async (request, response) => {
     produktgrupper = await getAllProductgroups();
