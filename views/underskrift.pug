@@ -3,7 +3,9 @@ head
   meta(charset='utf-8')
   meta(name='viewport' content='width=device-width, initial-scale=1')
   link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous')
-  style 
+  style
+    include underskrift.css
+    include common.css
   title Signature
 .tabbtn
   form(action = "/" method="get")
@@ -16,23 +18,16 @@ h2 PaperSign Faktura
 #app
   canvas#sig
 .funct
-  input#text(type='text' placeholder='skriv Kunde' name="kunde projekt afdeling" required)
-  input#projekt(type='text' placeholder='skriv kundes Projekt' name="Projekt" required)
-  input#afdeling(type='text' placeholder='skriv kundes afdeling' name="Afdeling" required)
-  input#fakturaNr(type='text' placeholder='skriv FakturaNr' name="FakturaNr" required)
-  p 
-  p
-  p 
-  p 
-  p
+  input#text(type='text' placeholder='Kundenavn' name="kunde projekt afdeling" required)
+  input#projekt(type='text' placeholder='Kundes Projekt' name="Projekt" required)
+  input#afdeling(type='text' placeholder='Kundes Afdeling' name="Afdeling" required)
+  input#fakturaNr(type='text' placeholder=' FakturaNr' name="FakturaNr" required)
   button#gemSig.gem(type='button') Gem
-  button#sletSig.slet(type='button') Slet 
-
-p#titleP 
-        select#produktList(name='kurv' multiple="")
-          each k of kurv
-            option()= k.navn+" " +"␢"+ k.antal +'stk. '+ k.pris  +" " + k.total
-        input#total(type="text" value=total readonly)  
+  button#sletSig.slet(type='button') Slet  
+  select#vareList(name='kurv' multiple="")
+    each k of kurv
+      option()= k.navn+" " +"␢"+ k.antal +'stk. '+ k.pris  +" " + k.total
+  input#total(type="text" value=total+"kr" readonly)  
 
 
 
@@ -49,8 +44,8 @@ script(type='module').
   var canvas;
   function setupSigBox(){
   canvas = document.querySelector("canvas");
-  canvas.setAttribute("width", 700);
-  canvas.setAttribute("height", 400);
+  canvas.setAttribute("width", 600);
+  canvas.setAttribute("height", 300);
   signaturePad = new SignaturePad(canvas);
   }
   document.addEventListener("DOMContentLoaded",setupSigBox);
@@ -76,7 +71,7 @@ script(type='module').
   doc.addImage(imageData,"JPEG",40,235,130,50)
   let count=0;
   let i=0
-  let kurv=document.getElementById("produktList")
+  let kurv=document.getElementById("vareList")
   let subTotal= document.getElementById("total").value
  
 
