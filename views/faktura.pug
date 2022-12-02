@@ -19,6 +19,14 @@ h1 PaperSign Ordrer
 .parent
   h2 Ordreoversigt: <br><br>
     each data in ordrer
-      a#productHeader(class='productHeader' href='/ordre/'+ data.docID +'')= data.ordreNr + ' - Dato:' + data.dato + " Samlet pris: " + " Kr. " + data.samletpris
       <br> 
-        
+    
+.ordrelinjer
+    .overskrift Ordrenummer
+    .overskrift Dato
+    .overskrift#Pris Samlet Pris
+    each data in ordrer
+      a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.ordreNr
+      a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.dato
+      a#ordrecontentPris(class='productHeader' href='/ordre/'+ data.docID +'')="Kr. " + data.samletpris+",-"
+

@@ -84,14 +84,37 @@ input[type=number] {
   a:hover {
   color: rgb(14, 120, 0);
   text-decoration: none;
+  background-color: aquamarine;
+
   }
   
   /* selected link */
   a:active {
     color: rgb(130, 255, 106);
     text-decoration: none;
+    background-color: rgb(130, 255, 106);
+    ;
+
   } 
   
   a{
     line-height: 130%;
   }
+
+  .ordrelinjer
+  {
+    display: grid;
+    grid-template-columns: repeat(3, 10%);
+    grid-template-rows: repeat(100, 5%);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+}
+.ordrelinjer {
+    padding: 3px;
+
+}
+
+#Pris, #ordrecontentPris{
+  padding: 2px;
+  text-align: right;
+}

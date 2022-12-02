@@ -14,6 +14,7 @@
   a:hover {
   color: rgb(14, 120, 0);
   text-decoration: none;
+  background-color: aquamarine;
   }
   
   /* selected link */
@@ -25,3 +26,14 @@
   a{
     line-height: 130%;
   }
+  .vareattributter
+  {
+    display: grid;
+    grid-template-columns: repeat(7, 14%);
+    grid-template-rows: repeat(100, 5%);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+}
+.attributter, #info{
+    padding: 3px;
+}
