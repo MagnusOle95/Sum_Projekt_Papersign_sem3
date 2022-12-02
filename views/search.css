@@ -21,3 +21,7 @@
     color: rgb(130, 255, 106);
     text-decoration: none;
   } 
+
+  a{
+    line-height: 130%;
+  }

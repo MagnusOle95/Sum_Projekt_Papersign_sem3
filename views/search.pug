@@ -22,7 +22,8 @@ h1 PaperSign Search
         input#value(type='text' name="vaerdi" placeholder='soegevaerdi')
         input(class='button' type="submit", value="Søg")
         <br>
+        <br>
     each data in search
-        a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= data.navn
+        a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= data.produktNr + " " +data.navn
         <br>
             

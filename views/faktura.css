@@ -68,3 +68,30 @@ input[type=number] {
     grid-column-gap: 2px;
     grid-row-gap: 2px;
 }
+ /* unvisited link */
+ a:link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+  
+  /* mouse over link */
+  a:hover {
+  color: rgb(14, 120, 0);
+  text-decoration: none;
+  }
+  
+  /* selected link */
+  a:active {
+    color: rgb(130, 255, 106);
+    text-decoration: none;
+  } 
+  
+  a{
+    line-height: 130%;
+  }

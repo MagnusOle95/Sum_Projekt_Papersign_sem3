@@ -18,11 +18,11 @@ head
     input(class="button" type="submit" value="Crud")
 
 h1 PaperSign Ordre
-  h2= "Ordre: " + specifikOrdre.ordreNr
-    H2#productHeader= "Dato: "+ specifikOrdre.dato
-    H2#productHeader= "Total: "+ specifikOrdre.samletpris
+  H2="Ordre: " + specifikOrdre.ordreNr
+  H2#productHeader= "Dato: "+ specifikOrdre.dato
+  H2#productHeader= "Samlet Pris: "+ specifikOrdre.samletpris
     each fisk in specifikOrdre.betalingsmetode
-      H2#productHeader= "Betalingsmetode: "+ fisk.betalling + " beløb: " + fisk.beloeb
+      H2#productHeader= "Betalingsmetode: "+ fisk.betalling + " beløb: " + fisk.beloeb + ",-"
     if (specifikOrdre.navn == "")
         H2#productHeader= "Anonym betaling " + specifikOrdre.navn
     else
@@ -35,9 +35,9 @@ h1 PaperSign Ordre
     .overskrift Antal
     .overskrift Total
     each data in specifikOrdre.ordrelinjer
-        div= data.produktnr
-        div= data.navn
-        div= data.pris
-        div= data.antal 
-        div= data.total
+        div#info= data.produktnr
+        div#info= data.navn
+        div#info= data.pris
+        div#info= data.antal 
+        div#info= data.total
 
