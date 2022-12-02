@@ -69,17 +69,16 @@ function getProducts() {
 // search dynamic
 
 async function searchDynamic(arr, attribut, soegevaerdi) {
-  if (arr != undefined && soegevaerdi != undefined) {
-    try {
-      soegevaerdi.toLowerCase();
-    } catch (error) {
-      console.log(error)
+  if (arr != undefined && soegevaerdi != undefined && attribut != undefined) {
+    // checks if string and converts to lowercase for easy search
+    if (typeof soegevaerdi === 'string') {
+      let tempSoeg = soegevaerdi.toString().toLowerCase();
+      soegevaerdi = tempSoeg;
     }
+    // initializing searchresults and attributSplit
     let searchresults = [];
     let attributSplit = null;
-    if (attribut == "") {
-      attribut = "navn";
-    }
+    // checks if atributepath contains (.) and if true goes to andvanced search
     if (attribut.includes(".")) {
       attributSplit = attribut.split(".");
       for (let p of arr) {
@@ -91,25 +90,31 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
     }
     else {
       for (let p of arr) {
+        // 
         let val = p[attribut];
-        try {
-          val.toLowerCase();
+        // checks if string and converts to lowercase for easy search, pushes is val contains soegevaerdi
+        if (typeof val === 'string') {
+          val.toString().toLowerCase();
+          let tempVal = val.toString().toLowerCase();
+          val = tempVal;
           if (val.includes(soegevaerdi)) {
             searchresults.push(p);
           }
-          else if (val == soegevaerdi) {
-            searchresults.push(p);
-          }
-
-        } catch (error) {
-          console.log(error);
         }
-
+        else {
+          try {
+            if (val == soegevaerdi) {
+              searchresults.push(p);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
       }
     };
-    return searchresults.sort();
+    return searchresults;
   }
-//returns false if arr or soegevaedi is undefined
+  //returns false if arr, attribut or soegevaedi is undefined
   else return false;
 }
 
@@ -117,20 +122,32 @@ async function searchDynamic(arr, attribut, soegevaerdi) {
 function searchDynamicObject(obj, arrSplit, count, soegevaerdi) {
   let found = false;
   let val = obj[arrSplit[count]];
+  if (typeof val === 'string') {
+    let tempVal = val.toString().toLowerCase();
+    val = tempVal;
+  }
+  //checks if val includes or is equal to soegevaerdi
   try {
-    val.toLowerCase();
-    if (val.includes(soegevaerdi) || val == soegevaerdi) {
+    if (val.includes(soegevaerdi)) {
       return true;
-    }
-    else if (count == arrSplit.length - 1) {
-      return false;
-    }
-
-    else {
-      found = searchDynamicObject(obj[arrSplit[count]], arrSplit, count + 1, soegevaerdi);
     }
   } catch (error) {
     console.log(error);
+  }
+  try {
+    if (val == soegevaerdi) {
+      return true;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  //if not includes or is equal to soegevaerdi then returns false if arraypath equal arrSplit.lenght -1
+  if (count == arrSplit.length - 1) {
+    return false;
+  }
+  //else take next step in arraypath
+  else {
+    found = searchDynamicObject(obj[arrSplit[count]], arrSplit, count + 1, soegevaerdi);
   }
   return found;
 }
