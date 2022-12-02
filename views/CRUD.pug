@@ -15,12 +15,12 @@ script.
     index = result.length - 1
     aktuelGroupNr = result[index]
     console.log(aktuelGroupNr)
+    localStorage.setItem('groupNr',aktuelGroupNr)
     produktsInGroup(aktuelGroupNr)
-  
+
   }
 
   let produktsInGroup = async (aktuelGroupNr) => {
-    localStorage.setItem('groupNr',aktuelGroupNr)
 
     try {
     await post("/seachProduktinGroup", {valgtGruppeNr: aktuelGroupNr});
@@ -44,10 +44,18 @@ script.
     aktuelProduktNr = result[index]
     localStorage.setItem('produktNr',aktuelProduktNr)
     console.log(aktuelProduktNr)
+    aktuelProduktNrTilServer(aktuelProduktNr)
   }
 
+  let aktuelProduktNrTilServer = async (aktuelProduktNr) => {
+    try {
+    await post("/aktuelProduktNrTilServer", {aktuelProduktNr: aktuelProduktNr});
+    window.location.href = "/CRUD"
+    }catch(e){
+    console.log("Fejl");
+    }
+  }
 
-  
     //Post metode til funktion. 
     async function post(url, objekt) {
     const respons = await fetch(url, {
@@ -100,6 +108,7 @@ script.
         var produktAntal = document.getElementById("antal").value;
         var leveradør = document.getElementById("leveradoer").value;
         var bestillingsnummer = document.getElementById("bestillingsnummer").value;
+
         console.log(produktNavn + " " + produktPris + " " + produktAntal + " " + leveradør + " " + bestillingsnummer)
         try {
         await post("/opretProdukt", {gruppeNr: localStorage.getItem('groupNr'), produktNavn:  produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer});
@@ -107,7 +116,7 @@ script.
         }catch(e){
         console.log(Fejl);
         } 
-        console.log("test")
+        console.log("test")     
     }
 
     let deleteProduct = async () => {
@@ -132,7 +141,6 @@ script.
         console.log(Fejl);
         } 
     }
-    
 
 
 doctype html
@@ -165,13 +173,28 @@ h1 PaperSign CRUD
         //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
     button#updaterProduktG(onclick='updateProductGroup()') Opdater
-    button#sletProduktG(onclick='deleteProductGroup()') slet
+    button#sletProduktG(onclick='deleteProductGroup()') Slet
 
-    each data in produktgrupper
-      if (data.gruppeNr == 14)
-        input#navnG(type='text' placeholder='Navn' value=data.navn)
-        input#beskrilseG(type='text' placeholder='Beskrivelse' value=data.beskrivelse)
-  
+    if (valgtGruppeNr == undefined)
+        input#navnG(type='text' placeholder='Navn')
+        input#beskrilseG(type='text' placeholder='Beskrivelse')
+
+    each data in produktgrupper 
+      if (data.gruppeNr == valgtGruppeNr)
+        input#navnG(type='text' placeholder='Navn' value = data.navn)
+        input#beskrilseG(type='text' placeholder='Beskrivelse' value = data.beskrivelse)
+        - break 
+    
+    //- - var n = 0;
+    //- while n < produktgrupper.length
+    //-   if (produktgrupper[n].gruppeNr == valgtGruppeNr)
+    //-     input#navnG(type='text' placeholder='Navn' value = produktgrupper[n].navn)
+    //-     input#beskrilseG(type='text' placeholder='Beskrivelse' value = produktgrupper[n].beskrivelse)
+    //-   else
+    //-     input#navnG(type='text' placeholder='Navn')
+    //-     input#beskrilseG(type='text' placeholder='Beskrivelse')
+
+
   .child2
     p#titleB  
     p#titleK Produkter
@@ -182,10 +205,22 @@ h1 PaperSign CRUD
     button#tilfoejProdukt(onclick='createProduct()') Tilf&oslash;j
     button#updateProdukt(onclick='updateProduct()') Opdater
     button#sletProdukt(onclick='deleteProduct()') Slet
-    input#navn(type='text' placeholder='Navn')
-    input#pris(type='text' placeholder='Pris')
-    input#antal(type='text' placeholder='Antal')
-    input#leveradoer(type='text' placeholder='Leverandør')
-    input#bestillingsnummer(type='text' placeholder='Bestillingsnummer')
+  
+    if (valgtProduktNr == undefined)
+        input#navn(type='text' placeholder='Navn')
+        input#pris(type='text' placeholder='Pris')
+        input#antal(type='text' placeholder='Antal')
+        input#leveradoer(type='text' placeholder='Leverandør')
+        input#bestillingsnummer(type='text' placeholder='Bestillingsnummer')
+        
+    each data in ProduktInProduktGoup
+      if (data.produktNr == valgtProduktNr)
+        input#navn(type='text' placeholder='Navn' value = data.navn)
+        input#pris(type='text' placeholder='Pris' value = data.pris)
+        input#antal(type='text' placeholder='Antal' value = data.antal)
+        input#leveradoer(type='text' placeholder='Leverandør' value = data.leveradør)
+        input#bestillingsnummer(type='text' placeholder='Bestillingsnummer' value = data.bestillingsnummer)
+        - break 
+
     //input#tilfoejAtr(type='text' placeholder='Skriv tekst her')
     //button#tilfoejAtrBut Tilf&oslash;j

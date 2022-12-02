@@ -70,6 +70,8 @@ let ProduktInProduktGoup = [];
 let kurv = [];
 let pgid = -1;
 let total = 0;
+let valgtGruppeNrS;
+let valgtProduktNrS;
 
 async function getAllOrdrer() {
     let fakturaCollection = collection(db, "ordrer");
@@ -85,9 +87,9 @@ async function getAllOrdrer() {
 
 //Numre til id af produkter og produktgrupper. 
 let result = await getAllNumbers();
-let gruppeNr = result[2].gruppeNr;
+let gruppeNr = result[1].gruppeNr;
 let produktNr = result[3].produktNr;
-let ordreNr = result[1].ordreNr;
+let ordreNr = result[2].ordreNr;
 let fakturaNR = result[0].fakturaNr;
 console.log(result)
 
@@ -189,6 +191,7 @@ app.post("/opretProdukt", async (request, response) => {
     produktNr++;
     let produktnrUpdate = { produktNr: produktNr }
     await setDoc(doc(db, "nummre/produktNr"), produktnrUpdate)
+    valgtProduktNrS = undefined;
     response.sendStatus(201);
 });
 
@@ -201,10 +204,13 @@ app.post('/deleteProdukt', async (request, response) => {
         if(produkter[i].produktNr == aktuelProduktNr){
             produkter.splice(i,1);
         }
+    for(let i = 0; i < ProduktInProduktGoup.length; i++){
         if(ProduktInProduktGoup[i].produktNr == aktuelProduktNr){
             ProduktInProduktGoup.splice(i,1);
+            }
         }
-    }
+     }
+    valgtProduktNrS = undefined;
     response.sendStatus(201)
 })
 
@@ -220,15 +226,14 @@ app.post('/updateProdukt', async (request, response) => {
         if(produkter[i].produktNr == aktuelProduktNr){
             produkter[i] = {gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
         }
+    }
+    for(let i = 0; i < ProduktInProduktGoup.length; i++){
         if(ProduktInProduktGoup[i].produktNr == aktuelProduktNr){
             ProduktInProduktGoup[i] = {gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
         }
     }
-
+    valgtProduktNrS = undefined;
     response.sendStatus(201)
-    console.log("Test888")
-    console.log(produkter)
-    console.log(ProduktInProduktGoup)
   })
 
 
@@ -267,12 +272,12 @@ app.post("/underskriftSend", async (request,response)=>{
 
 app.get("/crud/", async (request, response) => {
     produktgrupper = await getAllProductgroups();
-    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup });
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS });
 });
 
 app.get("/crud/:data", async (request, response) => {
   let produktID = request.params.data;
-  response.render("crud", { produktliste: produkter, produktID });
+  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, produktID: produktID });
 });
 
 app.get("/ordre/:data", async (request, response) => {
@@ -282,7 +287,8 @@ app.get("/ordre/:data", async (request, response) => {
 });
 
 app.get("/faktura/", async (request, response) => {
-    response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
+    ordrer = await getAllOrdrer();
+    response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
 // app.get("/kasse", async (request, response) => {
@@ -343,7 +349,7 @@ app.get("/kasserabat", async (request, response) => {
     //get index of product
     let productIndex = containsOrdre(request.query.kurv)
     let rabat = request.query.rabat;
-    if(rabat != undefined && productIndex!==false){
+    if (rabat != undefined && productIndex !== false) {
         kurv[productIndex].pris = rabat
         kurv[productIndex].total = Number(kurv[productIndex].pris) * Number(kurv[productIndex].antal)
     }
@@ -353,11 +359,15 @@ app.get("/kasserabat", async (request, response) => {
 
 app.post("/seachProduktinGroup", async (request, response) => {
     const { valgtGruppeNr } = request.body;
-    console.log(produkter)
-    console.log(valgtGruppeNr)
     ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNr)
-    console.log(ProduktInProduktGoup);
-    console.log("Over")
+    valgtGruppeNrS = valgtGruppeNr;
+    valgtProduktNrS = undefined;
+    response.sendStatus(201);
+})
+
+app.post("/aktuelProduktNrTilServer", async (request, response) => {
+    const { aktuelProduktNr } = request.body;
+    valgtProduktNrS = aktuelProduktNr;
     response.sendStatus(201);
 })
 
@@ -392,6 +402,9 @@ function addToKurv(antal, navn, pris) {
     let ordre = { antal: antal, navn: navn, pris: pris, total: total };
     let found = containsOrdre(navn);
     if (found !== false) {
+        if (kurv[found].pris != pris) {
+            total=antal*kurv[found].pris;
+        }
         kurv[found].total += total
         kurv[found].antal = Number(kurv[found].antal) + Number(antal)
     }
