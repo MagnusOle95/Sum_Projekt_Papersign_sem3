@@ -61,15 +61,8 @@ input[type=number] {
 
 .parent {
     display: grid;
-    grid-template-columns: repeat(2, 35%);
+    grid-template-columns: repeat(3, 35%);
     grid-template-rows: repeat(1, 100px);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
 }
-
-/* button:disabled,
-button[disabled] {
-    border: 1px solid #999999;
-    background-color: #ed0000;
-    color: #000000;
-} */

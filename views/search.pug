@@ -8,7 +8,7 @@ head
   script(src='logik.js')
   title PaperSign
 .tabbtn
-  form(action = "/kasse" method="get")
+  form(action = "/" method="get")
     input(class="button" type="submit" value="Kasse")
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
@@ -17,11 +17,11 @@ head
 h1 PaperSign Search
   h2 søgning
     form.div2(action = "/search", method="get")
-        input#atribut(type='text' name="attribut" placeholder='attribute')
-        input#value(type='text' name="vaerdi" placeholder='soegevaerdi')
-        input(class='button' type="submit", value="Søg")
-        <br>
+      input#atribut(type='text' name="attribut" placeholder='attribute')
+      input#value(type='text' name="vaerdi" placeholder='soegevaerdi')
+      input(class='button' type="submit", value="Søg")
+      <br>
     each data in search
-        a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= 'Navn: ' + data.navn
-        <br>
+      a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= 'Navn: ' + data.navn
+      <br>
             

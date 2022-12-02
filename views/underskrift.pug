@@ -8,24 +8,23 @@ head
     include common.css
   title Signature
 .tabbtn
-  form(action = "/kasse" method="get")
+  form(action = "/" method="get")
     input(class="button" type="submit" value="Kasse")
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
+h2 PaperSign Faktura
 #app
   canvas#sig
 .funct
   input#text(type='text' placeholder='Navn' name="Navn" required)
   button#gemSig.gem(type='button') Gem
   button#sletSig.slet(type='button') Slet 
-
-p#titleP 
-        select#produktList(name='kurv' multiple="")
-          each k of kurv
-            option()= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
-        input(type="text" placeholder="00kr" disabled)  
+  select#varelist(name='kurv' multiple="")
+    each k of kurv
+      option()= k.antal +'stk. ' + k.navn + ' ' + k.pris +' Total:' + k.total
+  input#total(type="text" placeholder="00kr" disabled)  
 #image
 script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js' integrity='sha512-cLuyDTDg9CSseBSFWNd4wkEaZ0TBEpclX0zD3D6HjI19pO39M58AgJ1SjHp6c7ZOp0/OCRcC2BCvvySU9KJaGw==' crossorigin='anonymous' referrerpolicy='no-referrer')
 script(src='https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js')
@@ -58,7 +57,7 @@ script(type='module').
   doc.addImage(imageData,"JPEG",60,200,80,80)
   let count=0;
   let i=0
-  let kurv=document.getElementById("produktList")
+  let kurv=document.getElementById("varelist")
   for(let k of kurv){
     doc.setFontSize(15);
     doc.text('antal.  ' + 'Navn. ' +'                   pris  Total',10,30)
@@ -69,4 +68,5 @@ script(type='module').
     i++;
   }
   doc.save(`underskrift ${text}.pdf`)
+  alert("saved")
   }
