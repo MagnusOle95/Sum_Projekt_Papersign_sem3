@@ -128,14 +128,21 @@ script.
         } 
     }
 
-    let updateProduct = async () => {
+    let updateProduct = async (openedBySeach) => {
         var produktNavn = document.getElementById("navn").value;
         var produktPris = document.getElementById("pris").value;
         var produktAntal = document.getElementById("antal").value;
         var leveradør = document.getElementById("leveradoer").value;
         var bestillingsnummer = document.getElementById("bestillingsnummer").value;
+        console.log(openedBySeach)
         try {
-        await post("/updateProdukt", {aktuelProduktNr: localStorage.getItem('produktNr'), gruppeNr: localStorage.getItem('groupNr'), produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
+          if(openedBySeach == 0){
+            await post("/updateProdukt", {aktuelProduktNr: localStorage.getItem('produktNr'), gruppeNr: localStorage.getItem('groupNr'), produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
+          }
+          //Virker ikke ordenligt endnu
+          else if(openedBySeach == 1){
+            await post("/updateProdukt", {aktuelProduktNr: valgtProduktNr, gruppeNr: valgtGruppeNr, produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
+          }
         window.location.href = "/CRUD"
         }catch(e){
         console.log(Fejl);
@@ -203,7 +210,7 @@ h1 PaperSign CRUD
           option()= 'Navn: ' + data.navn + " " + data.produktNr
           //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProdukt(onclick='createProduct()') Tilf&oslash;j
-    button#updateProdukt(onclick='updateProduct()') Opdater
+    button#updateProdukt(onclick='updateProduct('+openedBySeach+')') Opdater
     button#sletProdukt(onclick='deleteProduct()') Slet
   
     if (valgtProduktNr == undefined)
