@@ -8,9 +8,26 @@
 
 .funct{
     display: grid;
-    grid-template-columns: repeat(3, 235px);
-    grid-template-rows: repeat(1, 100%);
+    grid-template-columns: repeat(3, 235.5px);
+    grid-template-rows: repeat(8, 24%);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     padding: 2px;
+}
+
+#varelist {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 5;
+}
+
+html, body{
+    margin: 3px;
+}
+
+#total{
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: right;
 }

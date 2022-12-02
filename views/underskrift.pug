@@ -8,12 +8,13 @@ head
     include common.css
   title Signature
 .tabbtn
-  form(action = "/kasse" method="get")
+  form(action = "/" method="get")
     input(class="button" type="submit" value="Kasse")
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
+h2 PaperSign Faktura
 #app
   canvas#sig
 .funct

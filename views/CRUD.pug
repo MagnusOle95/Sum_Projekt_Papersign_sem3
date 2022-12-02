@@ -1,4 +1,13 @@
-
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  style 
+    include crud.css
+    include common.css
+  script(src='logik.js')
+  
 script.
 
   //Valg af produktgruppe. 
@@ -68,18 +77,18 @@ script.
     if (respons.status !== 201) // Created
     throw new Error(respons.status);
     return await respons.text();
-    }
+  }
 
-    let createProductgroup = async () => {
-        var produktGruppeNavn = document.getElementById("navnG").value;
-        var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
-        try {
-        await post("/opretProduktGruppe", {produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse});
-        window.location.href = "/CRUD"
-        }catch(e){
-        console.log("Fejl");
-        } 
-    }
+  let createProductgroup = async () => {
+    var produktGruppeNavn = document.getElementById("navnG").value;
+    var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
+    try {
+    await post("/opretProduktGruppe", {produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse});
+    window.location.href = "/CRUD"
+    }catch(e){
+      console.log("Fejl");
+    } 
+  }
 
     let deleteProductGroup = async () => {
       console.log("Lort")
@@ -91,15 +100,15 @@ script.
         } 
     }
 
-    let updateProductGroup = async () => {
-        var produktGruppeNavn = document.getElementById("navnG").value;
-        var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
-        try {
-        await post("/updateProduktGroup", {aktuelGroupNr: localStorage.getItem('groupNr'),produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse });
-        window.location.href = "/CRUD"
-        }catch(e){
-        console.log("Fejl");
-        } 
+  let updateProductGroup = async () => {
+    var produktGruppeNavn = document.getElementById("navnG").value;
+    var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
+    try {
+    await post("/updateProduktGroup", {aktuelGroupNr: localStorage.getItem('groupNr'),produktGruppeNavn: produktGruppeNavn, produktGruppeBeskrivelse: produktGruppeBeskrivelse });
+    window.location.href = "/CRUD"
+    }catch(e){
+    console.log("Fejl");
+    } 
     }
     
     let createProduct = async () => {
@@ -154,7 +163,7 @@ head
   script(src='logik.js')
   title PaperSign
 .tabbtn
-  form(action = "/kasse" method="get")
+  form(action = "/" method="get")
     input(class="button" type="submit" value="Kasse")
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
@@ -208,11 +217,12 @@ h1 PaperSign CRUD
   
     if (valgtProduktNr == undefined)
         input#navn(type='text' placeholder='Navn')
-        input#pris(type='text' placeholder='Pris')
-        input#antal(type='text' placeholder='Antal')
+        input#pris(type='number' placeholder='Pris')
+        input#antal(type='number' placeholder='Antal')
         input#leveradoer(type='text' placeholder='Leverandør')
         input#bestillingsnummer(type='text' placeholder='Bestillingsnummer')
         
+
     each data in ProduktInProduktGoup
       if (data.produktNr == valgtProduktNr)
         input#navn(type='text' placeholder='Navn' value = data.navn)

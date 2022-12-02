@@ -72,6 +72,10 @@ let pgid = -1;
 let total = 0;
 let valgtGruppeNrS;
 let valgtProduktNrS;
+let betalt = 0;
+let betallinger = [];
+let darkmode = true;
+
 
 async function getAllOrdrer() {
     let fakturaCollection = collection(db, "ordrer");
@@ -140,10 +144,15 @@ async function getAllProducts() {
 }
 
 app.get("/", async (request, response) => {
-    pgid = request.query.pgroup;
-    let p = await searchProductByGroupNr(pgid)
+    let temppgid = request.query.pgroup;
+    if (temppgid != undefined) {
+        pgid = temppgid
+    }
+    else if (pgid == -1) { pgid = 'visalt' }
+    let p = await searchProductByGroupNr(pgid);
     let pg = await getAllProductgroups();
-    response.render("kasse", { produkter: p, produktgrupper: pg });
+    let lavP = lagerStatus();    
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt), lavP: lavP });
 });
 
 // app.post("/opretProdukt", async (request, response) => {
@@ -285,17 +294,42 @@ app.get("/faktura/", async (request, response) => {
     response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
-// app.get("/kasse", async (request, response) => {
-//     pgid = request.query.pgroup;
-//     // kurv = request.query.kurv;
-//     let p = await searchProductByGroupNr(pgid);
-//     let pg = await getAllProductgroups();
-//     response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv});
-// });
+//---------------------------------------------------------------------------------------------(Kasse) 
 
+//TODO fjern tilføj delen fra /kasse og lav forbindelse til /kassetilfoej paa tilfoej knap
+
+//Kasse gennere kassen
 app.get("/kasse", async (request, response) => {
-    // let test = request.
-    // request.
+    let temppgid = request.query.pgroup;
+    if (temppgid != undefined) {
+        pgid = temppgid
+    }
+    let p = await searchProductByGroupNr(pgid);
+    let pg = await getAllProductgroups();
+    //add to kurv
+    response.render("kasse", { darkmode: darkmode, pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
+});
+
+//Kasse annulere køb
+app.get("/kasseannullere", async (request, response) => {
+    let temppgid = request.query.pgroup;
+    if (temppgid != undefined) {
+        pgid = temppgid
+    }
+    // let antal = request.query.antal;
+    // let produktList = request.query.produktList;
+    let p = await searchProductByGroupNr(pgid);
+    let pg = await getAllProductgroups();
+    //add to kurv
+    kurv = [];
+    betallinger = [];
+    betalt = 0;
+    total = 0;
+    response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
+});
+
+//Kasse tilføj produkt til kurv
+app.get("/kassetilfoej", async (request, response) => {
     let temppgid = request.query.pgroup;
     if (temppgid != undefined) {
         pgid = temppgid
@@ -307,12 +341,13 @@ app.get("/kasse", async (request, response) => {
     //add to kurv
     if (antal != undefined && produktList != undefined) {
         let splitProduct = produktList.split(".")
-        addToKurv(antal, splitProduct[0], splitProduct[1]);
+        addToKurv(antal, splitProduct[0], splitProduct[1], splitProduct[2]);
         sumTotal();
     }
-    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total });
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
 });
 
+//Kasse slet produkt fra kurv
 app.get("/kasseslet", async (request, response) => {
     // check if pgid is changed and chang
     let temppgid = request.query.pgroup;
@@ -327,17 +362,16 @@ app.get("/kasseslet", async (request, response) => {
     //splice
     kurv.splice(productIndex, 1);
     sumTotal();
-    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total });
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
 });
 
+//Kasse set rabat på produkt (pris pr stk pris ændring)
 app.get("/kasserabat", async (request, response) => {
     // check if pgid is changed and chang
     let temppgid = request.query.pgroup;
-    let tempp = request.query.pgroup;
     if (temppgid != undefined) {
         pgid = temppgid
     }
-    // let tempkurv = request.query.kurv;
     let p = await searchProductByGroupNr(pgid);
     let pg = await getAllProductgroups();
     //get index of product
@@ -348,8 +382,85 @@ app.get("/kasserabat", async (request, response) => {
         kurv[productIndex].total = Number(kurv[productIndex].pris) * Number(kurv[productIndex].antal)
     }
     sumTotal();
-    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total });
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
 });
+
+//Kasse set rabat på produkt (pris pr stk pris ændring)
+app.get("/kassebetal", async (request, response) => {
+    // check if pgid is changed and chang
+    let temppgid = request.query.pgroup;
+    if (temppgid != undefined) {
+        pgid = temppgid
+    }
+    let p = await searchProductByGroupNr(pgid);
+    let pg = await getAllProductgroups();
+    let beloeb = request.query.beloeb;
+    let betalling = request.query.betalling;
+    if (beloeb != undefined && betalling != undefined) {
+        betalBeloeb(beloeb, betalling)
+    }
+    //genenmføre købet
+    if (betalt >= total) {
+        //Opretter ordre
+        let d = new Date();
+        let datoidag = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+        let nyOrdreFirebase = { samletpris: total, dato: datoidag, betalingsmetode: betallinger, navn: "", ordreNr: ordreNr, ordrelinjer: kurv, underskrift: false }
+        //Sender odre til firebase
+        await setDoc(doc(db, "ordrer", `${ordreNr}`), nyOrdreFirebase)
+        ordreNr++;
+        let ordreNrUpdate = { ordreNr: ordreNr }
+        await setDoc(doc(db, "nummre/ordreNr"), ordreNrUpdate)
+        // Opdatere lager beholdningen på firebase
+        for (let k of kurv) {
+            // await setDoc(doc(db, "ordrer", `${ordreNr}`), nyOrdreFirebase)
+            // ordreNr++;
+            let produkterFB = await getAllProducts();
+            // let pIndexFB = produkterFB.indexOf(k.produktnr)
+            let pIndexFB = findDetSkideProdukt(produkterFB, k.produktnr, "produktNr")
+            let productFB = produkterFB[pIndexFB]
+            let nyAntal = produkterFB[pIndexFB].antal - k.antal
+            produkterFB[pIndexFB].antal = nyAntal
+            await setDoc(doc(db, "varer/" + k.produktnr), productFB)
+        }
+        //Nulstiller kasse apperatet 
+        kurv = [];
+        betallinger = [];
+        betalt = 0;
+        total = 0;
+        //Opdater lokal data
+        produkter = await getAllProducts();
+        // fakturaer = await getAllFakturaer();
+        ordrer = await getAllOrdrer();
+    }
+    // Beregner total
+    sumTotal();
+    // Genindlæser kasse apperatet 
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
+});
+
+//   app.post("/opretOrdre", async (request, response) => {
+//     const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
+//     let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
+//     await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
+//     ordreNr++;
+//     let ordreNrUpdate={ordreNr: ordreNr}
+//     await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
+//   })
+
+//Kasse gennemfør betalt køb
+// app.post("/kassegennemfoerkoeb", async (request, response) => {
+//     let d = new Date();
+//     let datoidag = d.getDate + "-" + d.getMonth + "-" + d.getFullYear;
+//     let nyOrdreFirebase = { samletpris: total, dato: datoidag, betalingsmetode: betallinger, navn: "Intet", ordreNr: ordreNr, ordrelinjer: kurv, underskrift: false }
+//     await setDoc(doc(db, "ordrer", `${ordreNr}`), nyOrdreFirebase)
+//     ordreNr++;
+//     let ordreNrUpdate = { ordreNr: ordreNr }
+//     await setDoc(doc(db, "nummre/ordreNr"), ordreNrUpdate)
+//     response.sendStatus(201);
+// });
+
+//---------------------------------------------------------------------------------------------()
+
 
 app.post("/seachProduktinGroup", async (request, response) => {
     const { valgtGruppeNr } = request.body;
@@ -391,13 +502,13 @@ function searchProductByGroupNr(gruppeNr) {
     return list;
 }
 
-function addToKurv(antal, navn, pris) {
+function addToKurv(antal, pNr, navn, pris) {
     let total = antal * pris;
-    let ordre = { antal: antal, navn: navn, pris: pris, total: total };
+    let ordre = { produktnr: pNr, antal: antal, navn: navn, pris: pris, total: total };
     let found = containsOrdre(navn);
     if (found !== false) {
         if (kurv[found].pris != pris) {
-            total=antal*kurv[found].pris;
+            total = antal * kurv[found].pris;
         }
         kurv[found].total += total
         kurv[found].antal = Number(kurv[found].antal) + Number(antal)
@@ -438,4 +549,35 @@ function getOrdre(ordreID){
       return ordrer[i];
     }
   }
+}
+
+
+function betalBeloeb(beloeb, betalling) {
+    betalt += Number(beloeb);
+    betallinger.push({ beloeb: beloeb, betalling: betalling });
+}
+
+function findDetSkideProdukt(produkter, soegevaerdi, atribute) {
+    let found = false
+    let i = 0;
+    while (i < produkter.length && found === false) {
+        let p = produkter[i];
+        if (p[atribute] == soegevaerdi) {
+            found = i;
+        }
+        else {
+            i++;
+        }
+    }
+    return found;
+}
+
+function lagerStatus(){
+    let lavLagerStatus = [];
+    for (let p of produkter) {
+        if(p.antal<=5){
+            lavLagerStatus.push(p)
+        }
+    }
+    return lavLagerStatus;
 }
