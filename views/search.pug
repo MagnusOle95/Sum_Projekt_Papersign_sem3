@@ -33,7 +33,8 @@ h1 PaperSign Search
     .attributter Produktgruppenr
     each data in search
         a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.produktNr
-        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.navn
+        a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID + '')= 'Navn: ' + data.navn
+        //a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= data.navn
         a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.pris
         a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.antal 
         a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.leveradør 
