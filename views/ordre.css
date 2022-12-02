@@ -72,3 +72,32 @@ input[type=number] {
     padding: 3px;
 
 }
+
+ /* unvisited link */
+ a#info:link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+  
+  /* visited link */
+  a#info:visited {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+  
+  /* mouse over link */
+  a#info:hover {
+  color: rgb(14, 120, 0);
+  text-decoration: none;
+  background-color: aquamarine;
+  }
+  
+  /* selected link */
+  a#info:active {
+    color: rgb(130, 255, 106);
+    text-decoration: none;
+  } 
+
+  a{
+    line-height: 130%;
+  }

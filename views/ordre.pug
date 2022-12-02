@@ -35,9 +35,9 @@ h1 PaperSign Ordre
     .overskrift Antal
     .overskrift Total
     each data in specifikOrdre.ordrelinjer
-        div#info= data.produktnr
-        div#info= data.navn
-        div#info= data.pris
-        div#info= data.antal 
-        div#info= data.total
+        a#info(class='productHeader' href='/CRUD/'+ data.produktnr +'')= data.produktnr
+        a#info(class='productHeader' href='/CRUD/'+ data.produktnr +'')= data.navn
+        a#hest= data.pris
+        a#hest= data.antal 
+        a#hest= data.total
 
