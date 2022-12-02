@@ -23,7 +23,19 @@ h1 PaperSign Search
         input(class='button' type="submit", value="Søg")
         <br>
         <br>
+  .vareattributter
+    .attributter Varenummer
+    .attributter Navn
+    .attributter Pris
+    .attributter Antal
+    .attributter Leverandør 
+    .attributter Bestillingsnummer 
+    .attributter Produktgruppenr
     each data in search
-        a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= data.produktNr + " " +data.navn
-        <br>
-            
+        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.produktNr
+        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.navn
+        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.pris
+        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.antal 
+        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.leveradør 
+        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.bestillingsnummer
+        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.gruppeNr 
