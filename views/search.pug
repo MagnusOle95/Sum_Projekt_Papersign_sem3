@@ -22,6 +22,7 @@ h1 PaperSign Search
         input(class='button' type="submit", value="Søg")
         <br>
     each data in search
-        a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= 'Navn: ' + data.navn
+        a#productHeader(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID + '')= 'Navn: ' + data.navn
+        //a#productHeader(class='productHeader' href='/CRUD/'+ data.docID +'')= 'Navn: ' + data.navn
         <br>
             

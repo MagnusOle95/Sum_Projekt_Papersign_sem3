@@ -162,6 +162,7 @@ app.post("/opretProduktGruppe", async (request, response) => {
     gruppeNr++;
     let gruppenrUpdate = { gruppeNr: gruppeNr }
     await setDoc(doc(db, "nummre/gruppeNr"), gruppenrUpdate)
+    valgtGruppeNrS = undefined;
     response.sendStatus(201);
 });
 
@@ -170,6 +171,7 @@ app.post('/deleteProductGroup', async (request, response) => {
     console.log(aktuelGroupNr + " Se her")
     await deleteDoc(doc(db, 'produktgrupper', aktuelGroupNr));
     response.sendStatus(201)
+    valgtGruppeNrS = undefined;
     console.log(aktuelGroupNr)
 })
 
@@ -177,6 +179,7 @@ app.post('/updateProduktGroup', async (request, response) => {
     const { aktuelGroupNr, produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
     let updatetProduktGroup = { navn: produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: aktuelGroupNr }
     await setDoc(doc(db, "produktgrupper/" + aktuelGroupNr), updatetProduktGroup)
+    valgtGruppeNrS = undefined;
     response.sendStatus(201)
 })
 
@@ -266,12 +269,16 @@ app.get("/underskrift", async (request, response) => {
 
 app.get("/crud/", async (request, response) => {
     produktgrupper = await getAllProductgroups();
-    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS });
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, openedBySeach: 0 });
 });
 
-app.get("/crud/:data", async (request, response) => {
-  let produktID = request.params.data;
-  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, produktID: produktID });
+app.get("/crud/:id&:id2", async (request, response) => {
+  let produktGId = request.params.id;
+  let produktId = request.params.id2
+  console.log("gruppe id = " + produktGId + " Produkt id =" + produktId)
+  ProduktInProduktGoup = searchProductByGroupNr(produktGId)
+  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: produktGId, valgtProduktNr: produktId, openedBySeach: 1 });
+
 });
 
 app.get("/ordre/:data", async (request, response) => {
