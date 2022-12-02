@@ -261,12 +261,13 @@ app.post('/updateProdukt', async (request, response) => {
 
 
 app.get("/underskrift", async (request, response) => {
-    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv, total: total,fakturaNR: fakturaNR});
+    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv, total: total,fakturaNr: fakturaNR});
 });
-app.post("/underskriftSend", async (request,response)=>{
-    let faktura={fakturaNR: fakturaNR}
-    faktura++;
-    await setDoc(doc(db,"nummre/fakturaNr"),faktura)
+app.post("/underskrift", async (request,response)=>{
+    let fakturanrUpdate = { fakturaNR: fakturaNR }
+    fakturaNR++;
+    await setDoc(doc(db, "nummre/fakturaNr"), fakturanrUpdate)
+    response.sendStatus(201);
 })
 
 
