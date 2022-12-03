@@ -1,120 +1,128 @@
-
 /* Font */
 
 p,
 input,
 button,
 select {
-    font-size: 125%;
+  font-size: 125%;
 }
 
-body{
-    font-family: 'SF Pixelate', sans-serif;
+body {
+  font-family: 'SF Pixelate', sans-serif;
 }
 
 /* Tab Buttons */
 
 .tabbtn {
-    display: grid;
-    grid-template-columns: repeat(6, 100px);
-    /* grid-column-gap: 2px; */
-    grid-row-gap: 2px;
-    /* background-color: red; */
-    /* box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(6, 100px);
+  /* grid-column-gap: 2px; */
+  grid-row-gap: 2px;
+  /* background-color: red; */
+  /* box-sizing: border-box;
     padding: 5px;
     margin: 0; */
 }
 
 
 .tabbtn input {
-    /* margin: 2px; */
-    width: 100px;
-    height: 100%;
+  /* margin: 2px; */
+  width: 100px;
+  height: 100%;
 }
 
 /* Background */
 
 body {
-    background-image: linear-gradient(white, gray);
-    background-attachment: fixed;
-    height: 100%;
+  background-image: linear-gradient(white, gray);
+  background-attachment: fixed;
+  height: 100%;
 }
 
 /* Set number inputs to have no arrows */
 /* others */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* firefox */
 input[type=number] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
-.dark-mode {
-    background-image: linear-gradient(rgb(43, 43, 43), rgb(23, 23, 23));
-    background-attachment: fixed;
-    height: 100%;    
-    color: white;
-  }
-
-  .parent
-  {
-    display: grid;
-    grid-template-columns: repeat(5, 35%);
-    grid-template-rows: repeat(10, 100px);
-    grid-column-gap: 2px;
-    grid-row-gap: 2px;
+.parent {
+  display: grid;
+  grid-template-columns: repeat(5, 35%);
+  grid-template-rows: repeat(10, 100px);
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
 }
- /* unvisited link */
- a:link {
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-  }
-  
-  /* visited link */
-  a:visited {
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-  }
-  
-  /* mouse over link */
-  a:hover {
+
+/* unvisited link */
+a:link {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
   color: rgb(14, 120, 0);
   text-decoration: none;
   background-color: aquamarine;
 
-  }
-  
-  /* selected link */
-  a:active {
-    color: rgb(130, 255, 106);
-    text-decoration: none;
-    background-color: rgb(130, 255, 106);
-    ;
-
-  } 
-  
-  a{
-    line-height: 130%;
-  }
-
-  .ordrelinjer
-  {
-    display: grid;
-    grid-template-columns: repeat(3, 10%);
-    grid-template-rows: repeat(100, 5%);
-    grid-column-gap: 2px;
-    grid-row-gap: 2px;
 }
+
+/* selected link */
+a:active {
+  color: rgb(130, 255, 106);
+  text-decoration: none;
+  background-color: rgb(130, 255, 106);
+  ;
+
+}
+
+a {
+  line-height: 130%;
+}
+
 .ordrelinjer {
-    padding: 3px;
+  display: grid;
+  grid-template-columns: repeat(3, 10%);
+  grid-template-rows: repeat(100, 5%);
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+  overflow: scroll;
+  background-color: red;
+}
+
+.ordrelinjerOverskrift {
+  display: grid;
+  grid-template-columns: repeat(3, 10%);
+  grid-template-rows: repeat(1, 5%);
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
 
 }
 
-#Pris, #ordrecontentPris{
+.ordrelinjer {
+  padding: 3px;
+
+}
+
+#Pris,
+#ordrecontentPris {
   padding: 2px;
   text-align: right;
+}
+
+body {
+  overflow: hidden;
 }
