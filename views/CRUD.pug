@@ -187,9 +187,9 @@ h1 PaperSign CRUD
       each data in produktgrupper
         option()= data.navn + " "+ data.gruppeNr
         //option(value="" placeholder="")= 'Navn: ' + data.navn
-    button#tilfoejProduktG(onclick='createProductgroup()') Tilf&oslash;j
-    button#updaterProduktG(onclick='updateProductGroup()') Opdater
-    button#sletProduktG(onclick='deleteProductGroup()') Slet
+    button#tilfoejProduktG(onclick='if (confirm("Er du sikker på at du vil oprette denne produktgruppe?")==true) createProductgroup()') Tilf&oslash;j
+    button#updaterProduktG(onclick='if (confirm("Er du sikker på at du vil opdatere denne produktgruppe?") updateProductGroup()') Opdater
+    button#sletProduktG(onclick='if (confirm("Er du sikker på at du vil slette denne produktgruppe?") deleteProductGroup()') Slet
 
     if (valgtGruppeNr == undefined)
         input#navnG(type='text' placeholder='Navn')
@@ -197,8 +197,8 @@ h1 PaperSign CRUD
 
     each data in produktgrupper 
       if (data.gruppeNr == valgtGruppeNr)
-        input#navnG(type='text' placeholder='Navn' value = data.navn)
-        input#beskrilseG(type='text' placeholder='Beskrivelse' value = data.beskrivelse)
+        input#navnG(title="Navn" type='text' placeholder='Navn' value = data.navn)
+        input#beskrilseG(title="Beskrivelse" type='text' placeholder='Beskrivelse' value = data.beskrivelse)
         - break 
     
     //- - var n = 0;
@@ -218,9 +218,9 @@ h1 PaperSign CRUD
       each data in ProduktInProduktGoup
           option()= 'Navn: ' + data.navn + " " + data.produktNr
           //option(value="" placeholder="")= 'Navn: ' + data.navn
-    button#tilfoejProdukt(onclick='createProduct()') Tilf&oslash;j
-    button#updateProdukt(onclick='updateProduct('+openedBySeach+')') Opdater
-    button#sletProdukt(onclick='deleteProduct()') Slet
+    button#tilfoejProdukt(onclick='if (confirm("Er du sikker på at du vil oprette dette produkt?") createProduct()') Tilf&oslash;j
+    button#updateProdukt(onclick='if (confirm("Er du sikker på at du vil opdatere dette produkt?") updateProduct('+openedBySeach+')') Opdater
+    button#sletProdukt(onclick='if (confirm("Er du sikker på at du vil slette dette produkt?") deleteProduct()') Slet
   
     if (valgtProduktNr == undefined)
         input#navn(type='text' placeholder='Navn')
@@ -232,11 +232,11 @@ h1 PaperSign CRUD
 
     each data in ProduktInProduktGoup
       if (data.produktNr == valgtProduktNr)
-        input#navn(type='text' placeholder='Navn' value = data.navn)
-        input#pris(type='text' placeholder='Pris' value = data.pris)
-        input#antal(type='text' placeholder='Antal' value = data.antal)
-        input#leveradoer(type='text' placeholder='Leverandør' value = data.leveradør)
-        input#bestillingsnummer(type='text' placeholder='Bestillingsnummer' value = data.bestillingsnummer)
+        input#navn(title="Navn" type='text' placeholder='Navn' value = data.navn)
+        input#pris(title="Pris" type='text' placeholder='Pris' value = data.pris)
+        input#antal(title="Antal" type='text' placeholder='Antal' value = data.antal)
+        input#leveradoer(title="Leverandør" type='text' placeholder='Leverandør' value = data.leveradør)
+        input#bestillingsnummer(title="Bestillingsnummer" type='text' placeholder='Bestillingsnummer' value = data.bestillingsnummer)
         - break 
 
     //input#tilfoejAtr(type='text' placeholder='Skriv tekst her')
