@@ -18,7 +18,6 @@ head
     input(class="button" type="submit" value="Crud")
   button(hidden class="button" id="dmode" value="Dark Mode" onclick='(function(){var element = document.body; element.classList.toggle("dark-mode"); darkmode=true;})();')    
 h1#tabTitle PaperSign Kasse
-//- img(src='/images/papersignLogo.png') 
 .parent
   .child1
     form.div2(type="hidden" action = "/search", method="get")
@@ -80,4 +79,7 @@ h1#tabTitle PaperSign Kasse
           each lp of lavP
             a= "Navn: " + lp.navn + " antal: " + lp.antal
             <br>
+#psLogo
+  img(src='/images/papersignLogo.png') 
+
 
