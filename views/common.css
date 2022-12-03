@@ -94,3 +94,16 @@ html, body{
     margin: 4px;
     padding: 6px;
 }
+
+#psLogo {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+}
+#psLogo img {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 37.5px;
+    width: 90.5px;
+}
