@@ -41,6 +41,9 @@ body {
     background-color: rgb(120, 195, 120);
 }
 
+#tabSelect{
+    background-color: rgb(120, 195, 120)
+}
 
 /* Background */
 
@@ -76,6 +79,8 @@ input[type=number] {
     grid-template-rows: repeat(1, 100px);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
+    margin: 4px;
+    padding: 4px;
 }
 
 html, body{
@@ -83,4 +88,9 @@ html, body{
     height: 100%;
     margin: 0;
     padding: 0;
+}
+
+#tabTitle{
+    margin: 4px;
+    padding: 6px;
 }

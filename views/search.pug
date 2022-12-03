@@ -15,15 +15,15 @@ head
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
-h1 PaperSign Search
-  h2 Søgning
+h1#tabTitle PaperSign Search
+  h2#tabTitle Søgning
     form.div2(action = "/search", method="get")
         input#atribut(type='text' name="attribut" placeholder='attribute')
         input#value(type='text' name="vaerdi" placeholder='soegevaerdi')
         input(class='button' type="submit", value="Søg")
         <br>
         <br>
-  .vareattributter
+  #tabTitle.vareattributter
     .attributter Varenummer
     .attributter Navn
     .attributter Pris

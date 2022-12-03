@@ -12,21 +12,22 @@ head
   form(action = "/" method="get")
     input(class="button" type="submit" value="Kasse")
   form(action = "/faktura" method="get")
-    input(class="button" type="submit" value="Faktura")
+    input#tabSelect(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
-h1 PaperSign Ordrer
-.parent
-  h2 Ordreoversigt: <br><br>
+h1#tabTitle PaperSign Ordrer
+//- .parent
+//-   h2 Ordreoversigt: <br><br>
+//-     each data in ordrer
+//-       <br> 
+.odreoversigt 
+  .ordrelinjerOverskrift
+    .overskrift Ordrenummer
+    .overskrift Dato
+    .overskrift#Pris Samlet Pris
+  .ordrelinjer
     each data in ordrer
-      <br> 
-.ordrelinjerOverskrift
-  .overskrift Ordrenummer
-  .overskrift Dato
-  .overskrift#Pris Samlet Pris
-.ordrelinjer
-  each data in ordrer
-    a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.ordreNr
-    a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.dato
-    a#ordrecontentPris(class='productHeader' href='/ordre/'+ data.docID +'')="Kr. " + data.samletpris+",-"
+      a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.ordreNr
+      a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.dato
+      a#ordrecontentPris(class='productHeader' href='/ordre/'+ data.docID +'')="Kr. " + data.samletpris+",-"
 

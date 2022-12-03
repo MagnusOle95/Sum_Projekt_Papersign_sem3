@@ -139,3 +139,20 @@ body {
     width: 100%;
     height: 40px;
 }
+
+.paamindelseT{
+    background-image: linear-gradient(rgb(255, 255, 125), rgb(255, 255, 180));
+    /* box-shadow: 0 1px 20px -0px rgb(197, 197, 197); */
+    padding: 2px;
+    margin: 2px;
+}
+
+.paamindelse{
+    background-image: linear-gradient(rgb(255, 255, 125), rgb(255, 255, 199));
+    box-shadow: 0 1px 20px -0px rgb(197, 197, 197);
+}
+
+.paamindelseP{
+    padding: 5px;
+    margin: 5px;}
+

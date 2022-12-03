@@ -1,7 +1,7 @@
 #sig{
     border: 3px;
-    margin: 2px;
-    padding: 2px;
+    margin: 9px;
+    padding: 8px;
     border-style: solid;
     background-color: white;
 }
@@ -12,7 +12,8 @@
     grid-template-rows: repeat(8, 20%);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
-    padding: 2px;
+    margin: 4px;
+    padding: 4px;
 }
 
 #vareList {
@@ -20,10 +21,6 @@
     grid-column-end: 5;
     grid-row-start: 2;
     grid-row-end: 4;
-}
-
-html, body{
-    margin: 3px;
 }
 
 #total{

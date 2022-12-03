@@ -16,6 +16,7 @@ app.set("views", "views/");
 
 app.use(express.json());
 
+
 //Importer til __DirName
 import { fileURLToPath } from "url";
 import { dirname } from "path";

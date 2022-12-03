@@ -1,65 +1,3 @@
-/* Font */
-
-p,
-input,
-button,
-select {
-  font-size: 125%;
-}
-
-body {
-  font-family: 'SF Pixelate', sans-serif;
-}
-
-/* Tab Buttons */
-
-.tabbtn {
-  display: grid;
-  grid-template-columns: repeat(6, 100px);
-  /* grid-column-gap: 2px; */
-  grid-row-gap: 2px;
-  /* background-color: red; */
-  /* box-sizing: border-box;
-    padding: 5px;
-    margin: 0; */
-}
-
-
-.tabbtn input {
-  /* margin: 2px; */
-  width: 100px;
-  height: 100%;
-}
-
-/* Background */
-
-body {
-  background-image: linear-gradient(white, gray);
-  background-attachment: fixed;
-  height: 100%;
-}
-
-/* Set number inputs to have no arrows */
-/* others */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-.parent {
-  display: grid;
-  grid-template-columns: repeat(5, 35%);
-  grid-template-rows: repeat(10, 100px);
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
-}
-
 /* unvisited link */
 a:link {
   color: rgb(0, 0, 0);
@@ -91,30 +29,28 @@ a:active {
 
 a {
   line-height: 130%;
+  border-right: 2px solid black;
 }
 
 .ordrelinjer {
   display: grid;
-  grid-template-columns: repeat(3, 10%);
-  grid-template-rows: repeat(100, 5%);
+  grid-template-columns: repeat(3, 15%);
+  grid-template-rows: repeat(30,5%);
   grid-column-gap: 2px;
-  grid-row-gap: 2px;
-  overflow: scroll;
-  background-color: red;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding: 2px;
+  height: 95%;
 }
 
 .ordrelinjerOverskrift {
   display: grid;
-  grid-template-columns: repeat(3, 10%);
+  grid-template-columns: repeat(3, 14.9%);
   grid-template-rows: repeat(1, 5%);
   grid-column-gap: 2px;
   grid-row-gap: 2px;
-
-}
-
-.ordrelinjer {
-  padding: 3px;
-
+  border-bottom: 2px solid black;
+  padding: 2px;
 }
 
 #Pris,
@@ -125,4 +61,13 @@ a {
 
 body {
   overflow: hidden;
+}
+
+.odreoversigt {
+  padding: 0px;
+  margin: 8px;
+  border: 2px solid black;
+  height: 83.5%;
+  overflow: hidden;
+  font-size: 125%;
 }
