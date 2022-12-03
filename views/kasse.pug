@@ -11,13 +11,14 @@ head
   title PaperSign
 .tabbtn
   form(action = "/" method="get")
-    input(class="button" type="submit" value="Kasse")
+    input#tabSelect(class="button" type="submit" value="Kasse")
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
   button(hidden class="button" id="dmode" value="Dark Mode" onclick='(function(){var element = document.body; element.classList.toggle("dark-mode"); darkmode=true;})();')    
-h1 PaperSign Kasse
+h1#tabTitle PaperSign Kasse
+//- img(src='/images/papersignLogo.png') 
 .parent
   .child1
     form.div2(type="hidden" action = "/search", method="get")
@@ -72,9 +73,11 @@ h1 PaperSign Kasse
         button#koeb(formaction="kassebetal" method="get") K&oslash;b
   .child3
     if (lavP!=undefined)
-      h3 Påmindelse
-      <br> 
-        each lp of lavP
-          a= "Navn: " + lp.navn + " antal: " + lp.antal
-          <br>
+      .paamindelse
+        .paamindelseT
+          h3 Påmindelse
+        .paamindelseP
+          each lp of lavP
+            a= "Navn: " + lp.navn + " antal: " + lp.antal
+            <br>
 

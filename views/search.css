@@ -1,39 +1,41 @@
  /* unvisited link */
  a:link {
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-  }
-  
-  /* visited link */
-  a:visited {
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-  }
-  
-  /* mouse over link */
-  a:hover {
-  color: rgb(14, 120, 0);
-  text-decoration: none;
-  background-color: aquamarine;
-  }
-  
-  /* selected link */
-  a:active {
-    color: rgb(130, 255, 106);
-    text-decoration: none;
-  } 
+   color: rgb(0, 0, 0);
+   text-decoration: none;
+ }
 
-  a{
-    line-height: 130%;
-  }
-  .vareattributter
-  {
-    display: grid;
-    grid-template-columns: repeat(7, 14%);
-    grid-template-rows: repeat(100, 5%);
-    grid-column-gap: 2px;
-    grid-row-gap: 2px;
-}
-.attributter, #info{
-    padding: 3px;
-}
+ /* visited link */
+ a:visited {
+   color: rgb(0, 0, 0);
+   text-decoration: none;
+ }
+
+ /* mouse over link */
+ a:hover {
+   color: rgb(14, 120, 0);
+   text-decoration: none;
+   background-color: aquamarine;
+ }
+
+ /* selected link */
+ a:active {
+   color: rgb(130, 255, 106);
+   text-decoration: none;
+ }
+
+ a {
+   line-height: 130%;
+ }
+
+ .vareattributter {
+   display: grid;
+   grid-template-columns: repeat(7, 14%);
+   grid-template-rows: repeat(100, 5%);
+   grid-column-gap: 2px;
+   grid-row-gap: 2px;
+ }
+
+ .attributter,
+ #info {
+   padding: 3px;
+ }
