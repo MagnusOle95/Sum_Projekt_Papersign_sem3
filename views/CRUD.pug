@@ -79,6 +79,7 @@ script.
     return await respons.text();
   }
 
+
   let createProductgroup = async () => {
     var produktGruppeNavn = document.getElementById("navnG").value;
     var produktGruppeBeskrivelse = document.getElementById("beskrilseG").value;
@@ -158,6 +159,17 @@ script.
         } 
     }
 
+    let search = async () => {
+        var attribut = document.getElementById("atribut").value;
+        var value = document.getElementById("value").value; 
+        console.log(attribut + value)
+        try {
+        window.location.href = "/search?atribut=" + attribut + "&value=" + value
+        }catch(e){
+        console.log("Fejl");
+        } 
+    }
+
 
 doctype html
 head
@@ -181,7 +193,7 @@ h1#tabTitle PaperSign CRUD
   .child1
     input#atribut(type='text' placeholder='Kategori')
     input#value(type='text' placeholder='Værdi')
-    button S&oslash;g
+    button#search(onclick = 'search()') S&oslash;g
     p#titleP Produktgrupper
     select#produktGList(name='pgroups' multiple='')
       each data in produktgrupper
