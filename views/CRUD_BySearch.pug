@@ -112,16 +112,16 @@ script.
     } 
     }
     
-    let createProduct = async () => {
+    let createProduct = async (valgtGruppeNr) => {
         var produktNavn = document.getElementById("navn").value;
         var produktPris = document.getElementById("pris").value;
         var produktAntal = document.getElementById("antal").value;
         var leveradør = document.getElementById("leveradoer").value;
         var bestillingsnummer = document.getElementById("bestillingsnummer").value;
 
-        console.log(produktNavn + " " + produktPris + " " + produktAntal + " " + leveradør + " " + bestillingsnummer)
+        console.log(produktNavn + " " + produktPris + " " + produktAntal + " " + leveradør + " " + bestillingsnummer + " " + valgtGruppeNr)
         try {
-        await post("/opretProdukt", {gruppeNr: localStorage.getItem('groupNr'), produktNavn:  produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer});
+        await post("/opretProdukt", {gruppeNr: valgtGruppeNr, produktNavn:  produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer});
         window.location.href = "/CRUD"
         }catch(e){
         console.log(Fejl);
@@ -129,23 +129,24 @@ script.
         console.log("test")     
     }
 
-    let deleteProduct = async () => {
+    let deleteProduct = async (valgtProduktNr) => {
         try {
-        await post("/deleteProdukt", {aktuelProduktNr: localStorage.getItem('produktNr')});
+        await post("/deleteProdukt", {aktuelProduktNr: valgtProduktNr});
         window.location.href = "/CRUD"
         }catch(e){
         console.log("Fejl");
         } 
     }
 
-    let updateProduct = async () => {
+    let updateProduct = async (valgtGruppeNr, valgtProduktNr) => {
+        console.log(valgtGruppeNr + " " + valgtProduktNr);
         var produktNavn = document.getElementById("navn").value;
         var produktPris = document.getElementById("pris").value;
         var produktAntal = document.getElementById("antal").value;
         var leveradør = document.getElementById("leveradoer").value;
         var bestillingsnummer = document.getElementById("bestillingsnummer").value;
         try {
-          await post("/updateProdukt", {aktuelProduktNr: localStorage.getItem('produktNr'), gruppeNr: localStorage.getItem('groupNr'), produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
+            await post("/updateProdukt", {aktuelProduktNr: valgtProduktNr, gruppeNr: valgtGruppeNr, produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
         window.location.href = "/CRUD"
         }catch(e){
         console.log(Fejl);
@@ -181,7 +182,7 @@ head
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input#tabSelect(class="button" type="submit" value="Crud")
-h1#tabTitle PaperSign CRUD
+h1#tabTitle PaperSign CRUD Search
 .parent
   .child1
     input#atribut(type='text' placeholder='Kategori')
@@ -223,9 +224,9 @@ h1#tabTitle PaperSign CRUD
       each data in ProduktInProduktGoup
           option()= 'Navn: ' + data.navn + " " + data.produktNr
           //option(value="" placeholder="")= 'Navn: ' + data.navn
-    button#tilfoejProdukt(onclick='if (confirm("Er du sikker på at du vil oprette dette produkt?")==true) createProduct()') Tilf&oslash;j
-    button#updateProdukt(onclick='if (confirm("Er du sikker på at du vil opdatere dette produkt?")==true) updateProduct()') Opdater
-    button#sletProdukt(onclick='if (confirm("Er du sikker på at du vil slette dette produkt?")==true) deleteProduct()') Slet
+    button#tilfoejProdukt(onclick='if (confirm("Er du sikker på at du vil oprette dette produkt?")==true) createProduct(' + valgtGruppeNr + ')') Tilf&oslash;j
+    button#updateProdukt(onclick='if (confirm("Er du sikker på at du vil opdatere dette produkt?")==true) updateProduct('+ valgtGruppeNr +"," + valgtProduktNr + ')') Opdater
+    button#sletProdukt(onclick='if (confirm("Er du sikker på at du vil slette dette produkt?")==true) deleteProduct(' + valgtProduktNr + ')') Slet
   
     if (valgtProduktNr == undefined)
         input#navn(type='text' placeholder='Navn')

@@ -212,7 +212,8 @@ app.post("/opretProdukt", async (request, response) => {
 
 app.post('/deleteProdukt', async (request, response) => {
     const { aktuelProduktNr } = request.body;
-    await deleteDoc(doc(db, 'varer', aktuelProduktNr));
+    console.log("." + aktuelProduktNr + ".")
+    await deleteDoc(doc(db, 'varer', aktuelProduktNr + ""));
 
     //Her finder jeg hvor i arrayet produkterne befinder sig og sletter dem. 
     for(let i = 0; i < produkter.length; i++){
@@ -288,18 +289,14 @@ app.post("/underskrift", async (request,response)=>{
 
 app.get("/crud/", async (request, response) => {
     produktgrupper = await getAllProductgroups();
-    let openedBySeach = 0;
-    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, openedBySeach: openedBySeach });
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS });
 });
 
 app.get("/crud/:id&:id2", async (request, response) => {
   let produktGId = request.params.id;
   let produktId = request.params.id2
-  console.log("gruppe id = " + produktGId + " Produkt id =" + produktId)
   ProduktInProduktGoup = searchProductByGroupNr(produktGId)
-  let openedBySeach = 1;
-  response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: produktGId, valgtProduktNr: produktId, openedBySeach: openedBySeach });
-
+  response.render("CRUD_BySearch", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: produktGId, valgtProduktNr: produktId });
 });
 
 app.get("/ordre/:data", async (request, response) => {
