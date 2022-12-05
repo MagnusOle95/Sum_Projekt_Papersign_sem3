@@ -14,21 +14,21 @@ head
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
-h1#tabTitle PaperSign Faktura
-
-#app
-  canvas#sig
-.funct
-  input#text(type='text' placeholder='Kundenavn' name="kunde projekt afdeling" required)
-  input#projekt(type='text' placeholder='Kundes Projekt' name="Projekt" required)
-  input#afdeling(type='text' placeholder='Kundes Afdeling' name="Afdeling" required)
-  input#fakturaNr(type='text' placeholder=' FakturaNr' name="FakturaNr" required)
-  button#gemSig.gem(type='button') Gem
-  button#sletSig.slet(type='button') Slet  
-  select#vareList(name='kurv' multiple="")
-    each k of kurv
-      option()= k.navn+" " +"␢"+ k.antal +'stk. '+ k.pris  +" " + k.total
-  input#total(type="text" value=total+"kr" readonly)  
+h1#tabTitle2 #[strong #{"PaperSign Faktura"}]
+.underskrift
+  #app
+    canvas#sig
+  .funct
+    input#text(type='text' placeholder='Kundenavn' name="kunde projekt afdeling" required)
+    input#projekt(type='text' placeholder='Kundes Projekt' name="Projekt" required)
+    input#afdeling(type='text' placeholder='Kundes Afdeling' name="Afdeling" required)
+    input#fakturaNr(type='text' placeholder=' FakturaNr' name="FakturaNr" required)
+    button#gemSig.gem(type='button') Gem
+    button#sletSig.slet(type='button') Slet  
+    select#vareList(name='kurv' multiple="")
+      each k of kurv
+        option()= k.navn+" " +"␢"+ k.antal +'stk. '+ k.pris  +" " + k.total
+    input#total(type="text" value=total+"kr" readonly)  
 #psLogo
   img(src='/images/papersignLogo.png') 
 
