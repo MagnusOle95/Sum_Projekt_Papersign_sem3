@@ -33,9 +33,24 @@
    grid-template-rows: repeat(100, 5%);
    grid-column-gap: 2px;
    grid-row-gap: 2px;
+   border: 2px solid black;
  }
 
  .attributter,
  #info {
    padding: 3px;
  }
+
+ .div2{
+  display: grid;
+  grid-template-columns: repeat(3, 14%);
+  grid-template-rows: repeat(1, 50%);
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+  font-size: 100%;
+  padding: 4px;
+  margin: 4px;
+  width: 74%;
+  height: 10.9%;
+
+}

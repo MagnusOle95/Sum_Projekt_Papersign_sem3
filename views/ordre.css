@@ -1,64 +1,4 @@
 
-/* Font */
-
-p,
-input,
-button,
-select {
-    font-size: 125%;
-}
-
-body{
-    font-family: 'SF Pixelate', sans-serif;
-}
-
-/* Tab Buttons */
-
-.tabbtn {
-    display: grid;
-    grid-template-columns: repeat(6, 100px);
-    /* grid-column-gap: 2px; */
-    grid-row-gap: 2px;
-    /* background-color: red; */
-    /* box-sizing: border-box;
-    padding: 5px;
-    margin: 0; */
-}
-
-
-.tabbtn input {
-    /* margin: 2px; */
-    width: 100px;
-    height: 100%;
-}
-
-/* Background */
-
-body {
-    background-image: linear-gradient(white, gray);
-    background-attachment: fixed;
-    height: 100%;
-}
-
-/* Set number inputs to have no arrows */
-/* others */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* firefox */
-input[type=number] {
-    -moz-appearance: textfield;
-}
-
-.dark-mode {
-    background-image: linear-gradient(rgb(43, 43, 43), rgb(23, 23, 23));
-    background-attachment: fixed;
-    height: 100%;    
-    color: white;
-  }
 
 .ordrelinjer
   {
@@ -71,4 +11,9 @@ input[type=number] {
 .ordrelinjer, #info{
     padding: 3px;
 
+}
+
+.ordre{
+    margin: 4px;
+    padding: 4px;
 }

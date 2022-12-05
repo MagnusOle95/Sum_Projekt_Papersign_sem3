@@ -148,6 +148,7 @@ body {
 }
 
 .paamindelse{
+    width: 80%;
     background-image: linear-gradient(rgb(255, 255, 125), rgb(255, 255, 199));
     box-shadow: 0 1px 20px -0px rgb(197, 197, 197);
 }

@@ -1,4 +1,4 @@
-#sig{
+#sig {
     border: 3px;
     margin: 9px;
     padding: 8px;
@@ -6,7 +6,7 @@
     background-color: white;
 }
 
-.funct{
+.funct {
     display: grid;
     grid-template-columns: repeat(4, 151px);
     grid-template-rows: repeat(8, 20%);
@@ -23,9 +23,25 @@
     grid-row-end: 4;
 }
 
-#total{
+#total {
     grid-row-start: 4;
     grid-column-start: 1;
     grid-column-end: 5;
     text-align: right;
+}
+
+.underskrift {
+    /* margin: 1px;
+    padding: 1px;    */
+}
+
+#tabTitle2 {
+    margin: 4px;
+    padding: 6px;
+    height: 5.5%;
+    font-size: 195%;
+}
+
+button{
+    border: 1.5px transparent gray;
 }

@@ -27,8 +27,9 @@ h1#tabTitle PaperSign Ordrer
     .overskrift#Pris Samlet Pris
   .ordrelinjer
     each data in ordrer
-      a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.ordreNr
-      a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.dato
-      a#ordrecontentPris(class='productHeader' href='/ordre/'+ data.docID +'')="Kr. " + data.samletpris+",-"
+      .div5 
+        a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.ordreNr
+        a#ordrecontent(class='productHeader' href='/ordre/'+ data.docID +'')=data.dato
+        a#ordrecontentPris(class='productHeader' href='/ordre/'+ data.docID +'')="Kr. " + data.samletpris+",-"
 #psLogo
   img(src='/images/papersignLogo.png') 

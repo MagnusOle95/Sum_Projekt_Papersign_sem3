@@ -16,28 +16,31 @@ head
   form(action= "/crud" method="get")
     input(class="button" type="submit" value="Crud")
 h1#tabTitle PaperSign Search
-  h2#tabTitle Søgning
-    form.div2(action = "/search", method="get")
-        input#atribut(type='text' name="attribut" placeholder='attribute')
-        input#value(type='text' name="vaerdi" placeholder='soegevaerdi')
-        input(class='button' type="submit", value="Søg")
-        <br>
-        <br>
-  #tabTitle.vareattributter
-    .attributter Varenummer
-    .attributter Navn
-    .attributter Pris
-    .attributter Antal
-    .attributter Leverandør 
-    .attributter Bestillingsnummer 
-    .attributter Produktgruppenr
-    each data in search
-        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.produktNr
-        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.navn
-        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.pris
-        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.antal 
-        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.leveradør 
-        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.bestillingsnummer
-        a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.gruppeNr
+form.div2(action = "/search", method="get")
+  select#atribut(name="atribut")
+    option(value='' disabled='' selected='') Attribute
+    option(value='navn') Navn
+    option(value='pris') Pris
+    option(value='antal') Antal
+    option(value='leveradør') Leverandør
+    option(value='bestillingsnummer') Bestillingsnummer
+  input#value(type='text' name="vaerdi" placeholder='soegevaerdi')
+  input(class='button' type="submit", value="Søg")
+#tabTitle.vareattributter
+  .attributter Varenummer
+  .attributter Navn
+  .attributter Pris
+  .attributter Antal
+  .attributter Leverandør 
+  .attributter Bestillingsnummer 
+  .attributter Produktgruppenr
+  each data in search
+    a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.produktNr
+    a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.navn
+    a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.pris
+    a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.antal 
+    a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.leveradør 
+    a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.bestillingsnummer
+    a#info(class='productHeader' href='/CRUD/'+ data.docID +'')= data.gruppeNr
 #psLogo
   img(src='/images/papersignLogo.png') 
