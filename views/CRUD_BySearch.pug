@@ -185,7 +185,13 @@ head
 h1#tabTitle PaperSign CRUD Search
 .parent
   .child1
-    input#atribut(type='text' placeholder='Kategori')
+    select#atribut(name="atribut")
+      option(value='' disabled='' selected='') Attribute
+      option(value='navn') Navn
+      option(value='pris') Pris
+      option(value='antal') Antal
+      option(value='leveradør') Leverandør
+      option(value='bestillingsnummer') Bestillingsnummer
     input#value(type='text' placeholder='Værdi')
     button#search(onclick = 'search()') S&oslash;g
     p#titleP Produktgrupper
