@@ -279,14 +279,17 @@ app.post("/underskrift", async (request,response)=>{
 
 app.get("/crud/", async (request, response) => {
     produktgrupper = await getAllProductgroups();
-    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS });
+    let fromSearch = "0"
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch });
+    console.table(ProduktInProduktGoup)
 });
 
 app.get("/crud/:id&:id2", async (request, response) => {
-  let produktGId = request.params.id;
-  let produktId = request.params.id2
-  ProduktInProduktGoup = searchProductByGroupNr(produktGId)
-  response.render("CRUD_BySearch", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: produktGId, valgtProduktNr: produktId });
+    valgtGruppeNrS = request.params.id;
+    valgtProduktNrS = request.params.id2
+    ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNrS)
+    let fromSearch = "1"
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch });
 });
 
 app.get("/ordre/:data", async (request, response) => {
