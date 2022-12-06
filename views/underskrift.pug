@@ -13,6 +13,32 @@ head
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3' crossorigin='anonymous')
     script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js' integrity='sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3' crossorigin='anonymous')
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js' integrity='sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk' crossorigin='anonymous')
+
+.tabbtn
+  form(action = "/" method="get")
+    input(class="button" type="submit" value="Kasse")
+  form(action = "/faktura" method="get")
+    input(class="button" type="submit" value="Faktura")
+  form(action= "/crud" method="get")
+    input(class="button" type="submit" value="Crud")
+h1#tabTitle2 #[strong #{"PaperSign Faktura"}]
+.underskrift
+  #app
+    canvas#sig
+  .funct
+    input#text(type='text' placeholder='Kundenavn' name="kunde projekt afdeling" required)
+    input#projekt(type='text' placeholder='Kundes Projekt' name="Projekt" required)
+    input#afdeling(type='text' placeholder='Kundes Afdeling' name="Afdeling" required)
+    input#fakturaNr(type='text' placeholder=' FakturaNr' name="FakturaNr" required)
+    button#gemSig.gem(type='button') Gem
+    button#sletSig.slet(type='button') Slet  
+    select#vareList(name='kurv' multiple="")
+      each k of kurv
+        option()= k.navn+" " +"␢"+ k.antal +'stk. '+ k.pris  +" " + k.total
+    input#total(type="text" value=total readonly)  
+#psLogo
+  img(src='/images/papersignLogo.png') 
+
 script(type='module').
  // hvis der er alt for meget text så skriv alt + z da jeg bruger data koden for nogen billeder
  // da det bare er en extrem lang linje
@@ -115,30 +141,4 @@ script(type='module').
   // navnet bliver fakturaNr.pdf så fx hvis man skriver  123 i fakturNr boxen så ville ens pdf være=123.pdf
   doc.save(`${fakturaNr}.pdf`)
   }
-.tabbtn
-  form(action = "/" method="get")
-    input(class="button" type="submit" value="Kasse")
-  form(action = "/faktura" method="get")
-    input(class="button" type="submit" value="Faktura")
-  form(action= "/crud" method="get")
-    input(class="button" type="submit" value="Crud")
-h1#tabTitle2 #[strong #{"PaperSign Faktura"}]
-.underskrift
-  #app
-    canvas#sig
-  .funct
-    input#text(type='text' placeholder='Kundenavn' name="kunde projekt afdeling" required)
-    input#projekt(type='text' placeholder='Kundes Projekt' name="Projekt" required)
-    input#afdeling(type='text' placeholder='Kundes Afdeling' name="Afdeling" required)
-    input#fakturaNr(type='text' placeholder=' FakturaNr' name="FakturaNr" required)
-    button#gemSig.gem(type='button') Gem
-    button#sletSig.slet(type='button') Slet  
-    select#vareList(name='kurv' multiple="")
-      each k of kurv
-        option()= k.navn+" " +"␢"+ k.antal +'stk. '+ k.pris  +" " + k.total
-    input#total(type="text" value=total readonly)  
-#psLogo
-  img(src='/images/papersignLogo.png') 
-
-
       
