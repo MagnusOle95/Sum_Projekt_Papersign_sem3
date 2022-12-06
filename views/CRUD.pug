@@ -285,8 +285,8 @@ h1#tabTitle PaperSign CRUD
     each data in ProduktInProduktGoup
       if (data.produktNr == valgtProduktNr)
         input#navn(title="Navn" type='text' placeholder='Navn' value = data.navn)
-        input#pris(title="Pris" type='text' placeholder='Pris' value = data.pris)
-        input#antal(title="Antal" type='text' placeholder='Antal' value = data.antal)
+        input#pris(title="Pris" type='number' placeholder='Pris' value = data.pris)
+        input#antal(title="Antal" type='number' placeholder='Antal' value = data.antal)
         input#leveradoer(title="Leverandør" type='text' placeholder='Leverandør' value = data.leveradør)
         input#bestillingsnummer(title="Bestillingsnummer" type='text' placeholder='Bestillingsnummer' value = data.bestillingsnummer)
         - break 
