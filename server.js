@@ -88,7 +88,6 @@ async function getAllOrdrer() {
         data.docID = doc.id;
         return data;
     });
-    console.table(liste);
     return liste;
 }
 
@@ -98,7 +97,6 @@ let gruppeNr = result[1].gruppeNr;
 let produktNr = result[3].produktNr;
 let ordreNr = result[2].ordreNr;
 let fakturaNR = result[0].fakturaNr;
-console.log(result)
 
 async function getAllFakturaer() {
     let fakturaCollection = collection(db, "fakturaer");
@@ -108,7 +106,6 @@ async function getAllFakturaer() {
         data.docID = doc.id;
         return data;
     });
-    console.table(liste);
     return liste;
 }
 async function getAllProductgroups() {
@@ -119,7 +116,6 @@ async function getAllProductgroups() {
         data.docID = doc.id;
         return data;
     });
-    console.table(liste);
     return liste;
 }
 
@@ -142,7 +138,6 @@ async function getAllProducts() {
         data.docID = doc.id;
         return data;
     });
-    console.table(vareliste);
     return vareliste;
 }
 
@@ -180,11 +175,9 @@ app.post("/opretProduktGruppe", async (request, response) => {
 
 app.post('/deleteProductGroup', async (request, response) => {
     const { aktuelGroupNr } = request.body;
-    console.log(aktuelGroupNr + " Se her")
     await deleteDoc(doc(db, 'produktgrupper', aktuelGroupNr));
     response.sendStatus(201)
     valgtGruppeNrS = undefined;
-    console.log(aktuelGroupNr)
 })
 
 app.post('/updateProduktGroup', async (request, response) => {
@@ -212,7 +205,6 @@ app.post("/opretProdukt", async (request, response) => {
 
 app.post('/deleteProdukt', async (request, response) => {
     const { aktuelProduktNr } = request.body;
-    console.log("." + aktuelProduktNr + ".")
     await deleteDoc(doc(db, 'varer', aktuelProduktNr + ""));
 
     //Her finder jeg hvor i arrayet produkterne befinder sig og sletter dem. 
@@ -231,10 +223,8 @@ app.post('/deleteProdukt', async (request, response) => {
 })
 
 app.post('/updateProdukt', async (request, response) => {
-    console.log("Test virker")
     const { aktuelProduktNr,gruppeNr, produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer } = request.body;
     let updatetProdukt = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
-    console.log(updatetProdukt)
     await setDoc(doc(db,"varer/" + aktuelProduktNr),updatetProdukt)
 
     //Her finder jeg hvor i arrayet produkterne befinder sig og opdatere dem. 
@@ -502,7 +492,6 @@ app.get("/search", async (request, response) => {
 
 app.listen(port);
 
-console.log("Lytter på port " + port);
 
 //Metoder--------------------------------------------------------------------------------------------------------------------------------------------------
 function searchProductByGroupNr(gruppeNr) {
@@ -557,8 +546,7 @@ function sumTotal() {
 }
 
 function getOrdre(ordreID){
-  console.table(ordrer);
-  console.log(ordrer[0].docID);
+
   for(let i = 0; i<ordrer.length; i++){
     if(ordrer[i].docID == ordreID){
       return ordrer[i];

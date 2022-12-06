@@ -166,7 +166,6 @@ let p5 = createProduct("2Hat", 20, 10, 4567890, "Mowgli inc", 932005, pg);
 let p6 = createProduct("1", 20, 10, 4567890, "Mowgli inc", 932005, pg);
 
 
-console.log(searchDynamic(products, "navn", 1 + ""));
 
 
 // finder en vare med det specifikke varenummer (skal indeholde 0'erne foran)
