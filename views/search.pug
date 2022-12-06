@@ -35,12 +35,12 @@ form.div2(action = "/search", method="get")
   .attributter Bestillingsnummer 
   .attributter Produktgruppenr
   each data in search
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID +'')= data.produktNr
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID + '')= data.navn
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID +'')= data.pris
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID +'')= data.antal 
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID +'')= data.leveradør 
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID +'')= data.bestillingsnummer
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.docID +'')= data.gruppeNr
+    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.produktNr
+    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr + '')= data.navn
+    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.pris
+    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.antal 
+    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.leveradør 
+    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.bestillingsnummer
+    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.gruppeNr
 #psLogo
   img(src='/images/papersignLogo.png') 
