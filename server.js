@@ -243,26 +243,27 @@ app.post('/updateProdukt', async (request, response) => {
     response.sendStatus(201)
   })
 
-
-
+  // sender brugeren over på "underskrift" siden
+  // bruges når man vælger "underskrift" som betalingsmetode, i kassen
 app.get("/underskrift", async (request, response) => {
     response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv, total: total,fakturaNr: fakturaNR});
 });
+// opdaterer fakturanummer, så den har et unikt ordrenummer
 app.post("/underskrift", async (request,response)=>{
     let fakturanrUpdate = { fakturaNR: fakturaNR }
     fakturaNR++;
     await setDoc(doc(db, "nummre/fakturaNr"), fakturanrUpdate)
     response.sendStatus(201);
 })
-
-
+// henter CRUD siden (create, update, remove, delete) af:
+// produkter, produktgrupper
 app.get("/crud/", async (request, response) => {
     produktgrupper = await getAllProductgroups();
     let fromSearch = "0"
     response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch });
     console.table(ProduktInProduktGoup)
 });
-
+// siden til at komme ind på crud, på et specifikt produkt (via søgning)
 app.get("/crud/:id&:id2", async (request, response) => {
     valgtGruppeNrS = request.params.id;
     valgtProduktNrS = request.params.id2
@@ -270,23 +271,19 @@ app.get("/crud/:id&:id2", async (request, response) => {
     let fromSearch = "1"
     response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch });
 });
-
+// siden til at komme ind på en specifik ordre (fundet via "faktura" oversigten)
 app.get("/ordre/:data", async (request, response) => {
   let ordreID = request.params.data;
   let specifikOrdre = getOrdre(ordreID);
   response.render("ordre", { specifikOrdre, ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter });
 });
-
+// viser alle ordrer (fakturaer)
 app.get("/faktura/", async (request, response) => {
     ordrer = await getAllOrdrer();
     response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
-//---------------------------------------------------------------------------------------------(Kasse) 
-
-//TODO fjern tilføj delen fra /kasse og lav forbindelse til /kassetilfoej paa tilfoej knap
-
-//Kasse gennere kassen
+//Kasse genererer kassen
 app.get("/kasse", async (request, response) => {
     let temppgid = request.query.pgroup;
     if (temppgid != undefined) {
@@ -298,7 +295,7 @@ app.get("/kasse", async (request, response) => {
     response.render("kasse", { darkmode: darkmode, pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
 });
 
-//Kasse annulere køb
+//Kasse annullér køb (Tømmer kurven)
 app.get("/kasseannullere", async (request, response) => {
     let temppgid = request.query.pgroup;
     if (temppgid != undefined) {
@@ -426,30 +423,7 @@ app.get("/kassebetal", async (request, response) => {
     response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
 });
 
-//   app.post("/opretOrdre", async (request, response) => {
-//     const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
-//     let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
-//     await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
-//     ordreNr++;
-//     let ordreNrUpdate={ordreNr: ordreNr}
-//     await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
-//   })
-
-//Kasse gennemfør betalt køb
-// app.post("/kassegennemfoerkoeb", async (request, response) => {
-//     let d = new Date();
-//     let datoidag = d.getDate + "-" + d.getMonth + "-" + d.getFullYear;
-//     let nyOrdreFirebase = { samletpris: total, dato: datoidag, betalingsmetode: betallinger, navn: "Intet", ordreNr: ordreNr, ordrelinjer: kurv, underskrift: false }
-//     await setDoc(doc(db, "ordrer", `${ordreNr}`), nyOrdreFirebase)
-//     ordreNr++;
-//     let ordreNrUpdate = { ordreNr: ordreNr }
-//     await setDoc(doc(db, "nummre/ordreNr"), ordreNrUpdate)
-//     response.sendStatus(201);
-// });
-
-//---------------------------------------------------------------------------------------------()
-
-
+// finder produkterne, som tilhører et specifikt produktgruppenummer
 app.post("/seachProduktinGroup", async (request, response) => {
     const { valgtGruppeNr } = request.body;
     ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNr)
@@ -464,7 +438,7 @@ app.post("/aktuelProduktNrTilServer", async (request, response) => {
     response.sendStatus(201);
 })
 
-
+// søgesiden, viser søgeresultaterne fra søgefeltet
 app.get("/search", async (request, response) => {
     var attribut = request.query.atribut;
     var vaerdi = request.query.value;
@@ -472,10 +446,12 @@ app.get("/search", async (request, response) => {
     response.render("search", { search: searchresults });
 });
 
+// porten til serveren (port 6969)
 app.listen(port);
 
 
 //Metoder--------------------------------------------------------------------------------------------------------------------------------------------------
+
 function searchProductByGroupNr(gruppeNr) {
     if (gruppeNr == "visalt") return produkter;
     let list = [];
@@ -487,7 +463,7 @@ function searchProductByGroupNr(gruppeNr) {
     }
     return list;
 }
-
+// tilføjer en varer til kurven, fra kasseapparatet
 function addToKurv(antal, pNr, navn, pris) {
     let total = antal * pris;
     let ordre = { produktnr: pNr, antal: antal, navn: navn, pris: pris, total: total };
@@ -528,7 +504,6 @@ function sumTotal() {
 }
 
 function getOrdre(ordreID){
-
   for(let i = 0; i<ordrer.length; i++){
     if(ordrer[i].docID == ordreID){
       return ordrer[i];
