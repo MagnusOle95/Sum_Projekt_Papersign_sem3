@@ -119,6 +119,7 @@ async function getAllProductgroups() {
     return liste;
 }
 
+// henter numre til varenumre, gruppenumre osv. (Dette er deres "id" inde på firebase)
 async function getAllNumbers() {
     let gruppeCollection = collection(db, "nummre");
     let nummre = await getDocs(gruppeCollection);
@@ -130,6 +131,7 @@ async function getAllNumbers() {
     return liste;
 }
 
+// henter alle produkter, fra firebase og putter dem ind i et "lokalt" array
 async function getAllProducts() {
     let varerCollection = collection(db, "varer");
     let varer = await getDocs(varerCollection);
@@ -141,6 +143,7 @@ async function getAllProducts() {
     return vareliste;
 }
 
+// forsiden (Kasseapparatet)
 app.get("/", async (request, response) => {
     let temppgid = request.query.pgroup;
     if (temppgid != undefined) {
@@ -153,13 +156,8 @@ app.get("/", async (request, response) => {
     response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt), lavP: lavP });
 });
 
-// app.post("/opretProdukt", async (request, response) => {
-//     const { pNavn } = request.body;
-//     let nyProdukt = { navn: pNavn };
-//     addDoc(collection(db, "varer"), nyProdukt);
-//     response.sendStatus(201);
-// });
-
+// opretter en produktgruppe med et unikt gruppeNr og opdaterer "numre" 
+// i firebase, så næste produktgruppe også får et unikt nummer
 app.post("/opretProduktGruppe", async (request, response) => {
     const { produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
     let nyProduktGruppe = logik.createProductgroup(produktGruppeNavn, produktGruppeBeskrivelse, gruppeNr)
@@ -173,13 +171,14 @@ app.post("/opretProduktGruppe", async (request, response) => {
     response.sendStatus(201);
 });
 
+// sletter en produktgruppe
 app.post('/deleteProductGroup', async (request, response) => {
     const { aktuelGroupNr } = request.body;
     await deleteDoc(doc(db, 'produktgrupper', aktuelGroupNr));
     response.sendStatus(201)
     valgtGruppeNrS = undefined;
 })
-
+// opdaterer en produktgruppe
 app.post('/updateProduktGroup', async (request, response) => {
     const { aktuelGroupNr, produktGruppeNavn, produktGruppeBeskrivelse } = request.body;
     let updatetProduktGroup = { navn: produktGruppeNavn, beskrivelse: produktGruppeBeskrivelse, gruppeNr: aktuelGroupNr }
@@ -188,7 +187,8 @@ app.post('/updateProduktGroup', async (request, response) => {
     response.sendStatus(201)
 })
 
-
+// opretter et produkt, i firebase og giver det et produktnummer
+// opdaterer "produktnumre" inde i firebase, så næste produkt får et nyt unikt nr
 app.post("/opretProdukt", async (request, response) => {
     const { gruppeNr, produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer } = request.body;
     let nyProdukt = logik.createProduct(produktNavn,produktPris,produktAntal,leveradør,bestillingsnummer,gruppeNr,produktNr)
@@ -203,6 +203,7 @@ app.post("/opretProdukt", async (request, response) => {
     response.sendStatus(201);
 });
 
+// sletter et produkt
 app.post('/deleteProdukt', async (request, response) => {
     const { aktuelProduktNr } = request.body;
     await deleteDoc(doc(db, 'varer', aktuelProduktNr + ""));
@@ -221,7 +222,7 @@ app.post('/deleteProdukt', async (request, response) => {
     valgtProduktNrS = undefined;
     response.sendStatus(201)
 })
-
+// opdaterer et produkt i firebase
 app.post('/updateProdukt', async (request, response) => {
     const { aktuelProduktNr,gruppeNr, produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer } = request.body;
     let updatetProdukt = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
@@ -242,28 +243,6 @@ app.post('/updateProdukt', async (request, response) => {
     response.sendStatus(201)
   })
 
-
-
-//   app.post("/opretOrdre", async (request, response) => {
-//     const { antal, dato,ordrerlinjenr,produkt,total } = request.body;
-//     let nyOrdreFirebase = {antal: antal,dato: dato,ordrerlinjenr: ordrerlinjenr,produkt: produkt, total: total}
-//     await setDoc(doc(db,"ordrer",`${ordreNr}`),nyOrdreFirebase)  
-//     ordreNr++;
-//     let ordreNrUpdate={ordreNr: ordreNr}
-//     await setDoc(doc(db,"nummre/gruppeNr"),ordreNrUpdate)
-//   })
-
-//   app.post("/opretFaktura", async (request, response) => {
-//     const {navn,dato,ordrelinjer,fakturaNr} = request.body;
-//     let fakturaNy=ordre.createFaktura(navn);
-//     fakturaNy.fakturanr=fakturaNR;
-//     fakturaer.push(fakturaNy);
-//     let nyFakturaFirebase = {navn: navn, dato: dato, ordrelinjer: ordrelinjer, fakturaNr: fakturaNr}
-//     await setDoc(doc(db,"ordrer",`${ordreNr}`),nyFakturaFirebase)  
-//     fakturaNR++;
-//     let fakturaNrUpdate={fakturaNr: fakturaNR}
-//     await setDoc(doc(db,"nummre/gruppeNr"),fakturaNrUpdate)
-//   })
 
 
 app.get("/underskrift", async (request, response) => {
