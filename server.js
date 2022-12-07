@@ -65,6 +65,7 @@ const firebaseConfig = {
 const appFireBase = initializeApp(firebaseConfig);
 const db = getFirestore(appFireBase);
 
+// Initialize Server Storage
 let produkter = await getAllProducts();
 let produktgrupper = await getAllProductgroups();
 let fakturaer = await getAllFakturaer();
@@ -397,11 +398,8 @@ app.get("/kassebetal", async (request, response) => {
         await setDoc(doc(db, "nummre/ordreNr"), ordreNrUpdate)
         // Opdatere lager beholdningen på firebase
         for (let k of kurv) {
-            // await setDoc(doc(db, "ordrer", `${ordreNr}`), nyOrdreFirebase)
-            // ordreNr++;
             let produkterFB = await getAllProducts();
-            // let pIndexFB = produkterFB.indexOf(k.produktnr)
-            let pIndexFB = findDetSkideProdukt(produkterFB, k.produktnr, "produktNr")
+            let pIndexFB = findIndexOfProduct(produkterFB, k.produktnr, "produktNr")
             let productFB = produkterFB[pIndexFB]
             let nyAntal = produkterFB[pIndexFB].antal - k.antal
             produkterFB[pIndexFB].antal = nyAntal
@@ -414,7 +412,6 @@ app.get("/kassebetal", async (request, response) => {
         total = 0;
         //Opdater lokal data
         produkter = await getAllProducts();
-        // fakturaer = await getAllFakturaer();
         ordrer = await getAllOrdrer();
     }
     // Beregner total
@@ -453,6 +450,7 @@ app.listen(port);
 //Metoder--------------------------------------------------------------------------------------------------------------------------------------------------
 
 function searchProductByGroupNr(gruppeNr) {
+    //if gruppeNr == visalt return all products
     if (gruppeNr == "visalt") return produkter;
     let list = [];
     //let products = getProducts() // hent alle produkterne, i arrayet "produkter" fra server.js - måske navnet er forkert, eller også er der ingen getProducts, til den?)
@@ -463,12 +461,17 @@ function searchProductByGroupNr(gruppeNr) {
     }
     return list;
 }
-// tilføjer en varer til kurven, fra kasseapparatet
+
+// adds product to cart
+// Returns nothing
+// Used in ("kassetilfoej")
 function addToKurv(antal, pNr, navn, pris) {
     let total = antal * pris;
     let ordre = { produktnr: pNr, antal: antal, navn: navn, pris: pris, total: total };
     let found = containsOrdre(navn);
+    //found !== false, update product, total and amount
     if (found !== false) {
+        // if price differnt, update total to include the new price
         if (kurv[found].pris != pris) {
             total = antal * kurv[found].pris;
         }
@@ -480,8 +483,10 @@ function addToKurv(antal, pNr, navn, pris) {
     }
 }
 
-//TODO fjern tempkurv
-
+// Returns an index of an product for an given value
+// Returns an index or false
+// Used in ("kasseslet, kasserabat, addToKurv") to find the index of a given product in the cart
+// TODO merge containsOrdre and findIndexOfProduct, becuase they do the same.. 
 function containsOrdre(searchvalue) {
     let tempkurv = kurv;
     let found = false;
@@ -489,6 +494,7 @@ function containsOrdre(searchvalue) {
     while (found === false && index < tempkurv.length) {
         let obj = tempkurv[index]
         if (obj.navn == searchvalue) {
+            //changes found to i (index)
             found = index;
         }
         else index++;
@@ -496,6 +502,9 @@ function containsOrdre(searchvalue) {
     return found;
 }
 
+// Calculates total price for items in cart
+// Returns nothing
+// Used in ("kassetilfoej") to calculates new total price for all items in cart
 function sumTotal() {
     total = 0;
     for (let k of kurv) {
@@ -511,18 +520,26 @@ function getOrdre(ordreID){
   }
 }
 
-
+// Adds a pay objects to an array of pay objects
+// Returns nothing
+// Used in ("kassebetal") to pay of the total amount of the sale purchase
 function betalBeloeb(beloeb, betalling) {
+    // updates total amount payed
     betalt += Number(beloeb);
+    // pushes pay object
     betallinger.push({ beloeb: beloeb, betalling: betalling });
 }
 
-function findDetSkideProdukt(produkter, soegevaerdi, atribute) {
+// Returns an index of an product for an given atribute and its value
+// Returns an index or false
+// Used in ("kassebetal") to find the index of a given product in firebase, the index is partly used to change firebase product amount
+function findIndexOfProduct(produkter, soegevaerdi, atribute) {
     let found = false
     let i = 0;
     while (i < produkter.length && found === false) {
         let p = produkter[i];
         if (p[atribute] == soegevaerdi) {
+            //changes found to i (index)
             found = i;
         }
         else {
@@ -532,13 +549,19 @@ function findDetSkideProdukt(produkter, soegevaerdi, atribute) {
     return found;
 }
 
-function lagerStatus(){
+// Checks if storage count is 5 or lowere
+// Returns array of products with low count
+// Used in view ("") for low product count reminder
+function lagerStatus(){ 
+    // insilize empty array for return statement
     let lavLagerStatus = [];
     for (let p of produkter) {
+        //Checks count of 5 or lowere, push if true
         if(p.antal<=5){
             lavLagerStatus.push(p)
         }
     }
+    // Returns array products with 
     return lavLagerStatus;
 }
 

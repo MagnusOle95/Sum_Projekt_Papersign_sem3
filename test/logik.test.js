@@ -1,7 +1,6 @@
 import assert from 'chai';
 import describe from 'mocha';
 import logik from '../logik.js';
-import ordre from '../ordre.js'
 
 describe('Test af createProduct', () => {
     let productgroup = null;
