@@ -34,6 +34,8 @@
    grid-column-gap: 2px;
    grid-row-gap: 2px;
    border: 2px solid black;
+   height: 69%;
+   background-image: linear-gradient(white, rgb(199, 199, 199));
  }
 
  .attributter,
