@@ -3,7 +3,7 @@ import logik from "./logik.js";
 
 //laver express server.
 const port = 6969;
-import express from "express"; //Ændret til import. ved brug af firebase
+import express from "express"; //Ændret til import. ved brug af firebase 
 const app = express();
 
 //Opretter view.
