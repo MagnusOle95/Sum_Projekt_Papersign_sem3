@@ -14,7 +14,7 @@ head
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
-    input(class="button" type="submit" value="Crud")
+    input(class="button" type="submit" value="Produkter")
 h1#tabTitle PaperSign Search
 form.div2(action = "/search", method="get")
   select#atribut(name="atribut")
@@ -27,20 +27,23 @@ form.div2(action = "/search", method="get")
   input#value(type='text' name="value" placeholder='soegevaerdi')
   input(class='button' type="submit", value="Søg")
 #tabTitle.vareattributter
-  .attributter Varenummer
-  .attributter Navn
-  .attributter Pris
-  .attributter Antal
-  .attributter Leverandør 
-  .attributter Bestillingsnummer 
-  .attributter Produktgruppenr
-  each data in search
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.produktNr
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr + '')= data.navn
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.pris
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.antal 
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.leveradør 
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.bestillingsnummer
-    a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.gruppeNr
+  .overskrifter
+    .attributter Varenummer
+    .attributter Navn
+    .attributter Pris
+    .attributter Antal
+    .attributter Leverandør 
+    .attributter Bestillingsnummer 
+    .attributter Produktgruppenr
+  .soegeresultater
+    each data in search
+      .soegeresultat
+        a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.produktNr
+        a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr + '')= data.navn
+        a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.pris
+        a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.antal 
+        a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.leveradør 
+        a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.bestillingsnummer
+        a#info(class='productHeader' href='/CRUD/'+ data.gruppeNr+"&"+data.produktNr +'')= data.gruppeNr
 #psLogo
   img(src='/images/papersignLogo.png') 

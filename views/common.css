@@ -108,3 +108,19 @@ html, body{
     height: 37.5px;
     width: 90.5px;
 }
+
+a:link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+  
+  /* mouse over link */
+  a:hover {
+    text-decoration: none;
+  }

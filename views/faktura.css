@@ -12,18 +12,8 @@ a:visited {
 
 /* mouse over link */
 a:hover {
-  color: rgb(255, 255, 255);
   text-decoration: none;
-  /* background-color: aquamarine; */
-
 }
-
-/* selected link */
-/* a:active {
-  color: rgb(130, 255, 106);
-  text-decoration: none;
-  background-color: rgb(130, 255, 106);
-} */
 
 a {
   line-height: 130%;

@@ -233,8 +233,8 @@ head
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
-    input#tabSelect(class="button" type="submit" value="Crud")
-h1#tabTitle PaperSign CRUD
+    input#tabSelect(class="button" type="submit" value="Produkter")
+h1#tabTitle PaperSign Produkter
 .parent
   .child1
     select#atribut(name="atribut")
@@ -287,7 +287,15 @@ h1#tabTitle PaperSign CRUD
         input#antal(title="Antal" type='number' placeholder='Antal' value = data.antal)
         input#leveradoer(title="Leverandør" type='text' placeholder='Leverandør' value = data.leveradør)
         input#bestillingsnummer(title="Bestillingsnummer" type='text' placeholder='Bestillingsnummer' value = data.bestillingsnummer)
-        - break 
-
+        - break
+  form.child3
+    if (lavP!=undefined)
+      .paamindelse
+        .paamindelseT
+          h3 Påmindelse
+        .paamindelseP
+          each lp of lavP
+            a(href="/CRUD/"+lp.gruppeNr+"&"+lp.produktNr)= lp.navn + " antal: " + lp.antal + " PGnr: " +lp.gruppeNr + " Pnr: " +lp.produktNr
+            <br>
 #psLogo
   img(src='/images/papersignLogo.png') 

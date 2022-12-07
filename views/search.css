@@ -10,19 +10,6 @@
    text-decoration: none;
  }
 
- /* mouse over link */
- a:hover {
-   color: rgb(14, 120, 0);
-   text-decoration: none;
-   background-color: aquamarine;
- }
-
- /* selected link */
- a:active {
-   color: rgb(130, 255, 106);
-   text-decoration: none;
- }
-
  a {
    line-height: 130%;
  }
@@ -30,7 +17,7 @@
  .vareattributter {
    display: grid;
    grid-template-columns: repeat(7, 14%);
-   grid-template-rows: repeat(100, 5%);
+   grid-template-rows: 5% 95%;
    grid-column-gap: 2px;
    grid-row-gap: 2px;
    border: 2px solid black;
@@ -54,5 +41,54 @@
   margin: 4px;
   width: 74%;
   height: 10.9%;
+}
 
+.overskrifter{
+  display: grid;
+  grid-template-columns: repeat(7, 14.9%);
+  grid-template-rows: repeat(100, 100%);
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+  border-bottom: 2px solid black;
+  padding: 2px;
+  width: 100%; 
+  grid-column-start: 1;
+  grid-column-end: 8;
+}
+
+.soegeresultater{
+  display: grid;
+  grid-template-columns: repeat(7, 14.9%);
+  grid-template-rows: repeat(100, 5%);
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  padding: 2px;
+  grid-column-start: 1;
+  grid-column-end: 8;
+  
+}
+
+.soegeresultat{
+  display: grid;
+  grid-template-columns: repeat(7, 14.2%);
+  grid-template-rows: repeat(100, 100%);
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+  padding: 2px;
+  grid-column-start: 1;
+  grid-column-end: 8;
+}
+
+.soegeresultat:hover{
+
+  background-color: rgb(120, 195, 120);
+  color: white;
+  border-bottom: 2px solid black;
+}
+
+body{
+  overflow: hidden;
 }

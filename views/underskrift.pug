@@ -20,7 +20,7 @@ head
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
-    input(class="button" type="submit" value="Crud")
+    input(class="button" type="submit" value="Produkter")
 h1#tabTitle2 #[strong #{"PaperSign Faktura"}]
 .underskrift
   #app
@@ -51,8 +51,8 @@ h1#tabTitle2 #[strong #{"PaperSign Faktura"}]
     // setupSigBox functionen bruges til at lave et tegne felt som kan bruges med Signature Pad
     function setupSigBox(){
     canvas = document.querySelector("canvas");
-    canvas.setAttribute("width", 700);
-    canvas.setAttribute("height", 400);
+    canvas.setAttribute("width", 600);
+    canvas.setAttribute("height", 300);
     signaturePad = new SignaturePad(canvas);
     }
     document.addEventListener("DOMContentLoaded",setupSigBox);
