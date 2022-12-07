@@ -250,7 +250,6 @@ h1#tabTitle PaperSign CRUD
     select#produktGList(name='pgroups' multiple='')
       each data in produktgrupper
         option()= data.navn + " "+ data.gruppeNr
-        //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProduktG(onclick='if (confirm("Er du sikker på at du vil oprette denne produktgruppe?")==true) createProductgroup()') Tilf&oslash;j
     button#updaterProduktG(onclick='if (confirm("Er du sikker på at du vil opdatere denne produktgruppe?")==true) updateProductGroup(' + fromSearch +"," + valgtGruppeNr + ')') Opdater
     button#sletProduktG(onclick='deleteProductGroup('+ProduktInProduktGoup.length+')') Slet
@@ -270,7 +269,6 @@ h1#tabTitle PaperSign CRUD
     select#produktList(name='productsForGroup' multiple='')
       each data in ProduktInProduktGoup
           option()= 'Navn: ' + data.navn + " " + data.produktNr
-          //option(value="" placeholder="")= 'Navn: ' + data.navn
     button#tilfoejProdukt(onclick='if (confirm("Er du sikker på at du vil oprette dette produkt?")==true) createProduct(' + fromSearch +"," + valgtGruppeNr + ')') Tilf&oslash;j
     button#updateProdukt(onclick='if (confirm("Er du sikker på at du vil opdatere dette produkt?")==true) updateProduct(' + fromSearch +"," + valgtGruppeNr + "," + valgtProduktNr + ')') Opdater
     button#sletProdukt(onclick='if (confirm("Er du sikker på at du vil slette dette produkt?")==true) deleteProduct(' + fromSearch +"," + valgtProduktNr + ')') Slet
