@@ -86,19 +86,19 @@ head
       } 
     }
     
-      //funktionen tjekker om at den valgte produktgruppe er tom for produkter og derefter bekræfter brugeren,
-      // om de ønsker en bestemt produktgruppe skal slettes.
-      //funktionen sender derefter valgte produktgruppenr til serveren, som så sletter produktgruppen, og opdatere siden. 
-      let deleteProductGroup = async (ProduktInProduktGouplength) => {
-        if (ProduktInProduktGouplength == 0 && confirm("Er du sikker på at du vil slette denne produktgruppe?")==true) {
-          try {
-          await post("/deleteProductGroup", {aktuelGroupNr: localStorage.getItem('groupNr')});
-          window.location.href = "/CRUD"
-          }catch(e){
-          console.log("Fejl");
-          }
+    //funktionen tjekker om at den valgte produktgruppe er tom for produkter og derefter bekræfter brugeren,
+    // om de ønsker en bestemt produktgruppe skal slettes.
+    //funktionen sender derefter valgte produktgruppenr til serveren, som så sletter produktgruppen, og opdatere siden. 
+    let deleteProductGroup = async (ProduktInProduktGouplength) => {
+      if (ProduktInProduktGouplength == 0 && confirm("Er du sikker på at du vil slette denne produktgruppe?")==true) {
+        try {
+        await post("/deleteProductGroup", {aktuelGroupNr: localStorage.getItem('groupNr')});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log("Fejl");
+        }
         } else {
-          alert("Du kan ikke slette en produktgruppe som indeholder produkter")
+        alert("Du kan ikke slette en produktgruppe som indeholder produkter")
         }
       }
     
@@ -126,95 +126,95 @@ head
       }
     }
 
-      //funktionen læser ønsket attributter som er indtastet af brugeren.
-      //derefter tjekker funktionen om kaldet af metoden kommer fra søgefunktionen eller direkte fra crud. 
-      //også sender attributer til serveren som opretter et nyt produkt. 
-      //denne metode opdatere også websiden med den nye produkt.
-      let createProduct = async (fromSearch, valgtGruppeNr) => {
-          var produktNavn = document.getElementById("navn").value;
-          var produktPris = document.getElementById("pris").value;
-          var produktAntal = document.getElementById("antal").value;
-          var leveradør = document.getElementById("leveradoer").value;
-          var bestillingsnummer = document.getElementById("bestillingsnummer").value;
-          if (fromSearch == "1"){
-            try {
-            await post("/opretProdukt", {gruppeNr: valgtGruppeNr, produktNavn:  produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer});
-            window.location.href = "/CRUD"
-            }catch(e){
-            console.log(Fejl);
-            } 
-          }  
-          else if(fromSearch == "0"){
-            try {
-            await post("/opretProdukt", {gruppeNr: localStorage.getItem('groupNr'), produktNavn:  produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer});
-            window.location.href = "/CRUD"
-            }catch(e){
-            console.log(Fejl);
-            }  
-          } 
+    //funktionen læser ønsket attributter som er indtastet af brugeren.
+    //derefter tjekker funktionen om kaldet af metoden kommer fra søgefunktionen eller direkte fra crud. 
+    //også sender attributer til serveren som opretter et nyt produkt. 
+    //denne metode opdatere også websiden med den nye produkt.
+    let createProduct = async (fromSearch, valgtGruppeNr) => {
+      var produktNavn = document.getElementById("navn").value;
+      var produktPris = document.getElementById("pris").value;
+      var produktAntal = document.getElementById("antal").value;
+      var leveradør = document.getElementById("leveradoer").value;
+      var bestillingsnummer = document.getElementById("bestillingsnummer").value;
+      if (fromSearch == "1"){
+        try {
+        await post("/opretProdukt", {gruppeNr: valgtGruppeNr, produktNavn:  produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log(Fejl);
         } 
+      }  
+      else if(fromSearch == "0"){
+        try {
+        await post("/opretProdukt", {gruppeNr: localStorage.getItem('groupNr'), produktNavn:  produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log(Fejl);
+        }  
+      } 
+    } 
 
-      //funktionen tjekker om kaldet af metoden kommer fra søgefunktionen eller direkte fra crud. 
-      //også sender valgteproduktnr til serveren som sletter det valgte produkt. 
-      //denne metode opdatere også websiden uden det slettede produkt.
-      let deleteProduct = async (fromSearch,valgtProduktNr) => {
-          if (fromSearch == "1"){
-            try {
-            await post("/deleteProdukt", {aktuelProduktNr: valgtProduktNr});
-            window.location.href = "/CRUD"
-            }catch(e){
-            console.log("Fejl");
-            } 
-          }
-          else if(fromSearch == "0"){
-            try {
-            await post("/deleteProdukt", {aktuelProduktNr: localStorage.getItem('produktNr')});
-            window.location.href = "/CRUD"
-            }catch(e){
-            console.log("Fejl");
-            } 
-          }
-        }
-
-      //funktionen læser ønskede attributter som er indtastet af brugeren.
-      //derefter tjekker funktionen om kaldet af metoden kommer fra søgefunktionen eller direkte fra crud. 
-      //også sender attributer til serveren som opdatere det valgte produkt via valgtegruppenr og valgteproduktnr. 
-      //denne metode opdatere også websiden med det opdaterede produkt. 
-      let updateProduct = async (fromSearch,valgtGruppeNr,valgtProduktNr) => {
-          var produktNavn = document.getElementById("navn").value;
-          var produktPris = document.getElementById("pris").value;
-          var produktAntal = document.getElementById("antal").value;
-          var leveradør = document.getElementById("leveradoer").value;
-          var bestillingsnummer = document.getElementById("bestillingsnummer").value;
-          if (fromSearch == "1"){
-            try {
-            await post("/updateProdukt", {aktuelProduktNr: valgtProduktNr, gruppeNr: valgtGruppeNr, produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
-            window.location.href = "/CRUD"
-            }catch(e){
-            console.log(Fejl);
-            } 
-          }
-          else if (fromSearch == "0"){
-            try {
-            await post("/updateProdukt", {aktuelProduktNr: localStorage.getItem('produktNr'), gruppeNr: localStorage.getItem('groupNr'), produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
-            window.location.href = "/CRUD"
-            }catch(e){
-            console.log(Fejl);
-            } 
-          }
+    //funktionen tjekker om kaldet af metoden kommer fra søgefunktionen eller direkte fra crud. 
+    //også sender valgteproduktnr til serveren som sletter det valgte produkt. 
+    //denne metode opdatere også websiden uden det slettede produkt.
+    let deleteProduct = async (fromSearch,valgtProduktNr) => {
+      if (fromSearch == "1"){
+        try {
+        await post("/deleteProdukt", {aktuelProduktNr: valgtProduktNr});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log("Fejl");
+        } 
       }
-
-      //ved tryk på søg knappen, læser funktionen den attribut og værdi man ønsker at søge efter. 
-      //og sender brugeren videre til søgesiden.. 
-      let search = async () => {
-          var attribut = document.getElementById("atribut").value;
-          var value = document.getElementById("value").value; 
-          try {
-          window.location.href = "/search?atribut=" + attribut + "&value=" + value
-          }catch(e){
-          console.log("Fejl");
-          } 
+      else if(fromSearch == "0"){
+        try {
+        await post("/deleteProdukt", {aktuelProduktNr: localStorage.getItem('produktNr')});
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log("Fejl");
+        } 
       }
+    }
+
+    //funktionen læser ønskede attributter som er indtastet af brugeren.
+    //derefter tjekker funktionen om kaldet af metoden kommer fra søgefunktionen eller direkte fra crud. 
+    //også sender attributer til serveren som opdatere det valgte produkt via valgtegruppenr og valgteproduktnr. 
+    //denne metode opdatere også websiden med det opdaterede produkt. 
+    let updateProduct = async (fromSearch,valgtGruppeNr,valgtProduktNr) => {
+      var produktNavn = document.getElementById("navn").value;
+      var produktPris = document.getElementById("pris").value;
+      var produktAntal = document.getElementById("antal").value;
+      var leveradør = document.getElementById("leveradoer").value;
+      var bestillingsnummer = document.getElementById("bestillingsnummer").value;
+      if (fromSearch == "1"){
+        try {
+        await post("/updateProdukt", {aktuelProduktNr: valgtProduktNr, gruppeNr: valgtGruppeNr, produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log(Fejl);
+        } 
+      }
+      else if (fromSearch == "0"){
+        try {
+        await post("/updateProdukt", {aktuelProduktNr: localStorage.getItem('produktNr'), gruppeNr: localStorage.getItem('groupNr'), produktNavn: produktNavn, produktPris: produktPris, produktAntal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer });
+        window.location.href = "/CRUD"
+        }catch(e){
+        console.log(Fejl);
+        } 
+      }
+    }
+
+    //ved tryk på søg knappen, læser funktionen den attribut og værdi man ønsker at søge efter. 
+    //og sender brugeren videre til søgesiden.. 
+    let search = async () => {
+      var attribut = document.getElementById("atribut").value;
+      var value = document.getElementById("value").value; 
+      try {
+      window.location.href = "/search?atribut=" + attribut + "&value=" + value
+      }catch(e){
+      console.log("Fejl");
+      } 
+    }
 
 
 doctype html
