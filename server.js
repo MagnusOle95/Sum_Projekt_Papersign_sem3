@@ -541,3 +541,5 @@ function lagerStatus(){
     }
     return lavLagerStatus;
 }
+
+console.log("Serveren er startet op. Lytter på port " + port);
