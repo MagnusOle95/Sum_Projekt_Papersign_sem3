@@ -511,7 +511,7 @@ function sumTotal() {
         total += k.total;
     }
 }
-
+// henter ordre, ud fra en ordres ID (i det lokale array, af ordre, som har data fra firebase)
 function getOrdre(ordreID){
   for(let i = 0; i<ordrer.length; i++){
     if(ordrer[i].docID == ordreID){
