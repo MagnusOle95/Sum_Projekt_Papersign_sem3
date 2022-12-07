@@ -263,7 +263,6 @@ app.get("/crud/", async (request, response) => {
     let fromSearch = "0"
     let lavP = lagerStatus();
     response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch,lavP: lavP });
-    console.table(ProduktInProduktGoup)
 });
 // siden til at komme ind på crud, på et specifikt produkt (via søgning)
 app.get("/crud/:id&:id2", async (request, response) => {
