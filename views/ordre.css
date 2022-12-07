@@ -1,10 +1,8 @@
 .ordre {
     display: grid;
-    border: 2px solid black;
     margin: 8px;
-    grid-template-columns: repeat(2, 30%);
+    grid-template-columns: repeat(2, 18%);
     grid-template-rows: repeat(20, 7.5%);
-    background-image: linear-gradient(white, lightgray);
     height: 83.5%;
 
 }
@@ -19,13 +17,6 @@
     padding: 0px;
 }
 
-.overskrift,
-#info {
-    border-right: 2px solid black;
-    border-bottom: 2px solid black;
-
-}
-
 .overskrifter {
     display: grid;
     grid-template-columns: repeat(5, 15%);
@@ -36,9 +27,6 @@
     grid-column-end: 5;
     font-weight: bold;
     font-size: 110%;
-
-
-    /* border: 2px solid black; */
 }
 
 .ordrelinje {
@@ -50,12 +38,9 @@
     grid-column-start: 1;
     grid-column-end: 5;
     width: 10%;
-    /* border: 2px solid black; */
 }
 
 #productHeader {
-    border-right: 2px solid black;
-    border-bottom: 2px solid black;
     font-size: 150%;
     font-weight: bold;
 }
@@ -70,6 +55,5 @@
 }
 
 .ordrelinje:hover {
-    background-color: rgb(120, 195, 120);
     color: white;
 }
