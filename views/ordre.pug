@@ -18,27 +18,39 @@ head
     input(class="button" type="submit" value="Crud")
 h1#tabTitle PaperSign Ordre
 .ordre
-  H2="Ordre: " + specifikOrdre.ordreNr
-  H2#productHeader= "Dato: "+ specifikOrdre.dato
-  H2#productHeader= "Samlet Pris: "+ specifikOrdre.samletpris +",-"
+  div#productHeader="Ordre: "
+  div#productHeader=specifikOrdre.ordreNr+""
+  div#productHeader= "Dato: "
+  div#productHeader= specifikOrdre.dato +""
+  div#productHeader= "Samlet Pris: "
+  div#productHeader= specifikOrdre.samletpris +",-"
+  -var id = 1
     each fisk in specifikOrdre.betalingsmetode
-      H2#productHeader= "Betalingsmetode: "+ fisk.betalling + " beløb: " + fisk.beloeb + ",-"
+      div#productHeader= id + " Betalingsmetode: "
+      div#productHeader= "" + fisk.betalling
+      div#productHeader= id + " Beløb: " 
+      div#productHeader= fisk.beloeb + ",-"
+      -id=id+1
     if (specifikOrdre.navn == "")
-        H2#productHeader= "Anonym betaling " + specifikOrdre.navn
+      div#productHeader= "Betaler: "
+      div#productHeader= "Anonym betaling "
     else
-        H2#productHeader= "Betaler: " + specifikOrdre.navn
-  H2 Vare fra ordre:
+      div#productHeader= "Betaler: "
+      div#productHeader= specifikOrdre.navn +""
+
   .ordrelinjer
-    .overskrift Varenummer
-    .overskrift Navn
-    .overskrift Pris
-    .overskrift Antal
-    .overskrift Total
+    .overskrifter
+      .overskrift Varenummer
+      .overskrift Navn
+      .overskrift Pris
+      .overskrift Antal
+      .overskrift Total
     each data in specifikOrdre.ordrelinjer
-      div#info= data.produktnr
-      div#info= data.navn
-      div#info= data.pris
-      div#info= data.antal 
-      div#info= data.total
+      .ordrelinje
+        div#info= data.produktnr
+        div#info= data.navn
+        div#info= data.pris
+        div#info= data.antal 
+        div#info= data.total
 #psLogo
   img(src='/images/papersignLogo.png') 
