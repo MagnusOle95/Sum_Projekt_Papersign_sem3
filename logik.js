@@ -177,31 +177,7 @@ function getProduct(varenr) {
 }
 
 
-
-/*
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCwMpbafG7AkNlU28omo8MDhA7ZgIh7BlA",
-  authDomain: "papersign-19cd5.firebaseapp.com",
-  projectId: "papersign-19cd5",
-  storageBucket: "papersign-19cd5.appspot.com",
-  messagingSenderId: "477663863462",
-  appId: "1:477663863462:web:f765c4665f9f0610fd4a67"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-*/
-
 export default { Product, createProduct, getProduct, getProducts, getProductgroup, createProductgroup, removeAttribute, setNewAttribute, searchDynamic };
-
-
-//TODO Firebase inplementation
 
 function deleteProduct(product1) {
   let deletedd = false;
