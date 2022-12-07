@@ -21,6 +21,7 @@
     display: grid;
     grid-template-columns: repeat(5, 15%);
     grid-template-rows: repeat(1, 100%);
+    border-top: 2px solid black;
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     grid-column-start: 1;

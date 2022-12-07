@@ -153,7 +153,7 @@ app.get("/", async (request, response) => {
     else if (pgid == -1) { pgid = 'visalt' }
     let p = await searchProductByGroupNr(pgid);
     let pg = await getAllProductgroups();
-    let lavP = lagerStatus();    
+    let lavP = lagerStatus();
     response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt), lavP: lavP });
 });
 
@@ -192,7 +192,7 @@ app.post('/updateProduktGroup', async (request, response) => {
 // opdaterer "produktnumre" inde i firebase, så næste produkt får et nyt unikt nr
 app.post("/opretProdukt", async (request, response) => {
     const { gruppeNr, produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer } = request.body;
-    let nyProdukt = logik.createProduct(produktNavn,produktPris,produktAntal,leveradør,bestillingsnummer,gruppeNr,produktNr)
+    let nyProdukt = logik.createProduct(produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer, gruppeNr, produktNr)
     produkter.push(nyProdukt)
     ProduktInProduktGoup.push(nyProdukt)
     let nyProduktFirebase = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: produktNr }
@@ -210,47 +210,47 @@ app.post('/deleteProdukt', async (request, response) => {
     await deleteDoc(doc(db, 'varer', aktuelProduktNr + ""));
 
     //Her finder jeg hvor i arrayet produkterne befinder sig og sletter dem. 
-    for(let i = 0; i < produkter.length; i++){
-        if(produkter[i].produktNr == aktuelProduktNr){
-            produkter.splice(i,1);
+    for (let i = 0; i < produkter.length; i++) {
+        if (produkter[i].produktNr == aktuelProduktNr) {
+            produkter.splice(i, 1);
         }
-    for(let i = 0; i < ProduktInProduktGoup.length; i++){
-        if(ProduktInProduktGoup[i].produktNr == aktuelProduktNr){
-            ProduktInProduktGoup.splice(i,1);
+        for (let i = 0; i < ProduktInProduktGoup.length; i++) {
+            if (ProduktInProduktGoup[i].produktNr == aktuelProduktNr) {
+                ProduktInProduktGoup.splice(i, 1);
             }
         }
-     }
+    }
     valgtProduktNrS = undefined;
     response.sendStatus(201)
 })
 // opdaterer et produkt i firebase
 app.post('/updateProdukt', async (request, response) => {
-    const { aktuelProduktNr,gruppeNr, produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer } = request.body;
+    const { aktuelProduktNr, gruppeNr, produktNavn, produktPris, produktAntal, leveradør, bestillingsnummer } = request.body;
     let updatetProdukt = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
-    await setDoc(doc(db,"varer/" + aktuelProduktNr),updatetProdukt)
+    await setDoc(doc(db, "varer/" + aktuelProduktNr), updatetProdukt)
 
     //Her finder jeg hvor i arrayet produkterne befinder sig og opdatere dem. 
-    for(let i = 0; i < produkter.length; i++){
-        if(produkter[i].produktNr == aktuelProduktNr){
-            produkter[i] = {gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
+    for (let i = 0; i < produkter.length; i++) {
+        if (produkter[i].produktNr == aktuelProduktNr) {
+            produkter[i] = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
         }
     }
-    for(let i = 0; i < ProduktInProduktGoup.length; i++){
-        if(ProduktInProduktGoup[i].produktNr == aktuelProduktNr){
-            ProduktInProduktGoup[i] = {gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
+    for (let i = 0; i < ProduktInProduktGoup.length; i++) {
+        if (ProduktInProduktGoup[i].produktNr == aktuelProduktNr) {
+            ProduktInProduktGoup[i] = { gruppeNr: gruppeNr, navn: produktNavn, pris: produktPris, antal: produktAntal, leveradør: leveradør, bestillingsnummer: bestillingsnummer, produktNr: aktuelProduktNr }
         }
     }
     valgtProduktNrS = undefined;
     response.sendStatus(201)
-  })
+})
 
-  // sender brugeren over på "underskrift" siden
-  // bruges når man vælger "underskrift" som betalingsmetode, i kassen
+// sender brugeren over på "underskrift" siden
+// bruges når man vælger "underskrift" som betalingsmetode, i kassen
 app.get("/underskrift", async (request, response) => {
-    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv, total: total,fakturaNr: fakturaNR});
+    response.render("underskrift", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv, total: total, fakturaNr: fakturaNR });
 });
 // opdaterer fakturanummer, så den har et unikt ordrenummer
-app.post("/underskrift", async (request,response)=>{
+app.post("/underskrift", async (request, response) => {
     let fakturanrUpdate = { fakturaNR: fakturaNR }
     fakturaNR++;
     await setDoc(doc(db, "nummre/fakturaNr"), fakturanrUpdate)
@@ -261,7 +261,8 @@ app.post("/underskrift", async (request,response)=>{
 app.get("/crud/", async (request, response) => {
     produktgrupper = await getAllProductgroups();
     let fromSearch = "0"
-    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch });
+    let lavP = lagerStatus();
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch,lavP: lavP });
     console.table(ProduktInProduktGoup)
 });
 // siden til at komme ind på crud, på et specifikt produkt (via søgning)
@@ -270,18 +271,19 @@ app.get("/crud/:id&:id2", async (request, response) => {
     valgtProduktNrS = request.params.id2
     ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNrS)
     let fromSearch = "1"
-    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch });
+    let lavP = lagerStatus();
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch,lavP: lavP });
 });
 // siden til at komme ind på en specifik ordre (fundet via "faktura" oversigten)
 app.get("/ordre/:data", async (request, response) => {
-  let ordreID = request.params.data;
-  let specifikOrdre = getOrdre(ordreID);
-  response.render("ordre", { specifikOrdre, ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter });
+    let ordreID = request.params.data;
+    let specifikOrdre = getOrdre(ordreID);
+    response.render("ordre", { specifikOrdre, ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter });
 });
 // viser alle ordrer (fakturaer)
 app.get("/faktura/", async (request, response) => {
     ordrer = await getAllOrdrer();
-    response.render("faktura", {ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
+    response.render("faktura", { ordrer: ordrer, fakturaer: fakturaer, produktgrupper: produktgrupper, produktliste: produkter, kurv: kurv });
 });
 
 //Kasse genererer kassen
@@ -311,7 +313,7 @@ app.get("/kasseannullere", async (request, response) => {
     betallinger = [];
     betalt = 0;
     total = 0;
-    response.render("kasse", {pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
 });
 
 //Kasse tilføj produkt til kurv
@@ -512,12 +514,12 @@ function sumTotal() {
     }
 }
 // henter ordre, ud fra en ordres ID (i det lokale array, af ordre, som har data fra firebase)
-function getOrdre(ordreID){
-  for(let i = 0; i<ordrer.length; i++){
-    if(ordrer[i].docID == ordreID){
-      return ordrer[i];
+function getOrdre(ordreID) {
+    for (let i = 0; i < ordrer.length; i++) {
+        if (ordrer[i].docID == ordreID) {
+            return ordrer[i];
+        }
     }
-  }
 }
 
 // Adds a pay objects to an array of pay objects
@@ -552,12 +554,12 @@ function findIndexOfProduct(produkter, soegevaerdi, atribute) {
 // Checks if storage count is 5 or lowere
 // Returns array of products with low count
 // Used in view ("") for low product count reminder
-function lagerStatus(){ 
+function lagerStatus() {
     // insilize empty array for return statement
     let lavLagerStatus = [];
     for (let p of produkter) {
         //Checks count of 5 or lowere, push if true
-        if(p.antal<=5){
+        if (p.antal <= 5) {
             lavLagerStatus.push(p)
         }
     }

@@ -15,7 +15,7 @@ head
   form(action = "/faktura" method="get")
     input(class="button" type="submit" value="Faktura")
   form(action= "/crud" method="get")
-    input(class="button" type="submit" value="Crud")
+    input(class="button" type="submit" value="Produkter")
   button(hidden class="button" id="dmode" value="Dark Mode" onclick='(function(){var element = document.body; element.classList.toggle("dark-mode"); darkmode=true;})();')    
 h1#tabTitle PaperSign Kasse
 .parent
@@ -70,14 +70,14 @@ h1#tabTitle PaperSign Kasse
           option(value='Underskrift') Underskrift
         input#beloeb(type='number' name='beloeb' value=''+betalt+'')
         button#koeb(formaction="kassebetal" method="get") K&oslash;b
-  .child3
+  form.child3
     if (lavP!=undefined)
       .paamindelse
         .paamindelseT
           h3 Påmindelse
         .paamindelseP
           each lp of lavP
-            a= "Navn: " + lp.navn + " antal: " + lp.antal
+            a(href="/CRUD/"+lp.gruppeNr+"&"+lp.produktNr)= lp.navn + " antal: " + lp.antal
             <br>
 #psLogo
   img(src='/images/papersignLogo.png') 
