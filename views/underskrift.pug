@@ -140,5 +140,6 @@ h1#tabTitle2 #[strong #{"PaperSign Faktura"}]
     // til sidst er der save funktionen som svare til createpdf hvor man bare skal give den et navn
     // navnet bliver fakturaNr.pdf så fx hvis man skriver  123 i fakturNr boxen så ville ens pdf være=123.pdf
     doc.save(`${fakturaNr}.pdf`)
+    window.location.href = "/underSkriftBetal"
     }
       

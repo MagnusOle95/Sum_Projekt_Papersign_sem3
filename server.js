@@ -157,6 +157,46 @@ app.get("/", async (request, response) => {
     response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt), lavP: lavP });
 });
 
+app.get("/underSkriftBetal", async (request, response) => {
+    let temppgid = request.query.pgroup;
+    if (temppgid != undefined) {
+        pgid = temppgid
+    }
+    else if (pgid == -1) { pgid = 'visalt' }
+    let p = await searchProductByGroupNr(pgid);
+    let pg = await getAllProductgroups();
+    let lavP = lagerStatus();
+    betalBeloeb(0, "Underskrift")
+    //genenmføre købet
+    //Opretter ordre
+    let d = new Date();
+    let datoidag = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+    let nyOrdreFirebase = { samletpris: total, dato: datoidag, betalingsmetode: betallinger, navn: "", ordreNr: ordreNr, ordrelinjer: kurv, underskrift: false }
+    //Sender odre til firebase
+    await setDoc(doc(db, "ordrer", `${ordreNr}`), nyOrdreFirebase)
+    ordreNr++;
+    let ordreNrUpdate = { ordreNr: ordreNr }
+    await setDoc(doc(db, "nummre/ordreNr"), ordreNrUpdate)
+    // Opdatere lager beholdningen på firebase
+    for (let k of kurv) {
+        let produkterFB = await getAllProducts();
+        let pIndexFB = findIndexOfProduct(produkterFB, k.produktnr, "produktNr")
+        let productFB = produkterFB[pIndexFB]
+        let nyAntal = produkterFB[pIndexFB].antal - k.antal
+        produkterFB[pIndexFB].antal = nyAntal
+        await setDoc(doc(db, "varer/" + k.produktnr), productFB)
+    }
+    //Nulstiller kasse apperatet 
+    kurv = [];
+    betallinger = [];
+    betalt = 0;
+    total = 0;
+    //Opdater lokal data
+    produkter = await getAllProducts();
+    ordrer = await getAllOrdrer();
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt), lavP: lavP });
+});
+
 // opretter en produktgruppe med et unikt gruppeNr og opdaterer "numre" 
 // i firebase, så næste produktgruppe også får et unikt nummer
 app.post("/opretProduktGruppe", async (request, response) => {
@@ -262,7 +302,7 @@ app.get("/crud/", async (request, response) => {
     produktgrupper = await getAllProductgroups();
     let fromSearch = "0"
     let lavP = lagerStatus();
-    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch,lavP: lavP });
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch, lavP: lavP });
 });
 // siden til at komme ind på crud, på et specifikt produkt (via søgning)
 app.get("/crud/:id&:id2", async (request, response) => {
@@ -271,7 +311,7 @@ app.get("/crud/:id&:id2", async (request, response) => {
     ProduktInProduktGoup = searchProductByGroupNr(valgtGruppeNrS)
     let fromSearch = "1"
     let lavP = lagerStatus();
-    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch,lavP: lavP });
+    response.render("crud", { fakturaer: fakturaer, produktgrupper: produktgrupper, produkter: produkter, ProduktInProduktGoup: ProduktInProduktGoup, valgtGruppeNr: valgtGruppeNrS, valgtProduktNr: valgtProduktNrS, fromSearch: fromSearch, lavP: lavP });
 });
 // siden til at komme ind på en specifik ordre (fundet via "faktura" oversigten)
 app.get("/ordre/:data", async (request, response) => {
