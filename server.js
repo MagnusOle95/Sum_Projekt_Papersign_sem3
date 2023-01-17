@@ -78,7 +78,7 @@ let valgtGruppeNrS;
 let valgtProduktNrS;
 let betalt = 0;
 let betallinger = [];
-let darkmode = true;
+// let darkmode = true;
 
 
 async function getAllOrdrer() {
@@ -334,7 +334,7 @@ app.get("/kasse", async (request, response) => {
     let p = await searchProductByGroupNr(pgid);
     let pg = await getAllProductgroups();
     //add to kurv
-    response.render("kasse", { darkmode: darkmode, pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
+    response.render("kasse", { pgid: pgid, produkter: p, produktgrupper: pg, kurv: kurv, total: total, betalt: (total - betalt) });
 });
 
 //Kasse annullér køb (Tømmer kurven)
